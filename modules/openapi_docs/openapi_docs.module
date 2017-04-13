@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function openapi_docs_theme() {
+  return array(
+    'swagger_ui' => array(
+      'render element' => 'elements',
+    ),
+  );
+}

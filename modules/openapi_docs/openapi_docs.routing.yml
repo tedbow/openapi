@@ -1,0 +1,26 @@
+openapi.swaggerUI.non_entity:
+  path: '/admin/config/services/openapi/swagger-ui/non-entity'
+  defaults:
+    _controller: '\Drupal\openapi_docs\Controller\SwaggerUIController::nonEntityResources'
+  methods: [GET]
+  requirements:
+    _permission: 'access openapi api docs'
+
+openapi.swaggerUI.bundle:
+  path: '/admin/config/services/openapi/swagger-ui/{entity_type}/{bundle_name}'
+  defaults:
+    _controller: '\Drupal\openapi_docs\Controller\SwaggerUIController::bundleResource'
+  methods: [GET]
+  requirements:
+    _permission: 'access openapi api docs'
+
+
+openapi.swaggerUI.list:
+  path: '/admin/config/services/openapi/swagger-ui/list-resources'
+  defaults:
+    _controller: '\Drupal\openapi_docs\Controller\SwaggerUIController::listResources'
+    _title: 'REST API'
+  methods: [GET]
+  requirements:
+    _permission: 'access openapi api docs'
+

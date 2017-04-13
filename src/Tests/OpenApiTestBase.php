@@ -133,7 +133,22 @@ abstract class OpenApiTestBase extends RESTTestBase {
     $this->assertResponse($status_code);
     if ($expected_result !== NULL) {
       $data = Json::decode($response);
-      $this->assertEqual($data, $expected_result, $message);
+      $this->assertEqual(static::nestedKsort($data), static::nestedKsort($expected_result), $message);
+    }
+  }
+
+  /**
+   * Sorts a nested array with ksort().
+   *
+   * @param $array
+   *   The nested array to sort.
+   */
+  public static function nestedKsort(&$array) {
+    ksort($array);
+    foreach ($array as &$item) {
+      if (is_array($item)) {
+        static::nestedKsort($item);
+      }
     }
   }
 

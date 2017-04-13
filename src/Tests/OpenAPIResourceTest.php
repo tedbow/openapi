@@ -35,7 +35,7 @@ class OpenAPIResourceTest extends OpenApiTestBase {
 
     $url = Url::fromRoute('openapi.entities')->setRouteParameter('_format', 'json');
     $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedEntities(), 'Resource list correct');
-    return;
+
     $entity_type_bundles = [
       'node' => ['article'],
     ];

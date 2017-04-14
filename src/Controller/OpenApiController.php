@@ -41,7 +41,7 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
   /**
    * The Schemata SchemaFactory.
    *
-   * @var \Drupal\schemata\SchemaFactory
+   * @var \Drupal\openapi_json_schema\SchemaFactory
    */
   protected $schemaFactory;
 

@@ -11,20 +11,13 @@ use Drupal\rest\RestResourceConfigInterface;
 trait RestInspectionTrait {
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface;
-   */
-  protected $entityTypeManager;
-
-  /**
    * Gets entity types that are enabled for rest.
    *
    * @param string $entity_type_id
    *   The entity type id.
    *
-   * @return \Drupal\Core\Entity\EntityTypeInterface[] Entity types that are enabled.
-   *    Entity types that are enabled.
+   * @return \Drupal\Core\Entity\EntityTypeInterface[]
+   *   Entity types that are enabled.
    */
   protected function getRestEnabledEntityTypes($entity_type_id = NULL) {
     $entity_types = [];
@@ -63,7 +56,7 @@ trait RestInspectionTrait {
    * Gets the entity type if any for REST resource.
    *
    * @param \Drupal\rest\RestResourceConfigInterface $resource_config
-   *    The REST config resource.
+   *   The REST config resource.
    *
    * @return \Drupal\Core\Entity\EntityTypeInterface|null
    *   The Entity Type or null.
@@ -80,7 +73,7 @@ trait RestInspectionTrait {
    * Determines if an REST resource is for an entity.
    *
    * @param \Drupal\rest\RestResourceConfigInterface $resource_config
-   *    The REST config resource.
+   *   The REST config resource.
    *
    * @return bool
    *   True if the resource represents a Drupal entity.

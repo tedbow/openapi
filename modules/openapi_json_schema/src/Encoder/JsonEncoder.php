@@ -16,7 +16,7 @@ class JsonEncoder extends DrupalJsonEncoder {
    *
    * @var string
    */
-  protected static $format = array('json_schema', 'hal_json_schema');
+  protected static $format = ['json_schema', 'hal_json_schema'];
 
   /**
    * {@inheritdoc}

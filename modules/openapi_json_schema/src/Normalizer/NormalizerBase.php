@@ -17,7 +17,7 @@ abstract class NormalizerBase extends SerializationNormalizerBase implements Den
    *
    * @var array
    */
-  protected $formats = array('json_schema');
+  protected $formats = ['json_schema'];
 
   /**
    * {@inheritdoc}
@@ -36,7 +36,7 @@ abstract class NormalizerBase extends SerializationNormalizerBase implements Den
   /**
    * {@inheritdoc}
    */
-  public function denormalize($data, $class, $format = NULL, array $context = array()) {
+  public function denormalize($data, $class, $format = NULL, array $context = []) {
     return FALSE;
   }
 

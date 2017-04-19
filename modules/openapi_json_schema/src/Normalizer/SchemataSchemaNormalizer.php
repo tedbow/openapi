@@ -39,7 +39,7 @@ class SchemataSchemaNormalizer extends NormalizerBase {
   /**
    * {@inheritdoc}
    */
-  public function normalize($entity, $format = NULL, array $context = array()) {
+  public function normalize($entity, $format = NULL, array $context = []) {
     // Create the array of normalized fields, starting with the URI.
     /* @var $entity \Drupal\openapi_json_schema\Schema\SchemaInterface */
     $normalized = [

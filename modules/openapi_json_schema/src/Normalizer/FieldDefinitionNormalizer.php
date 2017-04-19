@@ -23,7 +23,7 @@ class FieldDefinitionNormalizer extends ListDataDefinitionNormalizer {
   /**
    * {@inheritdoc}
    */
-  public function normalize($entity, $format = NULL, array $context = array()) {
+  public function normalize($entity, $format = NULL, array $context = []) {
     /* @var $entity \Drupal\Core\Field\FieldDefinitionInterface */
     $normalized = parent::normalize($entity, $format, $context);
 

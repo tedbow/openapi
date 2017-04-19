@@ -4,9 +4,9 @@
  * Implements hook_theme().
  */
 function openapi_docs_theme() {
-  return array(
-    'swagger_ui' => array(
+  return [
+    'swagger_ui' => [
       'render element' => 'elements',
-    ),
-  );
+    ],
+  ];
 }

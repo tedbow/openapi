@@ -44,7 +44,7 @@ class DataReferenceDefinitionNormalizer extends DataDefinitionNormalizer {
   /**
    * {@inheritdoc}
    */
-  public function normalize($entity, $format = NULL, array $context = array()) {
+  public function normalize($entity, $format = NULL, array $context = []) {
     /* @var $entity \Drupal\Core\TypedData\DataReferenceDefinitionInterface */
     if (!$this->validateEntity($entity)) {
       return [];

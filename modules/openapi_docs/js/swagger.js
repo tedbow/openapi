@@ -18,48 +18,24 @@
        highlightSizeThreshold: 5000
        });
        */
-
-      // Pre load translate...
-      if (window.SwaggerTranslator) {
-        window.SwaggerTranslator.translate();
-      }
-      window.swaggerUi = new SwaggerUi({
+      // Build a system
+      const ui = SwaggerUIBundle({
         url: url,
-        validatorUrl: undefined,
-        dom_id: "swagger-ui-container",
-        supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
-        onComplete: function (swaggerApi, swaggerUi) {
-          if (typeof initOAuth == "function") {
-            initOAuth({
-              clientId: "your-client-id",
-              clientSecret: "your-client-secret-if-required",
-              realm: "your-realms",
-              appName: "your-app-name",
-              scopeSeparator: " ",
-              additionalQueryStringParams: {}
-            });
-          }
-
-          if (window.SwaggerTranslator) {
-            window.SwaggerTranslator.translate();
-          }
-        },
-        onFailure: function (data) {
-          log("Unable to Load SwaggerUI");
-        },
-        docExpansion: "list",
-        jsonEditor: false,
-        defaultModelRendering: 'schema',
-        showRequestHeaders: false
+        //dom_id: '#swagger-ui',
+        dom_id: "#swagger-ui-container",
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout"
       });
 
-      window.swaggerUi.load();
+      window.ui = ui;
 
-      function log() {
-        if ('console' in window) {
-          console.log.apply(console, arguments);
-        }
-      }
+
     }
   };
 

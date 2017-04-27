@@ -1,3 +1,12 @@
 #swagger-ui-container table.parameters th {
-    color: #FFFFFF;
+  color: #FFFFFF;
 }
+
+#swagger-ui-container .info .url,
+#swagger-ui-container .topbar
+{
+  display: none;
+}
+.
+
+

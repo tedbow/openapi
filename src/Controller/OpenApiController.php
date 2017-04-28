@@ -217,14 +217,7 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
             $path_method_spec['parameters'] = array_merge($path_method_spec['parameters'], $this->getRouteParameters($route));
 
           }
-          if ($route->getRequirement('_csrf_request_header_token')) {
-            $path_method_spec['parameters'][] = [
-              'name' => 'X-CSRF-Token',
-              'type' => 'string',
-              'in' => 'header',
-              'required' => TRUE,
-            ];
-          }
+
           $path_method_spec['operationId'] = $resource_plugin->getPluginId() . ":" . $method;
           $path_method_spec['schemes'] = ['http'];
           $path_method_spec['security'] = $this->getSecurity($resource_config, $method, $formats);

@@ -40,6 +40,11 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   protected $entityTypeManager;
 
   /**
+   * @var \Drupal\rest\RestResourceConfigInterface[]
+   */
+  protected $restConfigs = [];
+
+  /**
    * Constructs a new OpenApiController object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -75,26 +80,6 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   }
 
   /**
-   * Output OpenAPI compatible API spec.
-   *
-   * @param string $entity_type
-   *   The entity type.
-   * @param string $bundle_name
-   *   The bundle.
-   *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   The JSON Response.
-   */
-  public function generateEntityBundleSpecification($entity_type = NULL, $bundle_name = NULL) {
-    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
-    $resource_configs = $this->getResourceConfigs($entity_type);
-    $spec = $this->getSpecification($resource_configs, $bundle_name);
-    // Add model definitions.
-    $spec['definitions'] = $this->getDefinitions($entity_type, $bundle_name);
-    return $spec;
-  }
-
-  /**
    * Returns the paths information.
    *
    * @param \Drupal\rest\RestResourceConfigInterface[] $resource_configs
@@ -105,7 +90,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @return array The info elements.
    *    The info elements.
    */
-  protected function getPaths(array $resource_configs, $bundle_name = NULL) {
+   public function getPaths(array $resource_configs = NULL, $bundle_name = NULL) {
     $api_paths = [];
     foreach ($resource_configs as $id => $resource_config) {
       /** @var \Drupal\rest\Plugin\ResourceBase $plugin */
@@ -680,40 +665,14 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   /**
    * Generates OpenAPI specification
    */
-  public function generateSpecification() {
-    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
-    $resource_configs = $this->entityTypeManager
-      ->getStorage('rest_resource_config')
-      ->loadMultiple();
-    $entity_configs = [];
-    foreach ($resource_configs as $resource_config) {
-      if ($this->isEntityResource($resource_config)) {
-        $entity_configs[] = $resource_config;
-      }
-    }
-    $spec = $this->getSpecification($entity_configs);
-    $spec['definitions'] = $this->getDefinitions();
+  public function generateSpecification($options = []) {
+    $bundle_name = $options['bundle_name'] ?: NULL;
+    $entity_type_id = $options['entity_id'] ?: NULL;
+    $resource_configs = $this->getResourceConfigs($options);
+    $spec = $this->getSpecification($resource_configs, $bundle_name);
+    $spec['definitions'] = $this->getDefinitions($entity_type_id, $bundle_name);
     $response = new JsonResponse($spec);
     return $response;
   }
 
-
-  /**
-   * Generates OpenAPI specification
-   */
-  public function generateEntitiesSpecification() {
-    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
-    $resource_configs = $this->entityTypeManager
-      ->getStorage('rest_resource_config')
-      ->loadMultiple();
-    $entity_configs = [];
-    foreach ($resource_configs as $resource_config) {
-      if ($this->isEntityResource($resource_config)) {
-        $entity_configs[] = $resource_config;
-      }
-    }
-    $spec = $this->getSpecification($entity_configs);
-    $spec['definitions'] = $this->getDefinitions();
-    return $spec;
-  }
 }

@@ -21,7 +21,7 @@ trait RestInspectionTrait {
    */
   protected function getRestEnabledEntityTypes($entity_type_id = NULL) {
     $entity_types = [];
-    $resource_configs = $this->getResourceConfigs();
+    $resource_configs = $this->getResourceConfigs([]);
 
     foreach ($resource_configs as $id => $resource_config) {
       if ($entity_type = $this->getEntityType($resource_config)) {
@@ -42,12 +42,19 @@ trait RestInspectionTrait {
    * @return \Drupal\rest\RestResourceConfigInterface[]
    *   The REST config resources.
    */
-  protected function getResourceConfigs($entity_type = NULL) {
-    if ($entity_type) {
-      $resource_configs[] = $this->entityTypeManager->getStorage('rest_resource_config')->load("entity.$entity_type");
+  protected function getResourceConfigs($options) {
+    if (isset($options['entity_type_id'])) {
+      $resource_configs[] = $this->entityTypeManager->getStorage('rest_resource_config')->load("entity.{$options['entity_type_id']}");
     }
     else {
       $resource_configs = $this->entityTypeManager->getStorage('rest_resource_config')->loadMultiple();
+      if (isset($options['resource_types']) && $options['resource_types'] == 'entities') {
+        foreach (array_keys($resource_configs) as $resource_key) {
+          if (!$this->isEntityResource($resource_configs[$resource_key])) {
+            unset($resource_configs[$resource_key]);
+          }
+        }
+      }
     }
     return $resource_configs;
   }

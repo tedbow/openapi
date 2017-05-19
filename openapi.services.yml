@@ -1,4 +1,0 @@
-services:
-  openapi.generator.rest:
-    class: Drupal\openapi\OpenApiGenerator\OpenApiRestGenerator
-    arguments: ['@entity_type.manager', '@entity_field.manager', '@schemata.schema_factory', '@serializer', '@router.route_provider', '@plugin.manager.rest']

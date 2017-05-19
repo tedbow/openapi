@@ -19,3 +19,7 @@ The Open API specification document in JSON format that describes all of the
 entity REST resources can be downloaded from, `openapi/entities?_format=json`.
 
 [Learn more about the Open API specification](https://github.com/OAI/OpenAPI-Specification)
+
+
+## Branch notes - 8.x-1-jsonapi_refactor
+@todo Use service provider to dyan

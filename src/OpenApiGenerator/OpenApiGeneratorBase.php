@@ -47,5 +47,27 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     ];
   }
 
+  public function generateSpecification() {
+    $spec = [
+      'swagger' => "2.0",
+      'schemes' => ['http'],
+      'info' => $this->getInfo(),
+      'paths' => $this->getPaths(),
+      'host' => \Drupal::request()->getHost(),
+      'basePath' => \Drupal::request()->getBasePath(),
+      'securityDefinitions' => $this->getSecurityDefinitions(),
+      'tags' => $this->getTags(),
+    ];
+    return $spec;
+  }
+
+  public function getBasePath() {
+    // TODO: Implement getBasePath() method.
+  }
+
+  public function getTags() {
+    // TODO: Implement getTags() method.
+  }
+
 
 }

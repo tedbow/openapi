@@ -10,7 +10,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\rest\Plugin\Type\ResourcePluginManager;
 use Drupal\rest\RestResourceConfigInterface;
-use Drupal\openapi_json_schema\SchemaFactory;
+use Drupal\schemata\SchemaFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Serializer\Serializer;
@@ -46,7 +46,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager
    *   The field manager.
-   * @param \Drupal\openapi_json_schema\SchemaFactory $schema_factory
+   * @param \Drupal\schemata\SchemaFactory $schema_factory
    *   The schema factory.
    * @param \Symfony\Component\Serializer\Serializer $serializer
    *   The serializer.
@@ -472,7 +472,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    */
   protected function getJsonSchema($entity_type_id, $bundle_name = NULL) {
     if ($schema = $this->schemaFactory->create($entity_type_id, $bundle_name)) {
-      $json_schema = $this->serializer->normalize($schema, 'json_schema');
+      $json_schema = $this->serializer->normalize($schema, 'schema_json:json');
       unset($json_schema['$schema'], $json_schema['id']);
       $json_schema = $this->cleanSchema($json_schema);
       if (!$bundle_name) {

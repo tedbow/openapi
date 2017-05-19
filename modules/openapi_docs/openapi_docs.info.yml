@@ -4,4 +4,4 @@ description: Documentation using the Swagger JS library
 core: 8.x
 package: OpenAPI
 dependencies:
-  - openapi_json_schema
+  - openapi

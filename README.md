@@ -1,5 +1,6 @@
 # OpenApi Module
 
+#
 ---
 
 This module provides a [Swagger/OpenAPI](https://github.com/OAI/OpenAPI-Specification) compliant document describing the enabled REST resources of your site.
@@ -10,10 +11,6 @@ If you desire to use Drupal core rest functionality with [OpenApi.js](https://gi
 
 ```
 drush dl openapi
-```
-
-```
-drush -y en openapi openapi_json_schema
 ```
 
 ## Documentation

@@ -21,7 +21,7 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   /**
    * The Schemata SchemaFactory.
    *
-   * @var \Drupal\openapi_json_schema\SchemaFactory
+   * @var \Drupal\schemata\SchemaFactory
    */
   protected $schemaFactory;
 
@@ -46,4 +46,6 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
       'version' => 'No API version',
     ];
   }
+
+
 }

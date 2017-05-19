@@ -23,7 +23,7 @@ class OpenApiRestResourceTest extends OpenApiTestBase {
     'serialization',
     'rest',
     'openapi',
-    'openapi_json_schema',
+    'schemata',
   ];
 
   /**

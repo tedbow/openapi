@@ -9,7 +9,7 @@ use Drupal\Core\Url;
  *
  * @group openapi
  */
-class OpenAPIResourceTest extends OpenApiTestBase {
+class OpenApiRestResourceTest extends OpenApiTestBase {
 
   /**
    * Modules to enable.
@@ -33,7 +33,7 @@ class OpenAPIResourceTest extends OpenApiTestBase {
     $user = $this->drupalCreateUser(['access openapi api docs']);
     $this->drupalLogin($user);;
 
-    $url = Url::fromRoute('openapi.entities')->setRouteParameter('_format', 'json');
+    $url = Url::fromRoute('openapi.rest.entities')->setRouteParameter('_format', 'json');
     $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedEntities(), 'Resource list correct');
 
     $entity_type_bundles = [
@@ -41,9 +41,9 @@ class OpenAPIResourceTest extends OpenApiTestBase {
     ];
     foreach ($entity_type_bundles as $entity_type => $bundles) {
       foreach ($bundles as $bundle) {
-        $url = Url::fromRoute('openapi.bundle',
+        $url = Url::fromRoute('openapi.rest.bundle',
           [
-            'entity_type' => $entity_type,
+            'entity_type_id' => $entity_type,
             'bundle_name' => $bundle,
           ]
         )->setRouteParameter('_format', 'json');

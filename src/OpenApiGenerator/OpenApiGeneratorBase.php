@@ -47,7 +47,10 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     ];
   }
 
-  public function getSpecification() {
+  /**
+   * {@inheritdoc}
+   */
+  public function getSpecification($options = []) {
     $spec = [
       'swagger' => "2.0",
       'schemes' => ['http'],
@@ -56,10 +59,14 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
       'basePath' => $this->getBasePath(),
       'securityDefinitions' => $this->getSecurityDefinitions(),
       'tags' => $this->getTags(),
+      'definitions' => $this->getDefinitions(),
     ];
     return $spec;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getBasePath() {
     return \Drupal::request()->getBasePath();
   }
@@ -82,6 +89,34 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
         }
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTags() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPaths() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSecurityDefinitions() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefinitions() {
+    return [];
   }
 
 }

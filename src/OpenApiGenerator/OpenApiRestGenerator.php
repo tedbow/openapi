@@ -316,7 +316,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @return array
    *   The model definitions.
    */
-  protected function getDefinitions($entity_type_id = NULL, $bundle_name = NULL) {
+  public function getDefinitions($entity_type_id = NULL, $bundle_name = NULL) {
     $entity_types = $this->getRestEnabledEntityTypes($entity_type_id);
     $definitions = [];
     foreach ($entity_types as $entity_id => $entity_type) {
@@ -479,10 +479,22 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @return array
    *   The OpenAPI specification.
    */
-  public function getSpecification(array $rest_configs = [], $bundle_name = NULL) {
+  public function getSpecification($options = []) {
+    $bundle_name = isset($options['bundle_name']) ? $options['bundle_name'] : NULL;
+    $entity_type_id = isset($options['entity_id']) ? $options['entity_id'] : NULL;
+    $resource_configs = $this->getResourceConfigs($options);
+    $spec['definitions'] = $this->getDefinitions($entity_type_id, $bundle_name);
     $spec = [
-      'paths' => $this->getPaths($rest_configs, $bundle_name),
-    ] + parent::getSpecification();
+      'swagger' => "2.0",
+      'schemes' => ['http'],
+      'info' => $this->getInfo(),
+      'host' => \Drupal::request()->getHost(),
+      'basePath' => $this->getBasePath(),
+      'securityDefinitions' => $this->getSecurityDefinitions(),
+      'tags' => $this->getTags(),
+      'definitions' => $this->getDefinitions($entity_type_id, $bundle_name),
+      'paths' => $this->getPaths($resource_configs, $bundle_name),
+    ];
     return $spec;
   }
 
@@ -604,36 +616,6 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
       $tags[] = $tag;
     }
     return $tags;
-  }
-
-  /**
-   * Get bundle tags for an entity type.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   *
-   * @return array
-   *   Bundle tags.
-   */
-  protected function getBundleTags(EntityTypeInterface $entity_type) {
-    $bundle_storage = $this->entityTypeManager->getStorage($entity_type->getBundleEntityType());
-    $tags = [];
-    foreach ($bundle_storage->loadMultiple() as $bundle_name => $bundle_entity) {
-      $tags[] = $this->getEntityDefinitionKey($entity_type, $bundle_name);
-    }
-    return $tags;
-  }
-
-  /**
-   * Generates OpenAPI specification
-   */
-  public function generateSpecification($options = []) {
-    $bundle_name = isset($options['bundle_name']) ? $options['bundle_name'] : NULL;
-    $entity_type_id = isset($options['entity_id']) ? $options['entity_id'] : NULL;
-    $resource_configs = $this->getResourceConfigs($options);
-    $spec = $this->getSpecification($resource_configs, $bundle_name);
-    $spec['definitions'] = $this->getDefinitions($entity_type_id, $bundle_name);
-    return $spec;
   }
 
 }

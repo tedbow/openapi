@@ -33,4 +33,13 @@ openapi.downloads:
   requirements:
     _permission: 'access openapi api docs'
 
+openapi.jsonapi:
+  path: '/openapi/jsonapi'
+  defaults:
+    _controller: '\Drupal\openapi\Controller\JsonApiSpecificationController::getSpecification'
+  methods: [GET]
+  requirements:
+    _permission: 'access openapi api docs'
+    _format: 'json'
+
 

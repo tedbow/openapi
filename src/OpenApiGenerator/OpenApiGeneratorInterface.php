@@ -7,16 +7,6 @@ namespace Drupal\openapi\OpenApiGenerator;
  */
 interface OpenApiGeneratorInterface {
 
-
-  /**
-   * Generates OpenAPI specification
-   *
-   * @param array $options
-   *   The options for the specification generation.
-   * @return array
-   */
-  public function generateSpecification($options);
-
   /**
    * @return string
    */
@@ -37,7 +27,16 @@ interface OpenApiGeneratorInterface {
    */
   public function getPaths();
 
+  /**
+   * Generates OpenAPI specification
+   *
+   * @param array $options
+   *   The options for the specification generation.
+   * @return array
+   */
   public function getSpecification();
+
+  public function getDefinitions();
 
 
 }

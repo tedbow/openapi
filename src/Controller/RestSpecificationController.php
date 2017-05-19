@@ -34,11 +34,11 @@ class RestSpecificationController extends ControllerBase implements ContainerInj
   }
 
   public function getEntitiesSpecification() {
-    $spec = $this->restGenerator->generateEntitiesSpecification();
+    $spec = $this->restGenerator->generateSpecification(['resource_types' => 'entities']);
     return new JsonResponse($spec);
   }
 
   public function getEntityBundleSpecification($entity_type_id, $bundle_name) {
-    return new JsonResponse($this->restGenerator->generateEntityBundleSpecification($entity_type_id, $bundle_name));
+    return new JsonResponse($this->restGenerator->generateSpecification(['entity_type_id' => $entity_type_id, 'bundle_name' => $bundle_name]));
   }
 }

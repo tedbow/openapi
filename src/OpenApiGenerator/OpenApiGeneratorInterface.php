@@ -37,5 +37,7 @@ interface OpenApiGeneratorInterface {
    */
   public function getPaths();
 
+  public function getSpecification();
+
 
 }

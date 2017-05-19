@@ -34,15 +34,11 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @var \Drupal\Core\Routing\RouteProviderInterface
    */
   protected $routingProvider;
+
   /**
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
-  /**
-   * @var \Drupal\rest\RestResourceConfigInterface[]
-   */
-  protected $restConfigs = [];
 
   /**
    * Constructs a new OpenApiController object.
@@ -70,16 +66,6 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   }
 
   /**
-   * Return Open API Spec for all entity resources.
-   *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   The Json Response.
-   */
-  public function entityResourcesJson() {
-
-  }
-
-  /**
    * Returns the paths information.
    *
    * @param \Drupal\rest\RestResourceConfigInterface[] $resource_configs
@@ -91,6 +77,9 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    *    The info elements.
    */
    public function getPaths(array $resource_configs = NULL, $bundle_name = NULL) {
+    if (!$resource_configs) {
+      return [];
+    }
     $api_paths = [];
     foreach ($resource_configs as $id => $resource_config) {
       /** @var \Drupal\rest\Plugin\ResourceBase $plugin */
@@ -403,7 +392,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @return array
    *   The security definitions.
    */
-  protected function getSecurityDefinitions() {
+  public function getSecurityDefinitions() {
     // @todo Determine definitions from available auth.
     return [
       'csrf_token' => [
@@ -490,17 +479,10 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @return array
    *   The OpenAPI specification.
    */
-  protected function getSpecification(array $rest_configs, $bundle_name = NULL) {
+  public function getSpecification(array $rest_configs = [], $bundle_name = NULL) {
     $spec = [
-      'swagger' => "2.0",
-      'schemes' => ['http'],
-      'info' => $this->getInfo(),
       'paths' => $this->getPaths($rest_configs, $bundle_name),
-      'host' => \Drupal::request()->getHost(),
-      'basePath' => \Drupal::request()->getBasePath(),
-      'securityDefinitions' => $this->getSecurityDefinitions(),
-      'tags' => $this->getTags(),
-    ];
+    ] + parent::getSpecification();
     return $spec;
   }
 
@@ -610,7 +592,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   /**
    * Get tags.
    */
-  protected function getTags() {
+  public function getTags() {
     $entity_types = $this->getRestEnabledEntityTypes();
     $tags = [];
     foreach ($entity_types as $entity_type) {
@@ -622,26 +604,6 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
       $tags[] = $tag;
     }
     return $tags;
-  }
-
-  /**
-   * Fix default field value as zero instead of FALSE.
-   *
-   * @param array $value
-   *   JSON Schema field value.
-   */
-  protected function fixDefaultFalse(&$value) {
-    if (isset($value['type']) && $value['type'] == 'array'
-      && is_array($value['items']['properties'])
-    ) {
-      foreach ($value['items']['properties'] as $property_key => $property) {
-        if ($property['type'] == 'boolean') {
-          if (isset($value['default'][0][$property_key]) && empty($value['default'][0][$property_key])) {
-            $value['default'][0][$property_key] = FALSE;
-          }
-        }
-      }
-    }
   }
 
   /**
@@ -666,13 +628,12 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * Generates OpenAPI specification
    */
   public function generateSpecification($options = []) {
-    $bundle_name = $options['bundle_name'] ?: NULL;
-    $entity_type_id = $options['entity_id'] ?: NULL;
+    $bundle_name = isset($options['bundle_name']) ? $options['bundle_name'] : NULL;
+    $entity_type_id = isset($options['entity_id']) ? $options['entity_id'] : NULL;
     $resource_configs = $this->getResourceConfigs($options);
     $spec = $this->getSpecification($resource_configs, $bundle_name);
     $spec['definitions'] = $this->getDefinitions($entity_type_id, $bundle_name);
-    $response = new JsonResponse($spec);
-    return $response;
+    return $spec;
   }
 
 }

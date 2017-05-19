@@ -47,14 +47,13 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     ];
   }
 
-  public function generateSpecification() {
+  public function getSpecification() {
     $spec = [
       'swagger' => "2.0",
       'schemes' => ['http'],
       'info' => $this->getInfo(),
-      'paths' => $this->getPaths(),
       'host' => \Drupal::request()->getHost(),
-      'basePath' => \Drupal::request()->getBasePath(),
+      'basePath' => $this->getBasePath(),
       'securityDefinitions' => $this->getSecurityDefinitions(),
       'tags' => $this->getTags(),
     ];
@@ -62,12 +61,27 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   }
 
   public function getBasePath() {
-    // TODO: Implement getBasePath() method.
+    return \Drupal::request()->getBasePath();
   }
 
-  public function getTags() {
-    // TODO: Implement getTags() method.
+  /**
+   * Fix default field value as zero instead of FALSE.
+   *
+   * @param array $value
+   *   JSON Schema field value.
+   */
+  protected function fixDefaultFalse(&$value) {
+    if (isset($value['type']) && $value['type'] == 'array'
+      && is_array($value['items']['properties'])
+    ) {
+      foreach ($value['items']['properties'] as $property_key => $property) {
+        if ($property['type'] == 'boolean') {
+          if (isset($value['default'][0][$property_key]) && empty($value['default'][0][$property_key])) {
+            $value['default'][0][$property_key] = FALSE;
+          }
+        }
+      }
+    }
   }
-
 
 }

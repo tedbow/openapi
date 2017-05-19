@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\openapi\Controller;
+namespace Drupal\openapi\OpenApiGenerator;
 
 use Drupal\rest\Plugin\rest\resource\EntityResource;
 use Drupal\rest\RestResourceConfigInterface;

@@ -2,4 +2,4 @@ openapi.list:
   title: REST API
   description: 'REST API documentation.'
   parent: system.admin_config_services
-  route_name: openapi.swaggerUI.list
+  route_name: openapi.swaggerUI.rest.list

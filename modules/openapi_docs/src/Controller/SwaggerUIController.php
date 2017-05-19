@@ -5,7 +5,7 @@ namespace Drupal\openapi_docs\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
-use Drupal\openapi\Controller\RestInspectionTrait;
+use Drupal\openapi\OpenApiGenerator\RestInspectionTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -47,9 +47,9 @@ class SwaggerUIController extends ControllerBase {
    */
   public function bundleResource($entity_type = NULL, $bundle_name = NULL) {
     $json_url = Url::fromRoute(
-      'openapi.bundle',
+      'openapi.rest.bundle',
       [
-        'entity_type' => $entity_type,
+        'entity_type_id' => $entity_type,
         'bundle_name' => $bundle_name,
       ]
     );
@@ -67,7 +67,7 @@ class SwaggerUIController extends ControllerBase {
     ];
     $return['other_resources'] = [
       '#type' => 'link',
-      '#url' => Url::fromRoute('openapi.swaggerUI.non_entity'),
+      '#url' => Url::fromRoute('openapi.swaggerUI.rest.non_entity'),
       '#title' => $this->t('Non bundle resources'),
     ];
 
@@ -81,7 +81,7 @@ class SwaggerUIController extends ControllerBase {
         foreach ($bundles as $bundle_name => $bundle) {
           $bundle_links[$bundle_name] = [
             'title' => $bundle->label(),
-            'url' => Url::fromRoute('openapi.swaggerUI.bundle', [
+            'url' => Url::fromRoute('openapi.swaggerUI.rest.bundle', [
               'entity_type' => $entity_type_id,
               'bundle_name' => $bundle_name,
             ]),

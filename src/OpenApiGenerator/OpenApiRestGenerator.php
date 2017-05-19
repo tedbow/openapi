@@ -1,10 +1,8 @@
 <?php
 
-namespace Drupal\openapi\Controller;
+namespace Drupal\openapi\OpenApiGenerator;
 
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
-use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -13,7 +11,6 @@ use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\rest\Plugin\Type\ResourcePluginManager;
 use Drupal\rest\RestResourceConfigInterface;
 use Drupal\openapi_json_schema\SchemaFactory;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Serializer\Serializer;
@@ -21,7 +18,7 @@ use Symfony\Component\Serializer\Serializer;
 /**
  * Routes for OpenAPI json schema generator.
  */
-class OpenApiController extends ControllerBase implements ContainerInjectionInterface {
+class OpenApiRestGenerator extends OpenApiGeneratorBase {
 
   use RestInspectionTrait;
   /**
@@ -32,38 +29,19 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
   protected $manager;
 
   /**
-   * The Field Manager.
-   *
-   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
-   */
-  protected $fieldManager;
-
-  /**
-   * The Schemata SchemaFactory.
-   *
-   * @var \Drupal\openapi_json_schema\SchemaFactory
-   */
-  protected $schemaFactory;
-
-  /**
-   * The serializer.
-   *
-   * @var \Symfony\Component\Serializer\SerializerInterface
-   */
-  protected $serializer;
-
-  /**
    * The route provider.
    *
    * @var \Drupal\Core\Routing\RouteProviderInterface
    */
   protected $routingProvider;
+  /**
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * Constructs a new OpenApiController object.
    *
-   * @param \Drupal\rest\Plugin\Type\ResourcePluginManager $manager
-   *   The resource plugin manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager
@@ -74,28 +52,16 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
    *   The serializer.
    * @param \Drupal\Core\Routing\RouteProviderInterface $routing_provider
    *   The route provider.
+   * @param \Drupal\rest\Plugin\Type\ResourcePluginManager $rest_manager
+   *   The resource plugin manager.
    */
-  public function __construct(ResourcePluginManager $manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $field_manager, SchemaFactory $schema_factory, Serializer $serializer, RouteProviderInterface $routing_provider) {
-    $this->manager = $manager;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $field_manager, SchemaFactory $schema_factory, Serializer $serializer, RouteProviderInterface $routing_provider, ResourcePluginManager $rest_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->fieldManager = $field_manager;
     $this->schemaFactory = $schema_factory;
     $this->serializer = $serializer;
     $this->routingProvider = $routing_provider;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('plugin.manager.rest'),
-      $container->get('entity_type.manager'),
-      $container->get('entity_field.manager'),
-      $container->get('openapi_json_schema.schema_factory'),
-      $container->get('serializer'),
-      $container->get('router.route_provider')
-    );
+    $this->manager = $rest_manager;
   }
 
   /**
@@ -105,20 +71,7 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
    *   The Json Response.
    */
   public function entityResourcesJson() {
-    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
-    $resource_configs = $this->entityTypeManager()
-      ->getStorage('rest_resource_config')
-      ->loadMultiple();
-    $entity_configs = [];
-    foreach ($resource_configs as $resource_config) {
-      if ($this->isEntityResource($resource_config)) {
-        $entity_configs[] = $resource_config;
-      }
-    }
-    $spec = $this->getSpecification($entity_configs);
-    $spec['definitions'] = $this->getDefinitions();
-    $response = new JsonResponse($spec);
-    return $response;
+
   }
 
   /**
@@ -132,29 +85,13 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   The JSON Response.
    */
-  public function bundleJson($entity_type = NULL, $bundle_name = NULL) {
+  public function generateEntityBundleSpecification($entity_type = NULL, $bundle_name = NULL) {
     /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
     $resource_configs = $this->getResourceConfigs($entity_type);
     $spec = $this->getSpecification($resource_configs, $bundle_name);
     // Add model definitions.
     $spec['definitions'] = $this->getDefinitions($entity_type, $bundle_name);
-    $response = new JsonResponse($spec);
-    return $response;
-  }
-
-  /**
-   * Creates the 'info' portion of the API.
-   *
-   * @return array
-   *   The info elements.
-   */
-  protected function getInfo() {
-    $site_name = $this->config('system.site')->get('name');
-    return [
-      'description' => '@todo update',
-      'title' => $this->t('@site - API', ['@site' => $site_name]),
-      'version' => 'No API version',
-    ];
+    return $spec;
   }
 
   /**
@@ -412,7 +349,7 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
       $entity_schema = $this->getJsonSchema($entity_id);
       $definitions[$entity_id] = $entity_schema;
       if ($bundle_type = $entity_type->getBundleEntityType()) {
-        $bundle_storage = $this->entityTypeManager()->getStorage($bundle_type);
+        $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
         if ($bundle_name) {
           $bundles[$bundle_name] = $bundle_storage->load($bundle_name);
         }
@@ -455,7 +392,7 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
    */
   public function nonBundleResourcesJson() {
     /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
-    $resource_configs = $this->entityTypeManager()
+    $resource_configs = $this->entityTypeManager
       ->getStorage('rest_resource_config')
       ->loadMultiple();
     $non_entity_configs = [];
@@ -540,7 +477,7 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
       $json_schema = $this->cleanSchema($json_schema);
       if (!$bundle_name) {
         // Add discriminator field.
-        $entity_type = $this->entityTypeManager()->getDefinition($entity_type_id);
+        $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
         if ($bundle_field = $entity_type->getKey('bundle')) {
           $json_schema['discriminator'] = $entity_type->getKey('bundle');
         }
@@ -740,4 +677,43 @@ class OpenApiController extends ControllerBase implements ContainerInjectionInte
     return $tags;
   }
 
+  /**
+   * Generates OpenAPI specification
+   */
+  public function generateSpecification() {
+    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
+    $resource_configs = $this->entityTypeManager
+      ->getStorage('rest_resource_config')
+      ->loadMultiple();
+    $entity_configs = [];
+    foreach ($resource_configs as $resource_config) {
+      if ($this->isEntityResource($resource_config)) {
+        $entity_configs[] = $resource_config;
+      }
+    }
+    $spec = $this->getSpecification($entity_configs);
+    $spec['definitions'] = $this->getDefinitions();
+    $response = new JsonResponse($spec);
+    return $response;
+  }
+
+
+  /**
+   * Generates OpenAPI specification
+   */
+  public function generateEntitiesSpecification() {
+    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
+    $resource_configs = $this->entityTypeManager
+      ->getStorage('rest_resource_config')
+      ->loadMultiple();
+    $entity_configs = [];
+    foreach ($resource_configs as $resource_config) {
+      if ($this->isEntityResource($resource_config)) {
+        $entity_configs[] = $resource_config;
+      }
+    }
+    $spec = $this->getSpecification($entity_configs);
+    $spec['definitions'] = $this->getDefinitions();
+    return $spec;
+  }
 }

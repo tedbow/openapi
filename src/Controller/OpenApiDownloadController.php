@@ -19,13 +19,13 @@ class OpenApiDownloadController extends ControllerBase {
         $this->t('This JSON file can be used in tools such as the <a href=":swagger_editor">Swagger Editor</a> to provide a more detailed version of the API documentation.', [':swagger_editor' => 'http://editor.swagger.io/#/']) . '</p>',
     ];
     $open_api_links['entities'] = [
-      'url' => Url::fromRoute('openapi.entities', [], ['query' => ['_format' => 'json']]),
-      'title' => $this->t('Open API: Entities'),
+      'url' => Url::fromRoute('openapi.rest.entities', [], ['query' => ['_format' => 'json']]),
+      'title' => $this->t('Open API: REST Entities'),
     ];
-    $open_api_links['other'] = [
+    /*$open_api_links['other'] = [
       'url' => Url::fromRoute('openapi.non_entities', [], ['query' => ['_format' => 'json']]),
       'title' => $this->t('Open API: Other resources'),
-    ];
+    ];*/
     $return['direct_download']['links'] = [
       '#theme' => 'links',
       '#links' => $open_api_links,

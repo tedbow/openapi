@@ -1,25 +1,25 @@
-openapi.entities:
-  path: '/openapi/entities'
+openapi.rest.entities:
+  path: '/openapi/rest/entities'
   defaults:
-    _controller: '\Drupal\openapi\Controller\OpenApiController::entityResourcesJson'
+    _controller: '\Drupal\openapi\Controller\RestSpecificationController::getEntitiesSpecification'
   methods: [GET]
   requirements:
     _permission: 'access openapi api docs'
     _format: 'json'
 
-openapi.non_entities:
-  path: '/openapi/non-entity'
+#openapi.non_entities:
+#  path: '/openapi/non-entity'
+#  defaults:
+#    _controller: '\Drupal\openapi\Controller\OpenApiController::nonBundleResourcesJson'
+#  methods: [GET]
+#  requirements:
+#    _permission: 'access openapi api docs'
+#    _format: 'json'
+#
+openapi.rest.bundle:
+  path: '/openapi/rest/{entity_type_id}/{bundle_name}'
   defaults:
-    _controller: '\Drupal\openapi\Controller\OpenApiController::nonBundleResourcesJson'
-  methods: [GET]
-  requirements:
-    _permission: 'access openapi api docs'
-    _format: 'json'
-
-openapi.bundle:
-  path: '/openapi/{entity_type}/{bundle_name}'
-  defaults:
-    _controller: '\Drupal\openapi\Controller\OpenApiController::bundleJson'
+    _controller: '\Drupal\openapi\Controller\RestSpecificationController::getEntityBundleSpecification'
   methods: [GET]
   requirements:
     _permission: 'access openapi api docs'

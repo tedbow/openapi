@@ -29,39 +29,23 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   protected $manager;
 
   /**
-   * The route provider.
-   *
-   * @var \Drupal\Core\Routing\RouteProviderInterface
-   */
-  protected $routingProvider;
-
-  /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * Constructs a new OpenApiController object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Routing\RouteProviderInterface $routing_provider
+   *   The route provider.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager
    *   The field manager.
    * @param \Drupal\schemata\SchemaFactory $schema_factory
    *   The schema factory.
    * @param \Symfony\Component\Serializer\Serializer $serializer
    *   The serializer.
-   * @param \Drupal\Core\Routing\RouteProviderInterface $routing_provider
-   *   The route provider.
    * @param \Drupal\rest\Plugin\Type\ResourcePluginManager $rest_manager
    *   The resource plugin manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $field_manager, SchemaFactory $schema_factory, Serializer $serializer, RouteProviderInterface $routing_provider, ResourcePluginManager $rest_manager) {
-    $this->entityTypeManager = $entity_type_manager;
-    $this->fieldManager = $field_manager;
-    $this->schemaFactory = $schema_factory;
-    $this->serializer = $serializer;
-    $this->routingProvider = $routing_provider;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, RouteProviderInterface $routing_provider, EntityFieldManagerInterface $field_manager, SchemaFactory $schema_factory, Serializer $serializer, ResourcePluginManager $rest_manager) {
+    parent::__construct($entity_type_manager, $routing_provider, $field_manager, $schema_factory, $serializer);
     $this->manager = $rest_manager;
   }
 

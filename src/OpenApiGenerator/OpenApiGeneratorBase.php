@@ -2,7 +2,12 @@
 
 namespace Drupal\openapi\OpenApiGenerator;
 
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\schemata\SchemaFactory;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class OpenApiGeneratorBase
@@ -11,6 +16,19 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
 
   use StringTranslationTrait;
+
+  /**
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The route provider.
+   *
+   * @var \Drupal\Core\Routing\RouteProviderInterface
+   */
+  protected $routingProvider;
+
   /**
    * The Field Manager.
    *
@@ -31,6 +49,23 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
    * @var \Symfony\Component\Serializer\SerializerInterface
    */
   protected $serializer;
+
+  /**
+   * OpenApiGeneratorBase constructor.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\Core\Routing\RouteProviderInterface $routingProvider
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $fieldManager
+   * @param \Drupal\schemata\SchemaFactory $schemaFactory
+   * @param \Symfony\Component\Serializer\SerializerInterface $serializer
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, RouteProviderInterface $routingProvider, EntityFieldManagerInterface $fieldManager, SchemaFactory $schemaFactory, SerializerInterface $serializer) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->fieldManager = $fieldManager;
+    $this->routingProvider = $routingProvider;
+    $this->schemaFactory = $schemaFactory;
+    $this->serializer = $serializer;
+  }
+
 
   /**
    * Creates the 'info' portion of the API.
@@ -60,6 +95,7 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
       'securityDefinitions' => $this->getSecurityDefinitions(),
       'tags' => $this->getTags(),
       'definitions' => $this->getDefinitions(),
+      'paths' => $this->getPaths(),
     ];
     return $spec;
   }

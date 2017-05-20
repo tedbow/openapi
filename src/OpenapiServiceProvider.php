@@ -17,19 +17,20 @@ class OpenapiServiceProvider extends ServiceProviderBase {
     if (isset($modules['rest'])) {
       $container->register('openapi.generator.rest', 'Drupal\openapi\OpenApiGenerator\OpenApiRestGenerator')
         ->addArgument(new Reference('entity_type.manager'))
+        ->addArgument(new Reference('router.route_provider'))
         ->addArgument(new Reference('entity_field.manager'))
         ->addArgument(new Reference('schemata.schema_factory'))
         ->addArgument(new Reference('serializer'))
-        ->addArgument(new Reference('router.route_provider'))
         ->addArgument(new Reference('plugin.manager.rest'));
     }
-    if (isset($modules['rest'])) {
+    if (isset($modules['jsonapi'])) {
       $container->register('openapi.generator.jsonapi', 'Drupal\openapi\OpenApiGenerator\OpenApiJsonapiGenerator')
         ->addArgument(new Reference('entity_type.manager'))
+        ->addArgument(new Reference('router.route_provider'))
         ->addArgument(new Reference('entity_field.manager'))
         ->addArgument(new Reference('schemata.schema_factory'))
-        ->addArgument(new Reference('serializer'))
-        ->addArgument(new Reference('router.route_provider'));
+        ->addArgument(new Reference('serializer'));
+
     }
   }
 

@@ -155,4 +155,65 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     return [];
   }
 
+  /**
+   * Gets the JSON Schema for an entity type or entity type and bundle.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $bundle_name
+   *   The bundle name.
+   *
+   * @return array
+   *   The JSON schema.
+   */
+  protected function getJsonSchema($described_format, $entity_type_id, $bundle_name = NULL) {
+    if ($schema = $this->schemaFactory->create($entity_type_id, $bundle_name)) {
+      $json_schema = $this->serializer->normalize($schema, "schema_json:$described_format");
+      unset($json_schema['$schema'], $json_schema['id']);
+      $json_schema = $this->cleanSchema($json_schema);
+      if (!$bundle_name) {
+        // Add discriminator field.
+        $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+        if ($bundle_field = $entity_type->getKey('bundle')) {
+          $json_schema['discriminator'] = $entity_type->getKey('bundle');
+        }
+      }
+    }
+    else {
+      $json_schema = [
+        'type' => 'object',
+        'title' => $this->t('@entity_type Schema', ['@entity_type' => $entity_type_id]),
+        'description' => $this->t('Describes the payload for @entity_type entities.', ['@entity_type' => $entity_type_id]),
+      ];
+    }
+
+    return $json_schema;
+  }
+
+  /**
+   * Cleans JSON schema definitions for OpenAPI.
+   *
+   * @todo Just to test if fixes
+   *       https://github.com/OAI/OpenAPI-Specification/issues/229
+   *
+   * @param array $json_schema
+   *   The JSON Schema elements.
+   *
+   * @return array
+   *   The cleaned JSON Schema elements.
+   */
+  protected function cleanSchema($json_schema) {
+    foreach ($json_schema as $key => &$value) {
+      if ($value === NULL) {
+        $value = '';
+      }
+      else {
+        if (is_array($value)) {
+          $this->fixDefaultFalse($value);
+          $value = $this->cleanSchema($value);
+        }
+      }
+    }
+    return $json_schema;
+  }
 }

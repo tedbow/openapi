@@ -167,7 +167,14 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
    *   The JSON schema.
    */
   protected function getJsonSchema($described_format, $entity_type_id, $bundle_name = NULL) {
-    if ($schema = $this->schemaFactory->create($entity_type_id, $bundle_name)) {
+    if ($entity_type_id !== $bundle_name) {
+      $schema = $this->schemaFactory->create($entity_type_id, $bundle_name);
+    }
+    else {
+      $schema = $this->schemaFactory->create($entity_type_id);
+    }
+
+    if ($schema) {
       $json_schema = $this->serializer->normalize($schema, "schema_json:$described_format");
       unset($json_schema['$schema'], $json_schema['id']);
       $json_schema = $this->cleanSchema($json_schema);

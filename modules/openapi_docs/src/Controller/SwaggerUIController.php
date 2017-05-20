@@ -142,4 +142,18 @@ class SwaggerUIController extends ControllerBase {
     return $build;
   }
 
+  /**
+   * Creates documentations page for non-entity resources.
+   *
+   * @return array
+   *   Render array for documentations page.
+   */
+  public function openApiResources() {
+    $json_url = Url::fromRoute(
+      'openapi.jsonapi'
+    );
+    $build = $this->swaggerUI($json_url);
+    return $build;
+  }
+
 }

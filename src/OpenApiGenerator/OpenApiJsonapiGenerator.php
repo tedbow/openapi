@@ -4,6 +4,8 @@
 namespace Drupal\openapi\OpenApiGenerator;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -60,9 +62,11 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
    */
   protected function getMethodParameters(Route $route, $method) {
     $parameters = [];
-    if ($route->hasOption('parameters')) {
-      $entity_type_id = $route->getRequirement('_entity_type');
-      $bundle_name = $route->getRequirement('_bundle');
+    $entity_type_id = $route->getRequirement('_entity_type');
+    $bundle_name = $route->getRequirement('_bundle');
+
+      if ($route->hasOption('parameters')) {
+
       foreach ($route->getOption('parameters') as $parameter_name => $parameter_info) {
         $parameter = [
           'name' => $parameter_name,
@@ -90,22 +94,37 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
           'in' => 'query',
           'type' => 'array',
           'required' => FALSE,
-          'description' => '@todo Explain filtering: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
+          //'description' => '@todo Explain filtering: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
         ];
         $parameters[] = [
           'name' => 'sort',
           'in' => 'query',
           'type' => 'array',
           'required' => FALSE,
-          'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
+          //'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
         ];
         $parameters[] = [
           'page' => 'sort',
           'in' => 'query',
           'type' => 'array',
           'required' => FALSE,
-          'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
+          //'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
         ];
+      }
+      elseif ($method == 'post' || $method == 'patch') {
+        // Determine if it is ContentEntity.
+        if ($this->entityTypeManager->getDefinition($entity_type_id) instanceof ContentEntityTypeInterface) {
+          $parameters[] = [
+            'name' => 'body',
+            'in' => 'body',
+            'description' => $this->t('The @label object', ['@label' => $entity_type_id]),
+            'required' => TRUE,
+            'schema' => [
+              '$ref' => '#/definitions/' . "$entity_type_id:$bundle_name",
+            ],
+          ];
+        }
+
       }
     }
     return $parameters;
@@ -114,14 +133,21 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   public function getDefinitions() {
     $definitions = [];
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
-      if ($bundle_type = $entity_type->getBundleEntityType()) {
-        $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
-        $bundles = $bundle_storage->loadMultiple();
-        foreach ($bundles as $bundle_name => $bundle) {
-          $definitions["{$entity_type->id()}:$bundle_name"] = $this->getJsonSchema('api_json', $entity_type->id(), $bundle_name);
+      if ($entity_type instanceof ContentEntityTypeInterface) {
+        if ($bundle_type = $entity_type->getBundleEntityType()) {
+          $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
+          $bundles = $bundle_storage->loadMultiple();
+          foreach ($bundles as $bundle_name => $bundle) {
+            $definitions["{$entity_type->id()}:$bundle_name"] = $this->getJsonSchema('api_json', $entity_type->id(), $bundle_name);
+          }
+        }
+        else {
+          $definitions["{$entity_type->id()}:{$entity_type->id()}"] = $this->getJsonSchema('api_json', $entity_type->id(), $entity_type->id());
         }
       }
+
     }
+    return $definitions;
   }
 
   /**

@@ -3,21 +3,27 @@
 
 namespace Drupal\openapi\OpenApiGenerator;
 
-use Drupal\Core\Config\Entity\ConfigEntityInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Routing\Route;
 
+/**
+ * Generates for OpenAPI specification for JSON API.
+ */
 class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
 
   const JSON_API_UUID_CONVERTER = 'paramconverter.jsonapi.entity_uuid';
+
+  /**
+   * {@inheritdoc}
+   */
   public function getBasePath() {
     return parent::getBasePath() . '/jsonapi';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getPaths() {
     $routes = $this->getJsonApiRoutes();
     $api_paths = [];
@@ -29,6 +35,8 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
       foreach ($methods as $method) {
         $method = strtolower($method);
         $path_method = [];
+        $path_method['summary'] = $this->getRouteMethodSummary($route, $route_name, $method);
+        $path_method['description'] = '@todo Add descriptions';
         $path_method['parameters'] = $this->getMethodParameters($route, $method);
         $path_method['tags'] = ["$entity_type_id:$bundle_name"];
         $api_path[$method] = $path_method;
@@ -104,7 +112,7 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
           //'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
         ];
         $parameters[] = [
-          'page' => 'sort',
+          'name' => 'page',
           'in' => 'query',
           'type' => 'array',
           'required' => FALSE,
@@ -130,6 +138,9 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
     return $parameters;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getDefinitions() {
     $definitions = [];
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
@@ -193,6 +204,24 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
    */
   protected function getBundleTag(EntityTypeInterface $entity_type, $bundle) {
     return $entity_type->id() . ':' . $bundle->id();
+  }
+
+  /**
+   * Gets description of a method on a route.
+   *
+   * @param \Symfony\Component\Routing\Route $route
+   * @param string $route_name
+   * @param string $method
+   */
+  protected function getRouteMethodSummary(Route $route, $route_name, $method) {
+    // @todo Make a better summary.
+    $route_name_parts = explode('.', $route_name);
+    if (isset($route_name_parts[2])) {
+      $route_type = $route_name_parts[2];
+      return "$route_type $method";
+    }
+    return '@todo';
+
   }
 
 }

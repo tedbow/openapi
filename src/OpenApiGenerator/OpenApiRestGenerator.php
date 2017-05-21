@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * Routes for OpenAPI json schema generator.
+ * Generates for OpenAPI specification for REST.
  */
 class OpenApiRestGenerator extends OpenApiGeneratorBase {
 

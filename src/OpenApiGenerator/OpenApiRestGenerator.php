@@ -102,7 +102,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
             }*/
 
             $path_method_spec['parameters'] = array_merge($path_method_spec['parameters'], $this->getEntityParameters($entity_type, $method, $bundle_name));
-            $path_method_spec['responses'] = $this->getEntityResponses($entity_type, $method, $bundle_name) + $path_method_spec['responses'];
+            $path_method_spec['responses'] = $this->getEntityResponses($entity_type->id(), $method, $bundle_name) + $path_method_spec['responses'];
           }
           else {
             $path_method_spec['responses']['200'] = [
@@ -172,7 +172,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
         'description' => $this->t('The @label object', ['@label' => $entity_type->getLabel()]),
         'required' => TRUE,
         'schema' => [
-          '$ref' => '#/definitions/' . $this->getEntityDefinitionKey($entity_type, $bundle_name),
+          '$ref' => '#/definitions/' . $this->getEntityDefinitionKey($entity_type->id(), $bundle_name),
         ],
       ];
     }
@@ -301,44 +301,48 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    *   The model definitions.
    */
   public function getDefinitions($entity_type_id = NULL, $bundle_name = NULL) {
-    $entity_types = $this->getRestEnabledEntityTypes($entity_type_id);
-    $definitions = [];
-    foreach ($entity_types as $entity_id => $entity_type) {
-      $entity_schema = $this->getJsonSchema('json', $entity_id);
-      $definitions[$entity_id] = $entity_schema;
-      if ($bundle_type = $entity_type->getBundleEntityType()) {
-        $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
-        if ($bundle_name) {
-          $bundles[$bundle_name] = $bundle_storage->load($bundle_name);
-        }
-        else {
-          $bundles = $bundle_storage->loadMultiple();
-        }
-        foreach ($bundles as $bundle_name => $bundle) {
-          $bundle_schema = $this->getJsonSchema('json', $entity_id, $bundle_name);
-          foreach ($entity_schema['properties'] as $property_id => $property) {
-            if (isset($bundle_schema['properties'][$property_id]) && $bundle_schema['properties'][$property_id] === $property) {
-              // Remove any bundle schema property that is the same as the
-              // entity schema property.
-              unset($bundle_schema['properties'][$property_id]);
-            }
+    static $definitions = [];
+    if (!$definitions) {
+      $entity_types = $this->getRestEnabledEntityTypes($entity_type_id);
+      $definitions = [];
+      foreach ($entity_types as $entity_id => $entity_type) {
+        $entity_schema = $this->getJsonSchema('json', $entity_id);
+        $definitions[$entity_id] = $entity_schema;
+        if ($bundle_type = $entity_type->getBundleEntityType()) {
+          $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
+          if ($bundle_name) {
+            $bundles[$bundle_name] = $bundle_storage->load($bundle_name);
           }
-          // Use Open API polymorphism support to show that bundles extend
-          // entity type.
-          // @todo Should base fields be removed from bundle schema?
-          // @todo Can base fields could be different from entity type base fields?
-          // @see hook_entity_bundle_field_info().
-          // @see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#models-with-polymorphism-support
-          $definitions[$this->getEntityDefinitionKey($entity_type, $bundle_name)] = [
-            'allOf' => [
-              ['$ref' => "#/definitions/$entity_id"],
-              $bundle_schema,
-            ],
-          ];
+          else {
+            $bundles = $bundle_storage->loadMultiple();
+          }
+          foreach ($bundles as $bundle_name => $bundle) {
+            $bundle_schema = $this->getJsonSchema('json', $entity_id, $bundle_name);
+            foreach ($entity_schema['properties'] as $property_id => $property) {
+              if (isset($bundle_schema['properties'][$property_id]) && $bundle_schema['properties'][$property_id] === $property) {
+                // Remove any bundle schema property that is the same as the
+                // entity schema property.
+                unset($bundle_schema['properties'][$property_id]);
+              }
+            }
+            // Use Open API polymorphism support to show that bundles extend
+            // entity type.
+            // @todo Should base fields be removed from bundle schema?
+            // @todo Can base fields could be different from entity type base fields?
+            // @see hook_entity_bundle_field_info().
+            // @see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#models-with-polymorphism-support
+            $definitions[$this->getEntityDefinitionKey($entity_type->id(), $bundle_name)] = [
+              'allOf' => [
+                ['$ref' => "#/definitions/$entity_id"],
+                $bundle_schema,
+              ],
+            ];
 
+          }
         }
       }
     }
+
     return $definitions;
   }
 
@@ -420,72 +424,6 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
     return $spec;
   }
 
-  /**
-   * Get possible responses for an entity type.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   * @param string $method
-   *   The method.
-   * @param string $bundle_name
-   *   The bundle name.
-   *
-   * @return array
-   *   The entity responses.
-   */
-  protected function getEntityResponses(EntityTypeInterface $entity_type, $method, $bundle_name = NULL) {
-    $responses = [];
-    $definition_ref = '#/definitions/' . $this->getEntityDefinitionKey($entity_type, $bundle_name);
-    switch ($method) {
-      case 'GET':
-        $responses['200'] = [
-          'description' => 'successful operation',
-          'schema' => [
-            '$ref' => $definition_ref,
-          ],
-        ];
-        break;
-
-      case 'POST':
-        unset($responses['200']);
-        $responses['201'] = [
-          'description' => 'Entity created',
-          'schema' => [
-            '$ref' => $definition_ref,
-          ],
-        ];
-        break;
-
-      case 'DELETE':
-        unset($responses['200']);
-        $responses['201'] = [
-          'description' => 'Entity deleted',
-        ];
-        break;
-    }
-    return $responses;
-  }
-
-  /**
-   * Gets the entity definition key.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   * @param string $bundle_name
-   *   The bundle name.
-   *
-   * @return string
-   *   The entity definition key. Either [entity_type] or
-   *   [entity_type]:[bundle_name]
-   */
-  protected function getEntityDefinitionKey(EntityTypeInterface $entity_type, $bundle_name) {
-    $definition_key = $entity_type->id();
-    if ($bundle_name) {
-      $definition_key .= ":$bundle_name";
-      return $definition_key;
-    }
-    return $definition_key;
-  }
 
   /**
    * Get the error responses.

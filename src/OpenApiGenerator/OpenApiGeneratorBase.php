@@ -223,4 +223,88 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     }
     return $json_schema;
   }
+
+  /**
+   * Gets the entity definition key.
+   *
+   * @param string $entity_type_id
+   *   The entity type.
+   * @param string $bundle_name
+   *   The bundle name.
+   *
+   * @return string
+   *   The entity definition key. Either [entity_type] or
+   *   [entity_type]:[bundle_name]
+   */
+  protected function getEntityDefinitionKey($entity_type_id, $bundle_name) {
+    $definition_key = $entity_type_id;
+    if ($bundle_name) {
+      $definition_key .= ":$bundle_name";
+      return $definition_key;
+    }
+    return $definition_key;
+  }
+
+  /**
+   * Get possible responses for an entity type.
+   *
+   * @param string $entity_type_id
+   *   The entity type.
+   * @param string $method
+   *   The method.
+   * @param string $bundle_name
+   *   The bundle name.
+   *
+   * @return array
+   *   The entity responses.
+   */
+  protected function getEntityResponses($entity_type_id, $method, $bundle_name = NULL) {
+    $method = strtolower($method);
+    $responses = [];
+    $definition_key = $this->getEntityDefinitionKey($entity_type_id, $bundle_name);
+    $schema_response = [];
+    if ($this->definitionExists($definition_key)) {
+      $definition_ref = '#/definitions/' . $definition_key;
+      $schema_response = [
+        'schema' => [
+          '$ref' => $definition_ref,
+        ],
+      ];
+    }
+
+    switch ($method) {
+      case 'get':
+        $responses['200'] = [
+          'description' => 'successful operation',
+        ] + $schema_response;
+        break;
+
+      case 'post':
+        unset($responses['200']);
+        $responses['201'] = [
+          'description' => 'Entity created',
+          ] + $schema_response;
+        break;
+
+      case 'delete':
+        unset($responses['200']);
+        $responses['201'] = [
+          'description' => 'Entity deleted',
+        ];
+        break;
+    }
+    return $responses;
+  }
+
+  /**
+   * Check whether a definitions exists for a key.
+   *
+   * @param $definition_key
+   * @return bool
+   */
+  protected function definitionExists($definition_key) {
+    $definitions = $this->getDefinitions();
+    return isset($definitions[$definition_key]);
+  }
+
 }

@@ -39,6 +39,7 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
         $path_method['description'] = '@todo Add descriptions';
         $path_method['parameters'] = $this->getMethodParameters($route, $method);
         $path_method['tags'] = ["$entity_type_id:$bundle_name"];
+        $path_method['responses'] = $this->getEntityResponses($entity_type_id, $method, $bundle_name);
         $api_path[$method] = $path_method;
 
       }
@@ -142,22 +143,24 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
    * {@inheritdoc}
    */
   public function getDefinitions() {
-    $definitions = [];
-    foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
-      if ($entity_type instanceof ContentEntityTypeInterface) {
-        if ($bundle_type = $entity_type->getBundleEntityType()) {
-          $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
-          $bundles = $bundle_storage->loadMultiple();
-          foreach ($bundles as $bundle_name => $bundle) {
-            $definitions["{$entity_type->id()}:$bundle_name"] = $this->getJsonSchema('api_json', $entity_type->id(), $bundle_name);
+    static $definitions = [];
+    if (!$definitions) {
+      foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
+        if ($entity_type instanceof ContentEntityTypeInterface) {
+          if ($bundle_type = $entity_type->getBundleEntityType()) {
+            $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
+            $bundles = $bundle_storage->loadMultiple();
+            foreach ($bundles as $bundle_name => $bundle) {
+              $definitions["{$entity_type->id()}:$bundle_name"] = $this->getJsonSchema('api_json', $entity_type->id(), $bundle_name);
+            }
+          }
+          else {
+            $definitions["{$entity_type->id()}:{$entity_type->id()}"] = $this->getJsonSchema('api_json', $entity_type->id(), $entity_type->id());
           }
         }
-        else {
-          $definitions["{$entity_type->id()}:{$entity_type->id()}"] = $this->getJsonSchema('api_json', $entity_type->id(), $entity_type->id());
-        }
       }
-
     }
+
     return $definitions;
   }
 

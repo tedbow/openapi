@@ -2,6 +2,8 @@
 
 namespace Drupal\openapi\OpenApiGenerator;
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Symfony\Component\Routing\Route;
@@ -37,7 +39,7 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
         $path_method['summary'] = $this->getRouteMethodSummary($route, $route_name, $method);
         $path_method['description'] = '@todo Add descriptions';
         $path_method['parameters'] = $this->getMethodParameters($route, $method);
-        $path_method['tags'] = ["$entity_type_id:$bundle_name"];
+        $path_method['tags'] = [$this->getBundleTag($entity_type_id, $bundle_name)];
         $path_method['responses'] = $this->getEntityResponses($entity_type_id, $method, $bundle_name, $route_name);
         $api_path[$method] = $path_method;
       }
@@ -55,6 +57,9 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
     $all_routes = $this->routingProvider->getAllRoutes();
     $jsonapi_reroutes = [];
     foreach ($all_routes as $route_name => $route) {
+      if ($route_name === 'jsonapi.resource_list') {
+        continue;
+      }
       if ($route->getOption('_is_jsonapi')) {
         $jsonapi_reroutes[$route_name] = $route;
       }
@@ -253,31 +258,31 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   public function getTags() {
     $tags = [];
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
-      if ($bundle_type = $entity_type->getBundleEntityType()) {
-        $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
+      if ($bundle_type_id = $entity_type->getBundleEntityType()) {
+        $bundle_storage = $this->entityTypeManager->getStorage($bundle_type_id);
         $bundles = $bundle_storage->loadMultiple();
         foreach ($bundles as $bundle_name => $bundle) {
+          $description = $this->t("@bundle_label @bundle of type @entity_type",
+            [
+              '@bundle_label' => $entity_type->getBundleLabel(),
+              '@bundle' => $bundle->label(),
+              '@entity_type' => $entity_type->getLabel(),
+            ]
+          );
           $tags[] = [
-            'name' => $this->getBundleTag($entity_type, $bundle),
-            'description' => $this->t('Entity type: @entity_type, Bundle: @bundle',
-              [
-                '@entity_type' => $entity_type->id(),
-                '@bundle' => $bundle->id(),
-              ]
-            ),
+            'name' => $this->getBundleTag($entity_type->id(), $bundle->id()),
+            'description' => $description,
           ];
         }
       }
       else {
-        $tags[] = [
-          'name' => $this->getBundleTag($entity_type, $entity_type),
-          'description' => $this->t('Entity type: @entity_type, Bundle: @bundle',
-            [
-              '@entity_type' => $entity_type->id(),
-              '@bundle' => $entity_type->id(),
-            ]
-          ),
+        $tag = [
+          'name' => $this->getBundleTag($entity_type->id()),
         ];
+        if ($entity_type instanceof ConfigEntityTypeInterface) {
+          $tag['description'] = $this->t('Configuration entity @entity_type', ['@entity_type' => $entity_type->getLabel()]);
+        }
+        $tags[] = $tag;
       }
     }
     return $tags;
@@ -286,16 +291,27 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   /**
    * Get the tag to use for a bundle.
    *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   * @param string $entity_type_id
    *   The entity type.
-   * @param \Drupal\Core\Entity\EntityTypeInterface $bundle
+   * @param string $bundle_name
    *   The entity type.
    *
    * @return string
    *   The bundle tag.
    */
-  protected function getBundleTag(EntityTypeInterface $entity_type, $bundle) {
-    return $entity_type->id() . ':' . $bundle->id();
+  protected function getBundleTag($entity_type_id, $bundle_name = NULL) {
+    static $tags = [];
+    if (!isset($tags[$entity_type_id][$bundle_name])) {
+      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+      $tag = $entity_type->getLabel() . "($entity_type_id)";
+      if ($bundle_type_id = $entity_type->getBundleEntityType()) {
+        $bundle_type = $this->entityTypeManager->getDefinition($entity_type_id);
+        $bundle_entity = $this->entityTypeManager->getStorage($bundle_type_id)->load($bundle_name);
+        $tag .= ' - ' . $bundle_entity->label() . "($bundle_name)";
+      }
+      $tags[$entity_type_id][$bundle_name] = $tag;
+    }
+    return $tags[$entity_type_id][$bundle_name];
   }
 
 }

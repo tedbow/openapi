@@ -41,7 +41,9 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
         $path_method['responses'] = $this->getEntityResponses($entity_type_id, $method, $bundle_name, $route_name);
         $api_path[$method] = $path_method;
       }
-      $api_paths[$route->getPath()] = $api_path;
+      // Each path contains the "base path" from a OpenAPI perspective.
+      $path = str_replace('/jsonapi', '', $route->getPath());
+      $api_paths[$path] = $api_path;
     }
     return $api_paths;
   }

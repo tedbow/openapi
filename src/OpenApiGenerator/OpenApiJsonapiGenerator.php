@@ -39,7 +39,7 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
         $path_method['description'] = '@todo Add descriptions';
         $path_method['parameters'] = $this->getMethodParameters($route, $method);
         $path_method['tags'] = ["$entity_type_id:$bundle_name"];
-        $path_method['responses'] = $this->getEntityResponses($entity_type_id, $method, $bundle_name);
+        $path_method['responses'] = $this->getEntityResponses($entity_type_id, $method, $bundle_name, $route_name);
         $api_path[$method] = $path_method;
 
       }
@@ -218,13 +218,78 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
    */
   protected function getRouteMethodSummary(Route $route, $route_name, $method) {
     // @todo Make a better summary.
-    $route_name_parts = explode('.', $route_name);
-    if (isset($route_name_parts[2])) {
-      $route_type = $route_name_parts[2];
+    if ($route_type = $this->getRoutTypeFromName($route_name)) {
       return "$route_type $method";
     }
     return '@todo';
 
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEntityResponses($entity_type_id, $method, $bundle_name = NULL, $route_name = NULL) {
+    $route_type = $this->getRoutTypeFromName($route_name);
+    if ($route_type === 'collection') {
+      if ($method === 'get') {
+        $schema_response = [];
+        if ($definition_ref = $this->getDefinitionReference($entity_type_id, $bundle_name)) {
+          $schema_response = [
+            'schema' => [
+              'type' => 'array',
+              'items' => [
+                '$ref' => $definition_ref,
+              ],
+            ],
+          ];
+        }
+        $responses['200'] = [
+          'description' => 'successful operation',
+        ] + $schema_response;
+        return $responses;
+      }
+
+    }
+    else {
+      return parent::getEntityResponses($entity_type_id, $method, $bundle_name);
+    }
+    return [];
+  }
+
+
+  /**
+   * Gets the route from the name if possible.
+   *
+   * @param string $route_name
+   *   The route name.
+   *
+   * @return string
+   *   The route type.
+   */
+  protected function getRoutTypeFromName($route_name) {
+    $route_name_parts = explode('.', $route_name);
+    return isset($route_name_parts[2]) ? $route_name_parts[2] : '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getJsonSchema($described_format, $entity_type_id, $bundle_name = NULL) {
+    $json_schema = parent::getJsonSchema($described_format, $entity_type_id, $bundle_name);
+    // @todo Should the schemata module be adding these?
+    $json_schema['properties'] += [
+      'type' => [
+        'type' => 'string',
+        'title' => $this->t('Title'),
+        'example' => "$entity_type_id--$bundle_name",
+      ],
+      'id' => [
+        'type' => 'string',
+        'title' => $this->t('Id'),
+      ],
+    ];
+    return $json_schema;
+  }
+
 
 }

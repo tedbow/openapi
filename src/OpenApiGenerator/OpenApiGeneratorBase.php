@@ -261,16 +261,16 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   protected function getEntityResponses($entity_type_id, $method, $bundle_name = NULL) {
     $method = strtolower($method);
     $responses = [];
-    $definition_key = $this->getEntityDefinitionKey($entity_type_id, $bundle_name);
+
     $schema_response = [];
-    if ($this->definitionExists($definition_key)) {
-      $definition_ref = '#/definitions/' . $definition_key;
+    if ($definition_ref = $this->getDefinitionReference($entity_type_id, $bundle_name)) {
       $schema_response = [
         'schema' => [
           '$ref' => $definition_ref,
         ],
       ];
     }
+
 
     switch ($method) {
       case 'get':
@@ -305,6 +305,20 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   protected function definitionExists($definition_key) {
     $definitions = $this->getDefinitions();
     return isset($definitions[$definition_key]);
+  }
+
+  /**
+   * @param $entity_type_id
+   * @param $bundle_name
+   * @return string
+   */
+  protected function getDefinitionReference($entity_type_id, $bundle_name) {
+    $definition_key = $this->getEntityDefinitionKey($entity_type_id, $bundle_name);
+    if ($this->definitionExists($definition_key)) {
+      $definition_ref = '#/definitions/' . $definition_key;
+      return $definition_ref;
+    }
+    return '';
   }
 
 }

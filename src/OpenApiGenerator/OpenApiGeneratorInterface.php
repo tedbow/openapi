@@ -3,7 +3,9 @@
 namespace Drupal\openapi\OpenApiGenerator;
 
 /**
- * Generates OpenAPI Spec
+ * Generates OpenAPI Spec.
+ *
+ * @todo Is this interface needed? Could this just contain getSpecification()?
  */
 interface OpenApiGeneratorInterface {
 
@@ -28,13 +30,15 @@ interface OpenApiGeneratorInterface {
   public function getPaths();
 
   /**
-   * Generates OpenAPI specification
+   * Generates OpenAPI specification.
    *
    * @param array $options
    *   The options for the specification generation.
+   *
    * @return array
+   *   The specification output.
    */
-  public function getSpecification();
+  public function getSpecification(array $options = []);
 
   public function getDefinitions();
 

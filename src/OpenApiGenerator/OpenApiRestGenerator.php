@@ -78,17 +78,9 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   }
 
   /**
-   * Get the Open API specification array.
-   *
-   * @param \Drupal\rest\RestResourceConfigInterface[] $rest_configs
-   *   The REST config resources.
-   * @param string $bundle_name
-   *   The bundle name.
-   *
-   * @return array
-   *   The OpenAPI specification.
+   * {@inheritdoc}
    */
-  public function getSpecification($options = []) {
+  public function getSpecification(array $options = []) {
     $bundle_name = isset($options['bundle_name']) ? $options['bundle_name'] : NULL;
     $entity_type_id = isset($options['entity_id']) ? $options['entity_id'] : NULL;
     $resource_configs = $this->getResourceConfigs($options);

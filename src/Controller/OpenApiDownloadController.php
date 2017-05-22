@@ -5,6 +5,11 @@ namespace Drupal\openapi\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 
+/**
+ * Lists OpenAPI direct downloads.
+ *
+ * @todo Should this just be menu items?
+ */
 class OpenApiDownloadController extends ControllerBase {
 
   /**
@@ -26,14 +31,12 @@ class OpenApiDownloadController extends ControllerBase {
       ];
     }
 
-
     if ($this->moduleHandler()->moduleExists('jsonapi')) {
       $open_api_links['jsonapi'] = [
         'url' => Url::fromRoute('openapi.jsonapi', [], ['query' => ['_format' => 'json']]),
         'title' => $this->t('Open API: JSON API'),
       ];
     }
-
 
     /*$open_api_links['other'] = [
       'url' => Url::fromRoute('openapi.non_entities', [], ['query' => ['_format' => 'json']]),
@@ -43,7 +46,7 @@ class OpenApiDownloadController extends ControllerBase {
       '#theme' => 'links',
       '#links' => $open_api_links,
     ];
-
     return $return;
   }
+
 }

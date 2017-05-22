@@ -287,7 +287,7 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type.
    * @param \Drupal\Core\Entity\EntityTypeInterface $bundle
-   *   The enity type
+   *   The entity type.
    *
    * @return string
    *   The bundle tag.

@@ -69,7 +69,7 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSpecification($options = []) {
+  public function getSpecification(array $options = []) {
     $spec = [
       'swagger' => "2.0",
       'schemes' => ['http'],
@@ -137,6 +137,8 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   /**
    * Gets the JSON Schema for an entity type or entity type and bundle.
    *
+   * @param string $described_format
+   *   The format that will be described, json, json_api, etc.
    * @param string $entity_type_id
    *   The entity type id.
    * @param string $bundle_name
@@ -172,7 +174,6 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
         'description' => $this->t('Describes the payload for @entity_type entities.', ['@entity_type' => $entity_type_id]),
       ];
     }
-
     return $json_schema;
   }
 
@@ -188,7 +189,7 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
    * @return array
    *   The cleaned JSON Schema elements.
    */
-  protected function cleanSchema($json_schema) {
+  protected function cleanSchema(array $json_schema) {
     foreach ($json_schema as $key => &$value) {
       if ($value === NULL) {
         $value = '';
@@ -209,7 +210,7 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
    * @param array $value
    *   JSON Schema field value.
    */
-  protected function fixDefaultFalse(&$value) {
+  protected function fixDefaultFalse(array &$value) {
     if (isset($value['type']) && $value['type'] == 'array'
       && is_array($value['items']['properties'])
     ) {
@@ -249,11 +250,10 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
       ];
     }
 
-
     switch ($method) {
       case 'get':
         $responses['200'] = [
-            'description' => 'successful operation',
+          'description' => 'successful operation',
           ] + $schema_response;
         break;
 
@@ -275,9 +275,15 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   }
 
   /**
-   * @param $entity_type_id
-   * @param $bundle_name
+   * Gets the reference to the definition in the document.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $bundle_name
+   *   The bundle name.
+   *
    * @return string
+   *   The reference to the definition.
    */
   protected function getDefinitionReference($entity_type_id, $bundle_name) {
     $definition_key = $this->getEntityDefinitionKey($entity_type_id, $bundle_name);
@@ -312,8 +318,11 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   /**
    * Check whether a definitions exists for a key.
    *
-   * @param $definition_key
+   * @param string $definition_key
+   *   The definition to check.
+   *
    * @return bool
+   *   TRUE if it exists.
    */
   protected function definitionExists($definition_key) {
     $definitions = $this->getDefinitions();

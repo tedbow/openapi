@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\openapi\OpenApiGenerator;
 
 use Drupal\Core\Entity\ContentEntityTypeInterface;
@@ -41,10 +40,8 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
         $path_method['tags'] = ["$entity_type_id:$bundle_name"];
         $path_method['responses'] = $this->getEntityResponses($entity_type_id, $method, $bundle_name, $route_name);
         $api_path[$method] = $path_method;
-
       }
       $api_paths[$route->getPath()] = $api_path;
-
     }
     return $api_paths;
   }
@@ -64,18 +61,52 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   }
 
   /**
+   * Gets description of a method on a route.
+   *
+   * @param \Symfony\Component\Routing\Route $route
+   * @param string $route_name
+   *
+   * @param string $method
+   */
+  protected function getRouteMethodSummary(Route $route, $route_name, $method) {
+    // @todo Make a better summary.
+    if ($route_type = $this->getRoutTypeFromName($route_name)) {
+      return "$route_type $method";
+    }
+    return '@todo';
+
+  }
+
+  /**
+   * Gets the route from the name if possible.
+   *
+   * @param string $route_name
+   *   The route name.
+   *
+   * @return string
+   *   The route type.
+   */
+  protected function getRoutTypeFromName($route_name) {
+    $route_name_parts = explode('.', $route_name);
+    return isset($route_name_parts[2]) ? $route_name_parts[2] : '';
+  }
+
+  /**
    * Get the parameters array for a method on a route.
    *
    * @param \Symfony\Component\Routing\Route $route
+   *   The route.
    * @param string $method
+   *   The HTTP method.
+   *
+   * @return array
+   *   The parameters.
    */
   protected function getMethodParameters(Route $route, $method) {
     $parameters = [];
     $entity_type_id = $route->getRequirement('_entity_type');
     $bundle_name = $route->getRequirement('_bundle');
-
-      if ($route->hasOption('parameters')) {
-
+    if ($route->hasOption('parameters')) {
       foreach ($route->getOption('parameters') as $parameter_name => $parameter_info) {
         $parameter = [
           'name' => $parameter_name,
@@ -103,21 +134,21 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
           'in' => 'query',
           'type' => 'array',
           'required' => FALSE,
-          //'description' => '@todo Explain filtering: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
+          // 'description' => '@todo Explain filtering: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
         ];
         $parameters[] = [
           'name' => 'sort',
           'in' => 'query',
           'type' => 'array',
           'required' => FALSE,
-          //'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
+          // 'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
         ];
         $parameters[] = [
           'name' => 'page',
           'in' => 'query',
           'type' => 'array',
           'required' => FALSE,
-          //'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
+          // 'description' => '@todo Explain sorting: https://www.drupal.org/docs/8/modules/json-api/collections-filtering-sorting-and-paginating',
         ];
       }
       elseif ($method == 'post' || $method == 'patch') {
@@ -142,6 +173,37 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   /**
    * {@inheritdoc}
    */
+  protected function getEntityResponses($entity_type_id, $method, $bundle_name = NULL, $route_name = NULL) {
+    $route_type = $this->getRoutTypeFromName($route_name);
+    if ($route_type === 'collection') {
+      if ($method === 'get') {
+        $schema_response = [];
+        if ($definition_ref = $this->getDefinitionReference($entity_type_id, $bundle_name)) {
+          $schema_response = [
+            'schema' => [
+              'type' => 'array',
+              'items' => [
+                '$ref' => $definition_ref,
+              ],
+            ],
+          ];
+        }
+        $responses['200'] = [
+            'description' => 'successful operation',
+          ] + $schema_response;
+        return $responses;
+      }
+
+    }
+    else {
+      return parent::getEntityResponses($entity_type_id, $method, $bundle_name);
+    }
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDefinitions() {
     static $definitions = [];
     if (!$definitions) {
@@ -160,8 +222,27 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
         }
       }
     }
-
     return $definitions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getJsonSchema($described_format, $entity_type_id, $bundle_name = NULL) {
+    $json_schema = parent::getJsonSchema($described_format, $entity_type_id, $bundle_name);
+    // @todo Should the schemata module be adding these?
+    $json_schema['properties'] += [
+      'type' => [
+        'type' => 'string',
+        'title' => $this->t('Title'),
+        'example' => "$entity_type_id--$bundle_name",
+      ],
+      'id' => [
+        'type' => 'string',
+        'title' => $this->t('Id'),
+      ],
+    ];
+    return $json_schema;
   }
 
   /**
@@ -201,95 +282,18 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   }
 
   /**
+   * Get the tag to use for a bundle.
+   *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *   The entity type.
    * @param \Drupal\Core\Entity\EntityTypeInterface $bundle
+   *   The enity type
+   *
    * @return string
+   *   The bundle tag.
    */
   protected function getBundleTag(EntityTypeInterface $entity_type, $bundle) {
     return $entity_type->id() . ':' . $bundle->id();
   }
-
-  /**
-   * Gets description of a method on a route.
-   *
-   * @param \Symfony\Component\Routing\Route $route
-   * @param string $route_name
-   * @param string $method
-   */
-  protected function getRouteMethodSummary(Route $route, $route_name, $method) {
-    // @todo Make a better summary.
-    if ($route_type = $this->getRoutTypeFromName($route_name)) {
-      return "$route_type $method";
-    }
-    return '@todo';
-
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getEntityResponses($entity_type_id, $method, $bundle_name = NULL, $route_name = NULL) {
-    $route_type = $this->getRoutTypeFromName($route_name);
-    if ($route_type === 'collection') {
-      if ($method === 'get') {
-        $schema_response = [];
-        if ($definition_ref = $this->getDefinitionReference($entity_type_id, $bundle_name)) {
-          $schema_response = [
-            'schema' => [
-              'type' => 'array',
-              'items' => [
-                '$ref' => $definition_ref,
-              ],
-            ],
-          ];
-        }
-        $responses['200'] = [
-          'description' => 'successful operation',
-        ] + $schema_response;
-        return $responses;
-      }
-
-    }
-    else {
-      return parent::getEntityResponses($entity_type_id, $method, $bundle_name);
-    }
-    return [];
-  }
-
-
-  /**
-   * Gets the route from the name if possible.
-   *
-   * @param string $route_name
-   *   The route name.
-   *
-   * @return string
-   *   The route type.
-   */
-  protected function getRoutTypeFromName($route_name) {
-    $route_name_parts = explode('.', $route_name);
-    return isset($route_name_parts[2]) ? $route_name_parts[2] : '';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getJsonSchema($described_format, $entity_type_id, $bundle_name = NULL) {
-    $json_schema = parent::getJsonSchema($described_format, $entity_type_id, $bundle_name);
-    // @todo Should the schemata module be adding these?
-    $json_schema['properties'] += [
-      'type' => [
-        'type' => 'string',
-        'title' => $this->t('Title'),
-        'example' => "$entity_type_id--$bundle_name",
-      ],
-      'id' => [
-        'type' => 'string',
-        'title' => $this->t('Id'),
-      ],
-    ];
-    return $json_schema;
-  }
-
 
 }

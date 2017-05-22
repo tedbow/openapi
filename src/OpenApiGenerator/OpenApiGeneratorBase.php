@@ -66,22 +66,6 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     $this->serializer = $serializer;
   }
 
-
-  /**
-   * Creates the 'info' portion of the API.
-   *
-   * @return array
-   *   The info elements.
-   */
-  protected function getInfo() {
-    $site_name = \Drupal::config('system.site')->get('name');
-    return [
-      'description' => '@todo update',
-      'title' => $this->t('@site - API', ['@site' => $site_name]),
-      'version' => 'No API version',
-    ];
-  }
-
   /**
    * {@inheritdoc}
    */
@@ -101,44 +85,25 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   }
 
   /**
+   * Creates the 'info' portion of the API.
+   *
+   * @return array
+   *   The info elements.
+   */
+  protected function getInfo() {
+    $site_name = \Drupal::config('system.site')->get('name');
+    return [
+      'description' => '@todo update',
+      'title' => $this->t('@site - API', ['@site' => $site_name]),
+      'version' => 'No API version',
+    ];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getBasePath() {
     return \Drupal::request()->getBasePath();
-  }
-
-  /**
-   * Fix default field value as zero instead of FALSE.
-   *
-   * @param array $value
-   *   JSON Schema field value.
-   */
-  protected function fixDefaultFalse(&$value) {
-    if (isset($value['type']) && $value['type'] == 'array'
-      && is_array($value['items']['properties'])
-    ) {
-      foreach ($value['items']['properties'] as $property_key => $property) {
-        if ($property['type'] == 'boolean') {
-          if (isset($value['default'][0][$property_key]) && empty($value['default'][0][$property_key])) {
-            $value['default'][0][$property_key] = FALSE;
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTags() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPaths() {
-    return [];
   }
 
   /**
@@ -151,7 +116,21 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   /**
    * {@inheritdoc}
    */
+  public function getTags() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDefinitions() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPaths() {
     return [];
   }
 
@@ -225,24 +204,23 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   }
 
   /**
-   * Gets the entity definition key.
+   * Fix default field value as zero instead of FALSE.
    *
-   * @param string $entity_type_id
-   *   The entity type.
-   * @param string $bundle_name
-   *   The bundle name.
-   *
-   * @return string
-   *   The entity definition key. Either [entity_type] or
-   *   [entity_type]:[bundle_name]
+   * @param array $value
+   *   JSON Schema field value.
    */
-  protected function getEntityDefinitionKey($entity_type_id, $bundle_name) {
-    $definition_key = $entity_type_id;
-    if ($bundle_name) {
-      $definition_key .= ":$bundle_name";
-      return $definition_key;
+  protected function fixDefaultFalse(&$value) {
+    if (isset($value['type']) && $value['type'] == 'array'
+      && is_array($value['items']['properties'])
+    ) {
+      foreach ($value['items']['properties'] as $property_key => $property) {
+        if ($property['type'] == 'boolean') {
+          if (isset($value['default'][0][$property_key]) && empty($value['default'][0][$property_key])) {
+            $value['default'][0][$property_key] = FALSE;
+          }
+        }
+      }
     }
-    return $definition_key;
   }
 
   /**
@@ -275,14 +253,14 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     switch ($method) {
       case 'get':
         $responses['200'] = [
-          'description' => 'successful operation',
-        ] + $schema_response;
+            'description' => 'successful operation',
+          ] + $schema_response;
         break;
 
       case 'post':
         unset($responses['200']);
         $responses['201'] = [
-          'description' => 'Entity created',
+            'description' => 'Entity created',
           ] + $schema_response;
         break;
 
@@ -297,17 +275,6 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   }
 
   /**
-   * Check whether a definitions exists for a key.
-   *
-   * @param $definition_key
-   * @return bool
-   */
-  protected function definitionExists($definition_key) {
-    $definitions = $this->getDefinitions();
-    return isset($definitions[$definition_key]);
-  }
-
-  /**
    * @param $entity_type_id
    * @param $bundle_name
    * @return string
@@ -319,6 +286,38 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
       return $definition_ref;
     }
     return '';
+  }
+
+  /**
+   * Gets the entity definition key.
+   *
+   * @param string $entity_type_id
+   *   The entity type.
+   * @param string $bundle_name
+   *   The bundle name.
+   *
+   * @return string
+   *   The entity definition key. Either [entity_type] or
+   *   [entity_type]:[bundle_name]
+   */
+  protected function getEntityDefinitionKey($entity_type_id, $bundle_name) {
+    $definition_key = $entity_type_id;
+    if ($bundle_name) {
+      $definition_key .= ":$bundle_name";
+      return $definition_key;
+    }
+    return $definition_key;
+  }
+
+  /**
+   * Check whether a definitions exists for a key.
+   *
+   * @param $definition_key
+   * @return bool
+   */
+  protected function definitionExists($definition_key) {
+    $definitions = $this->getDefinitions();
+    return isset($definitions[$definition_key]);
   }
 
 }

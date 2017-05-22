@@ -44,10 +44,12 @@ trait RestInspectionTrait {
    */
   protected function getResourceConfigs($options) {
     if (isset($options['entity_type_id'])) {
-      $resource_configs[] = $this->entityTypeManager->getStorage('rest_resource_config')->load("entity.{$options['entity_type_id']}");
+      $resource_configs[] = $this->entityTypeManager->getStorage('rest_resource_config')
+        ->load("entity.{$options['entity_type_id']}");
     }
     else {
-      $resource_configs = $this->entityTypeManager->getStorage('rest_resource_config')->loadMultiple();
+      $resource_configs = $this->entityTypeManager->getStorage('rest_resource_config')
+        ->loadMultiple();
       if (isset($options['resource_types']) && $options['resource_types'] == 'entities') {
         foreach (array_keys($resource_configs) as $resource_key) {
           if (!$this->isEntityResource($resource_configs[$resource_key])) {
@@ -57,6 +59,20 @@ trait RestInspectionTrait {
       }
     }
     return $resource_configs;
+  }
+
+  /**
+   * Determines if an REST resource is for an entity.
+   *
+   * @param \Drupal\rest\RestResourceConfigInterface $resource_config
+   *   The REST config resource.
+   *
+   * @return bool
+   *   True if the resource represents a Drupal entity.
+   */
+  protected function isEntityResource(RestResourceConfigInterface $resource_config) {
+    $resource_plugin = $resource_config->getResourcePlugin();
+    return $resource_plugin instanceof EntityResource;
   }
 
   /**
@@ -74,20 +90,6 @@ trait RestInspectionTrait {
       return $this->entityTypeManager->getDefinition($resource_plugin->getPluginDefinition()['entity_type']);
     }
     return NULL;
-  }
-
-  /**
-   * Determines if an REST resource is for an entity.
-   *
-   * @param \Drupal\rest\RestResourceConfigInterface $resource_config
-   *   The REST config resource.
-   *
-   * @return bool
-   *   True if the resource represents a Drupal entity.
-   */
-  protected function isEntityResource(RestResourceConfigInterface $resource_config) {
-    $resource_plugin = $resource_config->getResourcePlugin();
-    return $resource_plugin instanceof EntityResource;
   }
 
 }

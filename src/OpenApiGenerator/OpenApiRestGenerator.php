@@ -50,6 +50,158 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   }
 
   /**
+   * Return resources for non-entity resources.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   A json response.
+   */
+  public function nonBundleResourcesJson() {
+    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
+    $resource_configs = $this->entityTypeManager
+      ->getStorage('rest_resource_config')
+      ->loadMultiple();
+    $non_entity_configs = [];
+    foreach ($resource_configs as $resource_config) {
+      if (!$this->isEntityResource($resource_config)) {
+        $non_entity_configs[] = $resource_config;
+      }
+      else {
+        $entity_type = $this->getEntityType($resource_config);
+        if (!$entity_type->getBundleEntityType()) {
+          $non_entity_configs[] = $resource_config;
+        }
+      }
+    }
+    $spec = $this->getSpecification($non_entity_configs);
+    $response = new JsonResponse($spec);
+    return $response;
+  }
+
+  /**
+   * Get the Open API specification array.
+   *
+   * @param \Drupal\rest\RestResourceConfigInterface[] $rest_configs
+   *   The REST config resources.
+   * @param string $bundle_name
+   *   The bundle name.
+   *
+   * @return array
+   *   The OpenAPI specification.
+   */
+  public function getSpecification($options = []) {
+    $bundle_name = isset($options['bundle_name']) ? $options['bundle_name'] : NULL;
+    $entity_type_id = isset($options['entity_id']) ? $options['entity_id'] : NULL;
+    $resource_configs = $this->getResourceConfigs($options);
+    $spec['definitions'] = $this->getDefinitions($entity_type_id, $bundle_name);
+    $spec = [
+      'swagger' => "2.0",
+      'schemes' => ['http'],
+      'info' => $this->getInfo(),
+      'host' => \Drupal::request()->getHost(),
+      'basePath' => $this->getBasePath(),
+      'securityDefinitions' => $this->getSecurityDefinitions(),
+      'tags' => $this->getTags(),
+      'definitions' => $this->getDefinitions($entity_type_id, $bundle_name),
+      'paths' => $this->getPaths($resource_configs, $bundle_name),
+    ];
+    return $spec;
+  }
+
+  /**
+   * Get model definitions for Drupal entities and bundles.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $bundle_name
+   *   The bundle name.
+   *
+   * @return array
+   *   The model definitions.
+   */
+  public function getDefinitions($entity_type_id = NULL, $bundle_name = NULL) {
+    static $definitions = [];
+    if (!$definitions) {
+      $entity_types = $this->getRestEnabledEntityTypes($entity_type_id);
+      $definitions = [];
+      foreach ($entity_types as $entity_id => $entity_type) {
+        $entity_schema = $this->getJsonSchema('json', $entity_id);
+        $definitions[$entity_id] = $entity_schema;
+        if ($bundle_type = $entity_type->getBundleEntityType()) {
+          $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
+          if ($bundle_name) {
+            $bundles[$bundle_name] = $bundle_storage->load($bundle_name);
+          }
+          else {
+            $bundles = $bundle_storage->loadMultiple();
+          }
+          foreach ($bundles as $bundle_name => $bundle) {
+            $bundle_schema = $this->getJsonSchema('json', $entity_id, $bundle_name);
+            foreach ($entity_schema['properties'] as $property_id => $property) {
+              if (isset($bundle_schema['properties'][$property_id]) && $bundle_schema['properties'][$property_id] === $property) {
+                // Remove any bundle schema property that is the same as the
+                // entity schema property.
+                unset($bundle_schema['properties'][$property_id]);
+              }
+            }
+            // Use Open API polymorphism support to show that bundles extend
+            // entity type.
+            // @todo Should base fields be removed from bundle schema?
+            // @todo Can base fields could be different from entity type base fields?
+            // @see hook_entity_bundle_field_info().
+            // @see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#models-with-polymorphism-support
+            $definitions[$this->getEntityDefinitionKey($entity_type->id(), $bundle_name)] = [
+              'allOf' => [
+                ['$ref' => "#/definitions/$entity_id"],
+                $bundle_schema,
+              ],
+            ];
+
+          }
+        }
+      }
+    }
+
+    return $definitions;
+  }
+
+  /**
+   * Gets available security definitions.
+   *
+   * @return array
+   *   The security definitions.
+   */
+  public function getSecurityDefinitions() {
+    // @todo Determine definitions from available auth.
+    return [
+      'csrf_token' => [
+        'type' => 'apiKey',
+        'name' => 'X-CSRF-Token',
+        'in' => 'header',
+      ],
+      'basic_auth' => [
+        'type' => 'basic',
+      ],
+    ];
+  }
+
+  /**
+   * Get tags.
+   */
+  public function getTags() {
+    $entity_types = $this->getRestEnabledEntityTypes();
+    $tags = [];
+    foreach ($entity_types as $entity_type) {
+      $tag = [
+        'name' => $entity_type->id(),
+        'description' => $this->t("Entity type: @label", ['@label' => $entity_type->getLabel()]),
+        'x-entity-type' => $entity_type->id(),
+      ];
+      $tags[] = $tag;
+    }
+    return $tags;
+  }
+
+  /**
    * Returns the paths information.
    *
    * @param \Drupal\rest\RestResourceConfigInterface[] $resource_configs
@@ -60,7 +212,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @return array The info elements.
    *    The info elements.
    */
-   public function getPaths(array $resource_configs = NULL, $bundle_name = NULL) {
+  public function getPaths(array $resource_configs = NULL, $bundle_name = NULL) {
     if (!$resource_configs) {
       return [];
     }
@@ -121,6 +273,84 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
       }
     }
     return $api_paths;
+  }
+
+  /**
+   * Gets the matching for route for the resource and method.
+   *
+   * @param \Drupal\rest\RestResourceConfigInterface $resource_config
+   *   The REST config resource.
+   * @param string $method
+   *   The HTTP method.
+   *
+   * @return \Symfony\Component\Routing\Route
+   *    The route.
+   *
+   * @throws \Exception
+   *   If no route is found.
+   */
+  protected function getRouteForResourceMethod(RestResourceConfigInterface $resource_config, $method) {
+    if ($this->isEntityResource($resource_config)) {
+      $route_name = 'rest.' . $resource_config->id() . ".$method";
+
+      $routes = $this->routingProvider->getRoutesByNames([$route_name]);
+      if (empty($routes)) {
+        $formats = $resource_config->getFormats($method);
+        if (count($formats) > 0) {
+          $route_name .= ".{$formats[0]}";
+          $routes = $this->routingProvider->getRoutesByNames([$route_name]);
+        }
+      }
+      if ($routes) {
+        return array_pop($routes);
+      }
+    }
+    else {
+      $resource_plugin = $resource_config->getResourcePlugin();
+      foreach ($resource_plugin->routes() as $route) {
+        $methods = $route->getMethods();
+        if (array_search($method, $methods) !== FALSE) {
+          return $route;
+        }
+      };
+    }
+    throw new \Exception("No route found for REST resource, {$resource_config->id()}, for method $method");
+  }
+
+  /**
+   * Get the error responses.
+   *
+   * @see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject
+   *
+   * @return array
+   *   Keys are http codes. Values responses.
+   */
+  protected function getErrorResponses() {
+    $responses['400'] = [
+      'description' => 'Bad request',
+      'schema' => [
+        'type' => 'object',
+        'properties' => [
+          'error' => [
+            'type' => 'string',
+            'example' => 'Bad data',
+          ],
+        ],
+      ],
+    ];
+    $responses['500'] = [
+      'description' => 'Internal server error.',
+      'schema' => [
+        'type' => 'object',
+        'properties' => [
+          'message' => [
+            'type' => 'string',
+            'example' => 'Internal server error.',
+          ],
+        ],
+      ],
+    ];
+    return $responses;
   }
 
   /**
@@ -203,48 +433,6 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   }
 
   /**
-   * Gets the matching for route for the resource and method.
-   *
-   * @param \Drupal\rest\RestResourceConfigInterface $resource_config
-   *   The REST config resource.
-   * @param string $method
-   *   The HTTP method.
-   *
-   * @return \Symfony\Component\Routing\Route
-   *    The route.
-   *
-   * @throws \Exception
-   *   If no route is found.
-   */
-  protected function getRouteForResourceMethod(RestResourceConfigInterface $resource_config, $method) {
-    if ($this->isEntityResource($resource_config)) {
-      $route_name = 'rest.' . $resource_config->id() . ".$method";
-
-      $routes = $this->routingProvider->getRoutesByNames([$route_name]);
-      if (empty($routes)) {
-        $formats = $resource_config->getFormats($method);
-        if (count($formats) > 0) {
-          $route_name .= ".{$formats[0]}";
-          $routes = $this->routingProvider->getRoutesByNames([$route_name]);
-        }
-      }
-      if ($routes) {
-        return array_pop($routes);
-      }
-    }
-    else {
-      $resource_plugin = $resource_config->getResourcePlugin();
-      foreach ($resource_plugin->routes() as $route) {
-        $methods = $route->getMethods();
-        if (array_search($method, $methods) !== FALSE) {
-          return $route;
-        }
-      };
-    }
-    throw new \Exception("No route found for REST resource, {$resource_config->id()}, for method $method");
-  }
-
-  /**
    * Get the security information for the a resource.
    *
    * @param \Drupal\rest\RestResourceConfigInterface $resource_config
@@ -287,195 +475,6 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
       }
     }
     return $security;
-  }
-
-  /**
-   * Get model definitions for Drupal entities and bundles.
-   *
-   * @param string $entity_type_id
-   *   The entity type id.
-   * @param string $bundle_name
-   *   The bundle name.
-   *
-   * @return array
-   *   The model definitions.
-   */
-  public function getDefinitions($entity_type_id = NULL, $bundle_name = NULL) {
-    static $definitions = [];
-    if (!$definitions) {
-      $entity_types = $this->getRestEnabledEntityTypes($entity_type_id);
-      $definitions = [];
-      foreach ($entity_types as $entity_id => $entity_type) {
-        $entity_schema = $this->getJsonSchema('json', $entity_id);
-        $definitions[$entity_id] = $entity_schema;
-        if ($bundle_type = $entity_type->getBundleEntityType()) {
-          $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
-          if ($bundle_name) {
-            $bundles[$bundle_name] = $bundle_storage->load($bundle_name);
-          }
-          else {
-            $bundles = $bundle_storage->loadMultiple();
-          }
-          foreach ($bundles as $bundle_name => $bundle) {
-            $bundle_schema = $this->getJsonSchema('json', $entity_id, $bundle_name);
-            foreach ($entity_schema['properties'] as $property_id => $property) {
-              if (isset($bundle_schema['properties'][$property_id]) && $bundle_schema['properties'][$property_id] === $property) {
-                // Remove any bundle schema property that is the same as the
-                // entity schema property.
-                unset($bundle_schema['properties'][$property_id]);
-              }
-            }
-            // Use Open API polymorphism support to show that bundles extend
-            // entity type.
-            // @todo Should base fields be removed from bundle schema?
-            // @todo Can base fields could be different from entity type base fields?
-            // @see hook_entity_bundle_field_info().
-            // @see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#models-with-polymorphism-support
-            $definitions[$this->getEntityDefinitionKey($entity_type->id(), $bundle_name)] = [
-              'allOf' => [
-                ['$ref' => "#/definitions/$entity_id"],
-                $bundle_schema,
-              ],
-            ];
-
-          }
-        }
-      }
-    }
-
-    return $definitions;
-  }
-
-  /**
-   * Return resources for non-entity resources.
-   *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   A json response.
-   */
-  public function nonBundleResourcesJson() {
-    /** @var \Drupal\rest\Entity\RestResourceConfig[] $resource_configs */
-    $resource_configs = $this->entityTypeManager
-      ->getStorage('rest_resource_config')
-      ->loadMultiple();
-    $non_entity_configs = [];
-    foreach ($resource_configs as $resource_config) {
-      if (!$this->isEntityResource($resource_config)) {
-        $non_entity_configs[] = $resource_config;
-      }
-      else {
-        $entity_type = $this->getEntityType($resource_config);
-        if (!$entity_type->getBundleEntityType()) {
-          $non_entity_configs[] = $resource_config;
-        }
-      }
-    }
-    $spec = $this->getSpecification($non_entity_configs);
-    $response = new JsonResponse($spec);
-    return $response;
-  }
-
-  /**
-   * Gets available security definitions.
-   *
-   * @return array
-   *   The security definitions.
-   */
-  public function getSecurityDefinitions() {
-    // @todo Determine definitions from available auth.
-    return [
-      'csrf_token' => [
-        'type' => 'apiKey',
-        'name' => 'X-CSRF-Token',
-        'in' => 'header',
-      ],
-      'basic_auth' => [
-        'type' => 'basic',
-      ],
-    ];
-  }
-
-  /**
-   * Get the Open API specification array.
-   *
-   * @param \Drupal\rest\RestResourceConfigInterface[] $rest_configs
-   *   The REST config resources.
-   * @param string $bundle_name
-   *   The bundle name.
-   *
-   * @return array
-   *   The OpenAPI specification.
-   */
-  public function getSpecification($options = []) {
-    $bundle_name = isset($options['bundle_name']) ? $options['bundle_name'] : NULL;
-    $entity_type_id = isset($options['entity_id']) ? $options['entity_id'] : NULL;
-    $resource_configs = $this->getResourceConfigs($options);
-    $spec['definitions'] = $this->getDefinitions($entity_type_id, $bundle_name);
-    $spec = [
-      'swagger' => "2.0",
-      'schemes' => ['http'],
-      'info' => $this->getInfo(),
-      'host' => \Drupal::request()->getHost(),
-      'basePath' => $this->getBasePath(),
-      'securityDefinitions' => $this->getSecurityDefinitions(),
-      'tags' => $this->getTags(),
-      'definitions' => $this->getDefinitions($entity_type_id, $bundle_name),
-      'paths' => $this->getPaths($resource_configs, $bundle_name),
-    ];
-    return $spec;
-  }
-
-
-  /**
-   * Get the error responses.
-   *
-   * @see https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject
-   *
-   * @return array
-   *   Keys are http codes. Values responses.
-   */
-  protected function getErrorResponses() {
-    $responses['400'] = [
-      'description' => 'Bad request',
-      'schema' => [
-        'type' => 'object',
-        'properties' => [
-          'error' => [
-            'type' => 'string',
-            'example' => 'Bad data',
-          ],
-        ],
-      ],
-    ];
-    $responses['500'] = [
-      'description' => 'Internal server error.',
-      'schema' => [
-        'type' => 'object',
-        'properties' => [
-          'message' => [
-            'type' => 'string',
-            'example' => 'Internal server error.',
-          ],
-        ],
-      ],
-    ];
-    return $responses;
-  }
-
-  /**
-   * Get tags.
-   */
-  public function getTags() {
-    $entity_types = $this->getRestEnabledEntityTypes();
-    $tags = [];
-    foreach ($entity_types as $entity_type) {
-      $tag = [
-        'name' => $entity_type->id(),
-        'description' => $this->t("Entity type: @label", ['@label' => $entity_type->getLabel()]),
-        'x-entity-type' => $entity_type->id(),
-      ];
-      $tags[] = $tag;
-    }
-    return $tags;
   }
 
 }

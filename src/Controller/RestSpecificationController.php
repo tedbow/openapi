@@ -38,6 +38,9 @@ class RestSpecificationController implements ContainerInjectionInterface {
   }
 
   public function getEntityBundleSpecification($entity_type_id, $bundle_name) {
-    return new JsonResponse($this->restGenerator->getSpecification(['entity_type_id' => $entity_type_id, 'bundle_name' => $bundle_name]));
+    return new JsonResponse($this->restGenerator->getSpecification([
+      'entity_type_id' => $entity_type_id,
+      'bundle_name' => $bundle_name
+    ]));
   }
 }

@@ -305,7 +305,6 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
       $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
       $tag = $entity_type->getLabel() . "($entity_type_id)";
       if ($bundle_type_id = $entity_type->getBundleEntityType()) {
-        $bundle_type = $this->entityTypeManager->getDefinition($entity_type_id);
         $bundle_entity = $this->entityTypeManager->getStorage($bundle_type_id)->load($bundle_name);
         $tag .= ' - ' . $bundle_entity->label() . "($bundle_name)";
       }

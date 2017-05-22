@@ -1,4 +1,4 @@
-openapi.list:
+openapi.rest.list:
   title: REST API
   description: 'REST API documentation.'
   parent: system.admin_config_services
@@ -9,4 +9,3 @@ openapi.jsonapi:
   description: 'JSON API documentation.'
   parent: system.admin_config_services
   route_name: openapi.swaggerUI.jsonapi
-  class: Drupal\openapi_docs\Plugin\Menu\DocMenuLink

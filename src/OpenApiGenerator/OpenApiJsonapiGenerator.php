@@ -25,12 +25,15 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   /**
    * {@inheritdoc}
    */
-  public function getPaths() {
+  public function getPaths(array $options = []) {
     $routes = $this->getJsonApiRoutes();
     $api_paths = [];
     foreach ($routes as $route_name => $route) {
       $entity_type_id = $route->getRequirement('_entity_type');
       $bundle_name = $route->getRequirement('_bundle');
+      if (!$this->includeEntityTypeBundle($options, $entity_type_id, $bundle_name)) {
+        continue;
+      }
       $api_path = [];
       $methods = $route->getMethods();
       foreach ($methods as $method) {
@@ -211,7 +214,7 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   /**
    * {@inheritdoc}
    */
-  public function getDefinitions() {
+  public function getDefinitions(array $options = []) {
     static $definitions = [];
     if (!$definitions) {
       foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
@@ -220,11 +223,15 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
             $bundle_storage = $this->entityTypeManager->getStorage($bundle_type);
             $bundles = $bundle_storage->loadMultiple();
             foreach ($bundles as $bundle_name => $bundle) {
-              $definitions["{$entity_type->id()}:$bundle_name"] = $this->getJsonSchema('api_json', $entity_type->id(), $bundle_name);
+              if ($this->includeEntityTypeBundle($options, $entity_type->id(), $bundle_name)) {
+                $definitions["{$entity_type->id()}:$bundle_name"] = $this->getJsonSchema('api_json', $entity_type->id(), $bundle_name);
+              }
             }
           }
           else {
-            $definitions["{$entity_type->id()}:{$entity_type->id()}"] = $this->getJsonSchema('api_json', $entity_type->id(), $entity_type->id());
+            if ($this->includeEntityTypeBundle($options, $entity_type->id())) {
+              $definitions["{$entity_type->id()}:{$entity_type->id()}"] = $this->getJsonSchema('api_json', $entity_type->id());
+            }
           }
         }
       }
@@ -255,13 +262,16 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   /**
    * {@inheritdoc}
    */
-  public function getTags() {
+  public function getTags(array $options = []) {
     $tags = [];
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
       if ($bundle_type_id = $entity_type->getBundleEntityType()) {
         $bundle_storage = $this->entityTypeManager->getStorage($bundle_type_id);
         $bundles = $bundle_storage->loadMultiple();
         foreach ($bundles as $bundle_name => $bundle) {
+          if (!$this->includeEntityTypeBundle($options, $entity_type->id(), $bundle_name)) {
+            continue;
+          }
           $description = $this->t("@bundle_label @bundle of type @entity_type",
             [
               '@bundle_label' => $entity_type->getBundleLabel(),
@@ -276,6 +286,9 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
         }
       }
       else {
+        if (!$this->includeEntityTypeBundle($options, $entity_type->id())) {
+          continue;
+        }
         $tag = [
           'name' => $this->getBundleTag($entity_type->id()),
         ];
@@ -312,5 +325,6 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
     }
     return $tags[$entity_type_id][$bundle_name];
   }
+
 
 }

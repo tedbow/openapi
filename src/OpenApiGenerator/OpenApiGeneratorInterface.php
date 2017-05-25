@@ -20,14 +20,24 @@ interface OpenApiGeneratorInterface {
   public function getSecurityDefinitions();
 
   /**
+   *
+   * @param array $options
+   *   The options for generating the schema.
+   *
    * @return array
    */
-  public function getTags();
+  public function getTags(array $options = []);
 
   /**
+   * Returns the paths information.
+   *
+   * @param array $options
+   *   The options for generating the schema.
+   *
    * @return array
+   *   The info elements.
    */
-  public function getPaths();
+  public function getPaths(array $options = []);
 
   /**
    * Generates OpenAPI specification.
@@ -40,7 +50,16 @@ interface OpenApiGeneratorInterface {
    */
   public function getSpecification(array $options = []);
 
-  public function getDefinitions();
 
+  /**
+   * Get model definitions for Drupal entities and bundles.
+   *
+   * @param array $options
+   *   The options for the specification generation.
+   *
+   * @return array
+   *   The model definitions.
+   */
+  public function getDefinitions(array $options = []);
 
 }

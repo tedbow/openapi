@@ -2,6 +2,8 @@
 
 namespace Drupal\openapi\OpenApiGenerator;
 
+use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
+use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
@@ -77,9 +79,9 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
       'host' => \Drupal::request()->getHost(),
       'basePath' => $this->getBasePath(),
       'securityDefinitions' => $this->getSecurityDefinitions(),
-      'tags' => $this->getTags(),
-      'definitions' => $this->getDefinitions(),
-      'paths' => $this->getPaths(),
+      'tags' => $this->getTags($options),
+      'definitions' => $this->getDefinitions($options),
+      'paths' => $this->getPaths($options),
     ];
     return $spec;
   }
@@ -116,21 +118,21 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getTags() {
+  public function getTags(array $options = []) {
     return [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getDefinitions() {
+  public function getDefinitions(array $options = []) {
     return [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPaths() {
+  public function getPaths(array $options = []) {
     return [];
   }
 
@@ -327,6 +329,29 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   protected function definitionExists($definition_key) {
     $definitions = $this->getDefinitions();
     return isset($definitions[$definition_key]);
+  }
+
+
+  /**
+   * @param array $options
+   */
+  protected function includeEntityTypeBundle(array $options = [], $entity_type_id, $bundle_name = NULL) {
+    if (isset($options['entity_mode'])) {
+      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
+      if ($options['entity_mode'] == 'content_entities') {
+        return $entity_type instanceof ContentEntityTypeInterface;
+      }
+      if ($options['entity_mode'] == 'config_entities') {
+        return $entity_type instanceof ConfigEntityTypeInterface;
+      }
+    }
+    if (isset($options['entity_type_id']) && $options['entity_type_id'] !== $entity_type_id) {
+      return FALSE;
+    }
+    if (isset($options['bundle_name']) && $options['bundle_name'] !== $bundle_name) {
+      return FALSE;
+    }
+    return TRUE;
   }
 
 }

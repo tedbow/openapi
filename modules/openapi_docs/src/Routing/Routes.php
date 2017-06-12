@@ -49,18 +49,15 @@ class Routes implements ContainerInjectionInterface {
     $routes = [];
     if ($this->moduleHandler->moduleExists('rest')) {
       /** @var \Symfony\Component\Routing\Route[] $routes */
-
-      $routes['openapi.swaggerUI.rest.non_entity'] = (new Route('/admin/config/services/openapi/swagger-ui/rest/non-entity'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_docs\Controller\SwaggerUIRestController::nonEntityResources');
-      $routes['openapi.swaggerUI.rest.bundle'] = (new Route('/admin/config/services/openapi/swagger-ui/rest/{entity_type}/{bundle_name}'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_docs\Controller\SwaggerUIRestController::bundleResource');
-      $routes['openapi.swaggerUI.rest.list'] = (new Route('/admin/config/services/openapi/swagger-ui/rest/list-resources'))
+      $routes['openapi.swagger_ui.rest'] = (new Route('/admin/config/services/openapi/swagger-ui/rest'))
+        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_docs\Controller\SwaggerUIRestController::openApiResources');
+      $routes['openapi.swagger_ui.rest.list'] = (new Route('/admin/config/services/openapi/swagger-ui/rest/list-resources'))
         ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_docs\Controller\SwaggerUIRestController::listResources');
 
     }
     if ($this->moduleHandler->moduleExists('jsonapi')) {
-      $routes['openapi.swaggerUI.jsonapi'] = (new Route('/admin/config/services/openapi/swagger-ui/jsonapi'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_docs\Controller\SwaggerUIController::openApiResources');
+      $routes['openapi.swagger_ui.jsonapi'] = (new Route('/admin/config/services/openapi/swagger-ui/jsonapi'))
+        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_docs\Controller\SwaggerUIJsonApiController::openApiResources');
     }
     if ($routes) {
       foreach ($routes as $route_name => $route) {

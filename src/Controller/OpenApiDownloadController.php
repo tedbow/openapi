@@ -26,7 +26,7 @@ class OpenApiDownloadController extends ControllerBase {
 
     if ($this->moduleHandler()->moduleExists('rest')) {
       $open_api_links['entities'] = [
-        'url' => Url::fromRoute('openapi.rest.entities', [], ['query' => ['_format' => 'json']]),
+        'url' => Url::fromRoute('openapi.rest', [], ['query' => ['_format' => 'json']]),
         'title' => $this->t('Open API: REST Entities'),
       ];
     }

@@ -2,10 +2,10 @@ openapi.rest.list:
   title: REST API
   description: 'REST API documentation.'
   parent: system.admin_config_services
-  route_name: openapi.swaggerUI.rest.list
+  route_name: openapi.swagger_ui.rest.list
 
 openapi.jsonapi:
   title: JSON Api Documentation
   description: 'JSON API documentation.'
   parent: system.admin_config_services
-  route_name: openapi.swaggerUI.jsonapi
+  route_name: openapi.swagger_ui.jsonapi

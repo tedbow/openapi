@@ -1,38 +1,16 @@
 <?php
 
-
 namespace Drupal\openapi_docs\Controller;
-
 
 use Drupal\Core\Url;
 use Drupal\openapi\OpenApiGenerator\RestInspectionTrait;
 
-class SwaggerUIRestController extends SwaggerUIController {
+/**
+ * Controller for REST documentation.
+ */
+class SwaggerUIRestController extends SwaggerUIControllerBase {
 
   use RestInspectionTrait;
-
-  /**
-   * The Swagger UI page.
-   *
-   * @param string $entity_type
-   *   The entity type.
-   * @param string $bundle_name
-   *   The bundle.
-   *
-   * @return array The Swagger UI render array.
-   *   The Swagger UI render array.
-   */
-  public function bundleResource($entity_type = NULL, $bundle_name = NULL) {
-    $json_url = Url::fromRoute(
-      'openapi.rest.bundle',
-      [
-        'entity_type_id' => $entity_type,
-        'bundle_name' => $bundle_name,
-      ]
-    );
-    $build = $this->swaggerUI($json_url);
-    return $build;
-  }
 
   /**
    * List all REST Doc pages.
@@ -42,15 +20,17 @@ class SwaggerUIRestController extends SwaggerUIController {
       '#type' => 'markup',
       '#markup' => '<h2>' . $this->t('Documentation Pages') . '</h2>',
     ];
-    $return['other_resources'] = [
+
+    // @todo Implement non entity doc page.
+   /* $return['other_resources'] = [
       '#type' => 'link',
-      '#url' => Url::fromRoute('openapi.swaggerUI.rest.non_entity'),
+      '#url' => Url::fromRoute('openapi.swagger_ui.rest.non_entity'),
       '#title' => $this->t('Non bundle resources'),
-    ];
+    ];*/
 
     foreach ($this->getRestEnabledEntityTypes() as $entity_type_id => $entity_type) {
       if ($bundle_type = $entity_type->getBundleEntityType()) {
-        $bundle_storage = $this->entityTypeManager()
+          $bundle_storage = $this->entityTypeManager()
           ->getStorage($bundle_type);
         /** @var \Drupal\Core\Config\Entity\ConfigEntityBundleBase[] $bundles */
         $bundles = $bundle_storage->loadMultiple();
@@ -58,10 +38,18 @@ class SwaggerUIRestController extends SwaggerUIController {
         foreach ($bundles as $bundle_name => $bundle) {
           $bundle_links[$bundle_name] = [
             'title' => $bundle->label(),
-            'url' => Url::fromRoute('openapi.swaggerUI.rest.bundle', [
-              'entity_type' => $entity_type_id,
-              'bundle_name' => $bundle_name,
-            ]),
+            'url' => Url::fromRoute('openapi.swagger_ui.rest',
+              [],
+              [
+                'query' => [
+                  'options' =>
+                    [
+                      'entity_type_id' => $entity_type_id,
+                      'bundle_name' => $bundle_name,
+                    ],
+                ],
+              ]
+            ),
           ];
         }
         $return[$entity_type_id] = [
@@ -78,17 +66,10 @@ class SwaggerUIRestController extends SwaggerUIController {
   }
 
   /**
-   * Creates documentations page for non-entity resources.
-   *
-   * @return array
-   *   Render array for documentations page.
+   * {@inheritdoc}
    */
-  public function nonEntityResources() {
-    $json_url = Url::fromRoute(
-      'openapi.non_entities'
-    );
-    $build = $this->swaggerUI($json_url);
-    return $build;
+  protected function getJsonGeneratorRoute() {
+    return 'openapi.rest';
   }
 
 }

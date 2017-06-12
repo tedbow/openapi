@@ -12,14 +12,15 @@ use Drupal\schemata\SchemaFactory;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class OpenApiGeneratorBase
- * @package Drupal\openapi\OpenApiGenerator
+ * Base class for OpenAPI generators.
  */
 abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
 
   use StringTranslationTrait;
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
@@ -54,11 +55,17 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
 
   /**
    * OpenApiGeneratorBase constructor.
+   *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    * @param \Drupal\Core\Routing\RouteProviderInterface $routingProvider
+   *   The routing provider.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $fieldManager
+   *   The field manager.
    * @param \Drupal\schemata\SchemaFactory $schemaFactory
+   *   The schema factory.
    * @param \Symfony\Component\Serializer\SerializerInterface $serializer
+   *   The serializer.
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager, RouteProviderInterface $routingProvider, EntityFieldManagerInterface $fieldManager, SchemaFactory $schemaFactory, SerializerInterface $serializer) {
     $this->entityTypeManager = $entityTypeManager;

@@ -33,7 +33,7 @@ class OpenApiRestResourceTest extends OpenApiTestBase {
     $user = $this->drupalCreateUser(['access openapi api docs']);
     $this->drupalLogin($user);;
 
-    $url = Url::fromRoute('openapi.rest.entities')->setRouteParameter('_format', 'json');
+    $url = Url::fromRoute('openapi.rest')->setRouteParameter('_format', 'json');
     $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedEntities(), 'Resource list correct');
 
     $entity_type_bundles = [
@@ -41,10 +41,13 @@ class OpenApiRestResourceTest extends OpenApiTestBase {
     ];
     foreach ($entity_type_bundles as $entity_type => $bundles) {
       foreach ($bundles as $bundle) {
-        $url = Url::fromRoute('openapi.rest.bundle',
+        $url = Url::fromRoute('openapi.rest',
+          [],
           [
-            'entity_type_id' => $entity_type,
-            'bundle_name' => $bundle,
+            'options' => [
+              'entity_type_id' => $entity_type,
+              'bundle_name' => $bundle,
+            ],
           ]
         )->setRouteParameter('_format', 'json');
         $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedBundle($entity_type, $bundle), 'Bundle Resource list correct');

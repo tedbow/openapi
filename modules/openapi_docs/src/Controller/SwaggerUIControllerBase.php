@@ -6,11 +6,14 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Controller for the Swagger UI page callbacks.
  */
-class SwaggerUIController extends ControllerBase {
+abstract class SwaggerUIControllerBase extends ControllerBase {
+
+  protected $request;
 
   /**
    * Constructs a new SwaggerController object.
@@ -18,8 +21,9 @@ class SwaggerUIController extends ControllerBase {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, RequestStack $request) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->request = $request;
   }
 
   /**
@@ -27,11 +31,10 @@ class SwaggerUIController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('request_stack')
     );
   }
-
-
 
   /**
    * Creates render array for documentation page for a given resource url.
@@ -42,8 +45,16 @@ class SwaggerUIController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  protected function swaggerUI(Url $json_url) {
-    $json_url->setOption('query', ['_format' => 'json']);
+  protected function swaggerUi(Url $json_url) {
+    $query = [
+      '_format' => 'json',
+    ];
+    if ($options = $this->request->getCurrentRequest()->get('options', [])) {
+      $query['options'] = $options;
+    }
+
+    $json_url->setOption('query', $query);
+
     $build = [
       '#theme' => 'swagger_ui',
       '#attached' => [
@@ -53,13 +64,14 @@ class SwaggerUIController extends ControllerBase {
         ],
         'drupalSettings' => [
           'openapi' => [
-            'swagger_json_url' => $json_url->toString(),
+            'json_url' => $json_url->toString(),
           ],
         ],
       ],
     ];
     return $build;
   }
+
 
   /**
    * Creates documentations page for non-entity resources.
@@ -68,11 +80,17 @@ class SwaggerUIController extends ControllerBase {
    *   Render array for documentations page.
    */
   public function openApiResources() {
-    $json_url = Url::fromRoute(
-      'openapi.jsonapi'
-    );
-    $build = $this->swaggerUI($json_url);
+    $json_url = Url::fromRoute($this->getJsonGeneratorRoute());
+    $build = $this->swaggerUi($json_url);
     return $build;
   }
+
+  /**
+   * Returns route for generating JSON.
+   *
+   * @return string
+   *   The route name.
+   */
+  abstract protected function getJsonGeneratorRoute();
 
 }

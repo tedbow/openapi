@@ -43,17 +43,11 @@ class Routes implements ContainerInjectionInterface {
 
   public function routes() {
     $collection = new RouteCollection();
+    /** @var \Symfony\Component\Routing\Route[] $specification_routes */
     $specification_routes = [];
     if ($this->moduleHandler->moduleExists('rest')) {
-      /** @var \Symfony\Component\Routing\Route[] $specification_routes */
-
-      $specification_routes['openapi.rest.entities'] = (new Route('/openapi/rest/entities'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi\Controller\RestSpecificationController::getEntitiesSpecification');
-      $specification_routes['openapi.rest.bundle'] = (new Route('/openapi/rest/{entity_type_id}/{bundle_name}'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi\Controller\RestSpecificationController::getEntityBundleSpecification');
-      /*$specification_routes['openapi.non_entities'] = (new Route('/openapi/non-entity'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi\Controller\OpenApiController::nonBundleResourcesJson');*/
-
+      $specification_routes['openapi.rest'] = (new Route('/openapi/rest'))
+        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi\Controller\RestSpecificationController::getSpecification');
     }
     if ($this->moduleHandler->moduleExists('jsonapi')) {
       $specification_routes['openapi.jsonapi'] = (new Route('/openapi/jsonapi'))

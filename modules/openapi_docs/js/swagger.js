@@ -12,7 +12,7 @@
 
   Drupal.behaviors.swaggerui = {
     attach: function (context, settings) {
-      var url = drupalSettings.openapi.swagger_json_url;
+      var url = drupalSettings.openapi.json_url;
       /*
        hljs.configure({
        highlightSizeThreshold: 5000

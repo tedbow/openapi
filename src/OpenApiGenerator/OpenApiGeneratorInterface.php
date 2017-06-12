@@ -6,6 +6,7 @@ namespace Drupal\openapi\OpenApiGenerator;
  * Generates OpenAPI Spec.
  *
  * @todo Is this interface needed? Could this just contain getSpecification()?
+ *   The move all the functions to abstract functions OpenApiGeneratorBase.
  */
 interface OpenApiGeneratorInterface {
 

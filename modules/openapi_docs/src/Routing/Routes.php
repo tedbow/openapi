@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\openapi_docs\Routing;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -70,4 +71,5 @@ class Routes implements ContainerInjectionInterface {
     }
     return $collection;
   }
+
 }

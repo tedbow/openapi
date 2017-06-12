@@ -20,6 +20,8 @@ abstract class SwaggerUIControllerBase extends ControllerBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request
+   *   The request.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, RequestStack $request) {
     $this->entityTypeManager = $entity_type_manager;
@@ -71,7 +73,6 @@ abstract class SwaggerUIControllerBase extends ControllerBase {
     ];
     return $build;
   }
-
 
   /**
    * Creates documentations page for non-entity resources.

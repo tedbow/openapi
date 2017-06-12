@@ -21,7 +21,7 @@ trait RestInspectionTrait {
    */
   protected function getRestEnabledEntityTypes($entity_type_id = NULL) {
     $entity_types = [];
-    $resource_configs = $this->getResourceConfigs([]);
+    $resource_configs = $this->getResourceConfigs();
 
     foreach ($resource_configs as $id => $resource_config) {
       if ($entity_type = $this->getEntityType($resource_config)) {
@@ -36,13 +36,13 @@ trait RestInspectionTrait {
   /**
    * Gets the REST config resources.
    *
-   * @param string $entity_type
-   *   The entity type to filter by if any.
+   * @param array $options
+   *   The options to generate the output.
    *
    * @return \Drupal\rest\RestResourceConfigInterface[]
    *   The REST config resources.
    */
-  protected function getResourceConfigs($options) {
+  protected function getResourceConfigs(array $options = []) {
     if (isset($options['entity_type_id'])) {
       $resource_configs[] = $this->entityTypeManager->getStorage('rest_resource_config')
         ->load("entity.{$options['entity_type_id']}");

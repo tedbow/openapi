@@ -269,7 +269,7 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
       case 'post':
         unset($responses['200']);
         $responses['201'] = [
-            'description' => 'Entity created',
+          'description' => 'Entity created',
           ] + $schema_response;
         break;
 
@@ -338,11 +338,20 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     return isset($definitions[$definition_key]);
   }
 
-
   /**
+   * Determines if an entity type and/or bundle show be included.
+   *
    * @param array $options
+   *   The options to generate the output.
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string|null $bundle_name
+   *   The bundle name.
+   *
+   * @return bool
+   *   True if the entity type or bundle should be included.
    */
-  protected function includeEntityTypeBundle(array $options = [], $entity_type_id, $bundle_name = NULL) {
+  protected function includeEntityTypeBundle(array $options, $entity_type_id, $bundle_name = NULL) {
     if (isset($options['entity_mode'])) {
       $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
       if ($options['entity_mode'] == 'content_entities') {

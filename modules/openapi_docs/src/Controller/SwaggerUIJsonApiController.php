@@ -2,7 +2,6 @@
 
 namespace Drupal\openapi_docs\Controller;
 
-
 /**
  * Swagger UI controller for JSON API documentation.
  */

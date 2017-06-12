@@ -22,16 +22,10 @@ class SwaggerUIRestController extends SwaggerUIControllerBase {
     ];
 
     // @todo Implement non entity doc page.
-   /* $return['other_resources'] = [
-      '#type' => 'link',
-      '#url' => Url::fromRoute('openapi.swagger_ui.rest.non_entity'),
-      '#title' => $this->t('Non bundle resources'),
-    ];*/
 
     foreach ($this->getRestEnabledEntityTypes() as $entity_type_id => $entity_type) {
       if ($bundle_type = $entity_type->getBundleEntityType()) {
-          $bundle_storage = $this->entityTypeManager()
-          ->getStorage($bundle_type);
+        $bundle_storage = $this->entityTypeManager()->getStorage($bundle_type);
         /** @var \Drupal\Core\Config\Entity\ConfigEntityBundleBase[] $bundles */
         $bundles = $bundle_storage->loadMultiple();
         $bundle_links = [];

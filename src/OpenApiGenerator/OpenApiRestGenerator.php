@@ -166,19 +166,10 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
   }
 
   /**
-   * Returns the paths information.
-   *
-   * @param \Drupal\rest\RestResourceConfigInterface[] $resource_configs
-   *   The REST config resources.
-   * @param string $bundle_name
-   *   The bundle name.
-   *
-   * @return array The info elements.
-   *    The info elements.
+   * {@inheritdoc}
    */
   public function getPaths(array $options = []) {
     $bundle_name = isset($options['bundle_name']) ? $options['bundle_name'] : NULL;
-    $entity_type_id = isset($options['entity_type_id']) ? $options['entity_type_id'] : NULL;
     $resource_configs = $this->getResourceConfigs($options);
     if (!$resource_configs) {
       return [];
@@ -251,7 +242,7 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    *   The HTTP method.
    *
    * @return \Symfony\Component\Routing\Route
-   *    The route.
+   *   The route.
    *
    * @throws \Exception
    *   If no route is found.
@@ -330,8 +321,8 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @param string $bundle_name
    *   The bundle name.
    *
-   * @return array Parameters for the entity resource.
-   *    Parameters for the entity resource.
+   * @return array
+   *   Parameters for the entity resource.
    */
   protected function getEntityParameters(EntityTypeInterface $entity_type, $method, $bundle_name = NULL) {
     $parameters = [];
@@ -409,12 +400,12 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
    * @param string[] $formats
    *   The formats.
    *
-   * @return array The security elements.
-   *    The security elements.
+   * @return array
+   *   The security elements.
    *
    * @see http://swagger.io/specification/#securityDefinitionsObject
    */
-  protected function getSecurity(RestResourceConfigInterface $resource_config, $method, $formats) {
+  protected function getSecurity(RestResourceConfigInterface $resource_config, $method, array $formats) {
     $security = [];
     foreach ($resource_config->getAuthenticationProviders($method) as $auth) {
       switch ($auth) {

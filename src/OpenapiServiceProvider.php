@@ -6,6 +6,9 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Service provider that creators OpenAPI generator services.
+ */
 class OpenapiServiceProvider extends ServiceProviderBase {
 
   /**
@@ -30,7 +33,6 @@ class OpenapiServiceProvider extends ServiceProviderBase {
         ->addArgument(new Reference('entity_field.manager'))
         ->addArgument(new Reference('schemata.schema_factory'))
         ->addArgument(new Reference('serializer'));
-
     }
   }
 

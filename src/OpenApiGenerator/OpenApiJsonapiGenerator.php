@@ -2,10 +2,8 @@
 
 namespace Drupal\openapi\OpenApiGenerator;
 
-use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -54,7 +52,10 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
   }
 
   /**
+   * Gets the JSON API routes.
+   *
    * @return \Symfony\Component\Routing\Route[]
+   *   The routes.
    */
   protected function getJsonApiRoutes() {
     $all_routes = $this->routingProvider->getAllRoutes();
@@ -74,9 +75,14 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
    * Gets description of a method on a route.
    *
    * @param \Symfony\Component\Routing\Route $route
+   *   The route.
    * @param string $route_name
-   *
+   *   The route name.
    * @param string $method
+   *   The method.
+   *
+   * @return string
+   *   The method summary.
    */
   protected function getRouteMethodSummary(Route $route, $route_name, $method) {
     // @todo Make a better summary.
@@ -325,6 +331,5 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
     }
     return $tags[$entity_type_id][$bundle_name];
   }
-
 
 }

@@ -87,7 +87,7 @@ abstract class OpenApiTestBase extends RESTTestBase {
    * @param string $format
    *   The format to use to make the request.
    *
-   * @return \Psr\Http\Message\ResponseInterface The HTTP response.
+   * @return \Psr\Http\Message\ResponseInterface
    *   The HTTP response.
    */
   protected function loginRequest($name, $pass, $format = 'json') {
@@ -128,7 +128,7 @@ abstract class OpenApiTestBase extends RESTTestBase {
    * @param string $message
    *   The message to display if body is not expected result.
    */
-  protected function assertHttpResponse(Url $url, $method, $status_code, $expected_result, $message = '') {
+  protected function assertHttpResponse(Url $url, $method, $status_code, array $expected_result, $message = '') {
     $response = $this->httpRequest($url, $method);
     $this->assertResponse($status_code);
     if ($expected_result !== NULL) {
@@ -140,10 +140,10 @@ abstract class OpenApiTestBase extends RESTTestBase {
   /**
    * Sorts a nested array with ksort().
    *
-   * @param $array
+   * @param array $array
    *   The nested array to sort.
    */
-  public static function nestedKsort(&$array) {
+  public static function nestedKsort(array &$array) {
     ksort($array);
     foreach ($array as &$item) {
       if (is_array($item)) {

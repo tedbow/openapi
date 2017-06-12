@@ -8,17 +8,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class ApiSpecificationControllerBase
- * @package Drupal\openapi\Controller
+ * API Specification controller base.
  */
 abstract class ApiSpecificationControllerBase implements ContainerInjectionInterface {
 
   /**
+   * The OpenAPI generator.
+   *
    * @var \Drupal\openapi\OpenApiGenerator\OpenApiGeneratorInterface
    */
   protected $generator;
 
   /**
+   * The request stack.
+   *
    * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected $request;
@@ -28,6 +31,8 @@ abstract class ApiSpecificationControllerBase implements ContainerInjectionInter
    *
    * @param \Drupal\openapi\OpenApiGenerator\OpenApiGeneratorInterface $generator
    *   The OpenAPI generator.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request
+   *   The request.
    */
   public function __construct(OpenApiGeneratorInterface $generator, RequestStack $request) {
     $this->generator = $generator;

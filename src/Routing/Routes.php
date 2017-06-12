@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\openapi\Routing;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -41,6 +42,12 @@ class Routes implements ContainerInjectionInterface {
     );
   }
 
+  /**
+   * Creates the routs for OpenAPI specification controllers.
+   *
+   * @return \Symfony\Component\Routing\RouteCollection
+   *   The route collection.
+   */
   public function routes() {
     $collection = new RouteCollection();
     /** @var \Symfony\Component\Routing\Route[] $specification_routes */

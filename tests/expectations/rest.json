@@ -1,0 +1,26 @@
+{
+    "swagger": "2.0",
+    "schemes": [
+        "http"
+    ],
+    "info": {
+        "description": "@todo update",
+        "title": "Drupal - API",
+        "version": "No API version"
+    },
+    "host": "www.octo2.dev",
+    "basePath": "\/d8_openapi",
+    "securityDefinitions": {
+        "csrf_token": {
+            "type": "apiKey",
+            "name": "X-CSRF-Token",
+            "in": "header"
+        },
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "tags": [],
+    "definitions": [],
+    "paths": []
+}

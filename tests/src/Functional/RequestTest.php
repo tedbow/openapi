@@ -5,12 +5,13 @@ namespace Drupal\Tests\openapi\Functional;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
+use Drupal\rest\Entity\RestResourceConfig;
 use Drupal\rest\RestResourceConfigInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Tests requests schemata routes.
+ * Tests requests OpenAPI routes.
  *
  * @group OpenAPI
  */
@@ -21,7 +22,7 @@ class RequestTest extends BrowserTestBase {
    *
    * The test will be marked as a fail when generating test files.
    */
-  const GENERATE_EXPECTATION_FILES = TRUE;
+  const GENERATE_EXPECTATION_FILES = FALSE;
 
   /**
    * {@inheritdoc}
@@ -39,15 +40,7 @@ class RequestTest extends BrowserTestBase {
     'schemata_json_schema',
     'openapi',
     'rest',
-    'jsonapi',
   ];
-
-  /**
-   * The REST resource config storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  protected $resourceConfigStorage;
 
   /**
    * {@inheritdoc}
@@ -93,61 +86,74 @@ class RequestTest extends BrowserTestBase {
     $enable_entity_types = [
       'node' => ['GET', 'POST', 'PATCH', 'DELETE'],
       'user' => ['GET'],
+      'taxonomy_term' => ['GET', 'POST', 'PATCH', 'DELETE'],
       'taxonomy_vocabulary' => ['GET'],
     ];
     foreach ($enable_entity_types as $entity_type_id => $methods) {
       foreach ($methods as $method) {
-        $this->enableService("entity:$entity_type_id", $method);
+        $this->enableRestService("entity:$entity_type_id", $method);
+      }
+    }
+    $this->container->get('router.builder')->rebuild();
+    $this->drupalLogin($this->drupalCreateUser([
+      'access openapi api docs',
+      'access content',
+    ]));
+
+    // @todo Add JSON API to $modules
+    //   Currently this will not work because the new bundles are not picked up
+    //   in \Drupal\jsonapi\Routing\Routes::routes().
+    $this->container->get('module_installer')->install(['jsonapi']);
+  }
+
+  /**
+   * Tests OpenAPI requests.
+   */
+  public function testRequests() {
+
+    foreach (['rest', 'jsonapi'] as $api_module) {
+      // Make request with no options to produce full result.
+      $this->requestOpenApiJson($api_module);
+      $option_sets = [
+        'node' => [
+          'entity_type_id' => 'node',
+        ],
+        'node_camelids' => [
+          'entity_type_id' => 'node',
+          'bundle_name' => 'camelids',
+        ],
+        'taxonomy_term' => [
+          'entity_type_id' => 'taxonomy_term',
+        ],
+        'taxonomy_term_camelids' => [
+          'entity_type_id' => 'taxonomy_term',
+          'bundle_name' => 'camelids',
+        ],
+        'user' => [
+          'entity_type_id' => 'user',
+        ],
+      ];
+      // Test the output using various options.
+      foreach ($option_sets as $options) {
+        $this->requestOpenApiJson($api_module, $options);
       }
     }
 
-    $this->resourceConfigStorage = $this->container->get('entity_type.manager')->getStorage('rest_resource_config');
-    if (!$this->resourceConfigStorage) {
-      $this->fail('wtf');
-    }
-
-    $this->container->get('router.builder')->rebuild();
-    $this->drupalLogin($this->drupalCreateUser(['access openapi api docs']));
-  }
-
-  /**
-   * Tests schemata requests.
-   */
-  public function testRequests() {
-    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
-    $entity_type_manager = $this->container->get('entity_type.manager');
-
-    foreach (['rest', 'jsonapi'] as $api_module) {
-
-      $this->requestSchema($api_module);
-      /*foreach ($entity_type_manager->getDefinitions() as $entity_type_id => $entity_type) {
-        $this->requestSchema($format, $entity_type_id);
-        if ($bundle_type = $entity_type->getBundleEntityType()) {
-          $bundles = $entity_type_manager->getStorage($bundle_type)->loadMultiple();
-          foreach ($bundles as $bundle) {
-            $this->requestSchema($format, $entity_type_id, $bundle->id());
-          }
-        }
-      }*/
-    }
-
     if (static::GENERATE_EXPECTATION_FILES) {
-      $this->fail('Expectation fails generated. Tests not run.');
+      $this->fail('Expectation fails generated. Change \Drupal\Tests\openapi\Functional\RequestTest::GENERATE_EXPECTATION_FILES to FALSE to run tests.');
     }
 
   }
 
   /**
-   * Makes schema request and checks the response.
+   * Makes OpenAPI request and checks the response.
    *
-   * @param string $format
-   *   The described format.
-   * @param string $entity_type_id
-   *   Then entity type.
-   * @param string|null $bundle_name
-   *   The bundle name or NULL.
+   * @param string $api_module
+   *   The API module being tested. Either 'rest' or 'jsonapi'.
+   * @param array $options
+   *   The query options for generating the OpenAPI output.
    */
-  protected function requestSchema($api_module, array $options = []) {
+  protected function requestOpenApiJson($api_module, array $options = []) {
     $get_options = [
       'query' => [
         '_format' => 'json',
@@ -162,7 +168,6 @@ class RequestTest extends BrowserTestBase {
       $file_name .= "." . implode('.', $options);
     }
     $file_name .= '.json';
-    //$this->assertFalse(empty($contents), "Content not empty for $format, $entity_type_id, $bundle_name");
 
     if (static::GENERATE_EXPECTATION_FILES) {
       $this->saveExpectationFile($file_name, $contents);
@@ -174,7 +179,10 @@ class RequestTest extends BrowserTestBase {
     // Compare decoded json to so that failure will indicate which element is
     // incorrect.
     $expected = json_decode(file_get_contents($file_name), TRUE);
-    //$expected['id'] = str_replace('{base_url}', $this->baseUrl, $expected['id']);
+    $host = str_replace('/' . $this->getBasePath(), '', $this->baseUrl);
+    $host = str_replace('http://', '', $host);
+    $expected['host'] = str_replace('{host}', $host, $expected['host']);
+    $expected['basePath'] = str_replace('{base_path}', $this->getBasePath(), $expected['basePath']);
     $decoded_response = json_decode($contents, TRUE);
 
     $this->assertEquals($expected, $decoded_response, "The response matches expected file: $file_name");
@@ -188,13 +196,15 @@ class RequestTest extends BrowserTestBase {
    * @param string $contents
    *   The JSON response contents.
    *
-   * @see \Drupal\Tests\schemata\Functional\RequestTest::GENERATE_EXPECTATION_FILES
+   * @see \Drupal\Tests\openapi\Functional\RequestTest::GENERATE_EXPECTATION_FILES
    */
   protected function saveExpectationFile($file_name, $contents) {
     $decoded_response = json_decode($contents, TRUE);
     // Replace the base url because will be different for different
     // environments.
-    //$decoded_response['id'] = str_replace($this->baseUrl, '{base_url}', $decoded_response['id']);
+    $decoded_response['host'] = '{host}';
+
+    $decoded_response['basePath'] = str_replace($this->getBasePath(), '{base_path}', $decoded_response['basePath']);
     $re_encode = json_encode($decoded_response, JSON_PRETTY_PRINT);
     file_put_contents($file_name, $re_encode);
   }
@@ -212,15 +222,15 @@ class RequestTest extends BrowserTestBase {
    * @param array $auth
    *   (Optional) The list of valid authentication methods.
    */
-  protected function enableService($resource_type, $method = 'GET', $format = 'json', array $auth = ['basic_auth']) {
+  protected function enableRestService($resource_type, $method = 'GET', $format = 'json', array $auth = ['basic_auth']) {
     if ($resource_type) {
       // Enable REST API for this entity type.
       $resource_config_id = str_replace(':', '.', $resource_type);
       // get entity by id
       /** @var \Drupal\rest\RestResourceConfigInterface $resource_config */
-      $resource_config = $this->resourceConfigStorage->load($resource_config_id);
+      $resource_config = RestResourceConfig::load($resource_config_id);
       if (!$resource_config) {
-        $resource_config = $this->resourceConfigStorage->create([
+        $resource_config = RestResourceConfig::create([
           'id' => $resource_config_id,
           'granularity' => RestResourceConfigInterface::METHOD_GRANULARITY,
           'configuration' => [],
@@ -246,11 +256,24 @@ class RequestTest extends BrowserTestBase {
       $resource_config->save();
     }
     else {
-      foreach ($this->resourceConfigStorage->loadMultiple() as $resource_config) {
+      foreach (RestResourceConfig::loadMultiple() as $resource_config) {
         $resource_config->delete();
       }
     }
-    //$this->rebuildCache();
+  }
+
+  /**
+   * Gets the base path to be used in OpenAPI.
+   *
+   * @return string
+   *   The base path.
+   */
+  protected function getBasePath() {
+    $base = str_replace('http://', '', $this->baseUrl);
+    $base_parts = explode('/', $base);
+    array_shift($base_parts);
+    $base = implode('/', $base_parts);
+    return $base;
   }
 
 }

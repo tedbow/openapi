@@ -31,28 +31,34 @@ class OpenApiRestResourceTest extends OpenApiTestBase {
    */
   public function testResourceDiscovery() {
     $user = $this->drupalCreateUser(['access openapi api docs']);
-    $this->drupalLogin($user);;
+    $this->drupalLogin($user);
 
-    $url = Url::fromRoute('openapi.rest')->setRouteParameter('_format', 'json');
-    $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedEntities(), 'Resource list correct');
+    foreach (['rest', 'jsonapi'] as $api_module) {
+      $route_name = "openapi.$api_module";
+      $url = Url::fromRoute($route_name)->setRouteParameter('_format', 'json');
+      $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedEntities(), 'Resource list correct');
 
-    $entity_type_bundles = [
-      'node' => ['article'],
-    ];
-    foreach ($entity_type_bundles as $entity_type => $bundles) {
-      foreach ($bundles as $bundle) {
-        $url = Url::fromRoute('openapi.rest',
-          [],
-          [
-            'options' => [
-              'entity_type_id' => $entity_type,
-              'bundle_name' => $bundle,
-            ],
-          ]
-        )->setRouteParameter('_format', 'json');
-        $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedBundle($entity_type, $bundle), 'Bundle Resource list correct');
+      $entity_type_bundles = [
+        'node' => ['article'],
+      ];
+      foreach ($entity_type_bundles as $entity_type => $bundles) {
+        foreach ($bundles as $bundle) {
+          $url = Url::fromRoute($route_name,
+            [],
+            [
+              'options' => [
+                'entity_type_id' => $entity_type,
+                'bundle_name' => $bundle,
+              ],
+            ]
+          )->setRouteParameter('_format', 'json');
+
+          $this->assertHttpResponse($url, 'GET', 200, $this->getExpectedBundle($entity_type, $bundle), 'Bundle Resource list correct');
+        }
       }
     }
+
+
   }
 
   /**

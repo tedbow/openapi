@@ -4,5 +4,5 @@ description: Connects Drupal to the OpenAPI Javascript Library
 core: 8.x
 package: OpenAPI
 dependencies:
-  - schemata
-  - schemata_json_schema
+  - schemata:schemata
+  - schemata:schemata_json_schema

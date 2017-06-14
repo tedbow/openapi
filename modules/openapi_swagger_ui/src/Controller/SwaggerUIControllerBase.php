@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\openapi_docs\Controller;
+namespace Drupal\openapi_swagger_ui\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -61,8 +61,8 @@ abstract class SwaggerUIControllerBase extends ControllerBase {
       '#theme' => 'swagger_ui',
       '#attached' => [
         'library' => [
-          'openapi_docs/swagger_ui_integration',
-          'openapi_docs/swagger_ui',
+          'openapi_swagger_ui/swagger_ui_integration',
+          'openapi_swagger_ui/swagger_ui',
         ],
         'drupalSettings' => [
           'openapi' => [

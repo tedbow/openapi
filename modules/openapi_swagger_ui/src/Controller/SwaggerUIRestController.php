@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\openapi_docs\Controller;
+namespace Drupal\openapi_swagger_ui\Controller;
 
 use Drupal\Core\Url;
 use Drupal\openapi\OpenApiGenerator\RestInspectionTrait;

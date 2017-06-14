@@ -3,7 +3,7 @@
 /**
  * Implements hook_theme().
  */
-function openapi_docs_theme() {
+function openapi_swagger_ui_theme() {
   return [
     'swagger_ui' => [
       'render element' => 'elements',
@@ -14,7 +14,7 @@ function openapi_docs_theme() {
 /**
  * Implements hook_menu_links_discovered_alter().
  */
-function openapi_docs_menu_links_discovered_alter(&$links) {
+function openapi_swagger_ui_menu_links_discovered_alter(&$links) {
   // Disable menu items depending on module enabled.
   // @todo Is this possible to do in custom menu class?
   //   Currently this is not working.

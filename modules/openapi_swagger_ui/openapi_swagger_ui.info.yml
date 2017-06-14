@@ -1,4 +1,4 @@
-name: OpenAPI REST Documentation
+name: OpenAPI Documentation using Swagger UI
 type: module
 description: Documentation using the Swagger JS library
 core: 8.x

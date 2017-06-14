@@ -15,11 +15,11 @@ class DocController {
    * @return array
    *   A render array.
    */
-  public function generateDocs() {
+  public function generateDocs($api_module) {
     $options = \Drupal::request()->get('options', []);
     $build = [
       '#theme' => 'redoc',
-      '#url' => Url::fromRoute('openapi.jsonapi', [], ['query' => ['_format' => 'json', 'options' => $options]])->setAbsolute()->toString(),
+      '#url' => Url::fromRoute("openapi.$api_module", [], ['query' => ['_format' => 'json', 'options' => $options]])->setAbsolute()->toString(),
     ];
     return $build;
   }

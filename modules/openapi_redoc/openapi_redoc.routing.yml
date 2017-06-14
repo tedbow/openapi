@@ -1,7 +1,3 @@
-openapi_redoc.jsonapi:
-  path: '/openapi-redoc/jsonapi'
-  defaults:
-    _controller: '\Drupal\openapi_redoc\Controller\DocController::generateDocs'
-    _title: 'JSON API Documentation'
-  requirements:
-    _permission: 'access openapi api docs'
+route_callbacks:
+  - '\Drupal\openapi_redoc\Routing\Routes::routes'
+

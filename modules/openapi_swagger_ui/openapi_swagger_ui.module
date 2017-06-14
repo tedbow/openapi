@@ -20,9 +20,9 @@ function openapi_swagger_ui_menu_links_discovered_alter(&$links) {
   //   Currently this is not working.
   $module_handler = \Drupal::moduleHandler();
   if (!$module_handler->moduleExists('jsonapi')) {
-    unset($links['openapi.jsonapi']);
+    unset($links['openapi_swagger_ui.jsonapi']);
   }
   if (!$module_handler->moduleExists('rest')) {
-    unset($links['openapi.rest.list']);
+    unset($links['openapi_swagger_ui.rest.list']);
   }
 }

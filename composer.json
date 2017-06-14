@@ -12,5 +12,8 @@
   },
   "require": {
     "drupal/schemata": "1.x-dev"
+  },
+  "require-dev": {
+    "drupal/jsonapi": "1.0"
   }
 }

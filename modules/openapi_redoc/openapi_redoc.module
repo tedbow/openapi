@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function openapi_redoc_theme() {
+  return [
+    'redoc' => [
+      'render element' => 'elements',
+      'variables' => ['url' => 'whoops'],
+    ],
+  ];
+}

@@ -1,0 +1,9 @@
+name: OpenAPI Redoc Documentation
+type: module
+description: Documentation using the ReDoc
+core: 8.x
+package: OpenAPI
+dependencies:
+  - openapi
+  # Currently on supports JSON. Remove dependency when adding REST.
+  - jsonapi

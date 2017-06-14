@@ -10,7 +10,5 @@
     "issues": "http://drupal.org/project/issues/openapi",
     "source": "http://cgit.drupalcode.org/openapi"
   },
-  "require": {
-    "drupal/schemata": "8.x-1.x"
-  }
+  "require": {}
 }

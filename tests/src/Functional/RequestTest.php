@@ -289,12 +289,30 @@ class RequestTest extends BrowserTestBase {
    *   The nested array to sort.
    */
   protected function nestedKsort(array &$array) {
-    ksort($array);
+    if ($this->isAssocArray($array)) {
+      ksort($array);
+    }
+    else {
+      usort($array, function ($a, $b) {
+        if (isset($a['name']) && isset($b['name'])) {
+          return strcmp($a['name'], $b['name']);
+        }
+        return -1;
+      });
+    }
+
     foreach ($array as &$item) {
       if (is_array($item)) {
         $this->nestedKsort($item);
       }
     }
+  }
+
+  protected function isAssocArray(array $arr) {
+    if (array() === $arr) {
+      return FALSE;
+    }
+    return array_keys($arr) !== range(0, count($arr) - 1);
   }
 
 }

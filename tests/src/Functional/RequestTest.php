@@ -183,11 +183,13 @@ class RequestTest extends BrowserTestBase {
     // Compare decoded json to so that failure will indicate which element is
     // incorrect.
     $expected = json_decode(file_get_contents($file_name), TRUE);
+    $this->nestedKsort($expected);
     $host = str_replace('/' . $this->getBasePath(), '', $this->baseUrl);
     $host = str_replace('http://', '', $host);
     $expected['host'] = str_replace('{host}', $host, $expected['host']);
     $expected['basePath'] = str_replace('{base_path}', $this->getBasePath(), $expected['basePath']);
     $decoded_response = json_decode($contents, TRUE);
+    $this->nestedKsort($decoded_response);
 
     $this->assertEquals($expected, $decoded_response, "The response matches expected file: $file_name");
   }
@@ -278,6 +280,21 @@ class RequestTest extends BrowserTestBase {
     array_shift($base_parts);
     $base = implode('/', $base_parts);
     return $base;
+  }
+
+  /**
+   * Sorts a nested array with ksort().
+   *
+   * @param array $array
+   *   The nested array to sort.
+   */
+  protected function nestedKsort(array &$array) {
+    ksort($array);
+    foreach ($array as &$item) {
+      if (is_array($item)) {
+        $this->nestedKsort($item);
+      }
+    }
   }
 
 }

@@ -352,6 +352,12 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
    *   True if the entity type or bundle should be included.
    */
   protected function includeEntityTypeBundle(array $options, $entity_type_id, $bundle_name = NULL) {
+    // Entity types or a specific bundle be can excluded.
+    if (isset($options['exclude'])) {
+      if (array_intersect([$entity_type_id, "$entity_type_id:$bundle_name"], $options['exclude'])) {
+        return FALSE;
+      }
+    }
     if (isset($options['entity_mode'])) {
       $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
       if ($options['entity_mode'] == 'content_entities') {

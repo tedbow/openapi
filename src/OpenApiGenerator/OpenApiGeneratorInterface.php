@@ -45,6 +45,10 @@ interface OpenApiGeneratorInterface {
    *
    * @param array $options
    *   The options for the specification generation.
+   *   - exclude: Array of Entity types or bundles to exclude in the format,
+   *      "[ENTITY_TYPE]" or "[ENTITY_TYPE]:[BUNDLE]".
+   *
+   * @todo Document all options.
    *
    * @return array
    *   The specification output.

@@ -19,7 +19,7 @@ class DocController {
     $options = \Drupal::request()->get('options', []);
     $build = [
       '#theme' => 'redoc',
-      '#url' => Url::fromRoute("openapi.$api_module", [], ['query' => ['_format' => 'json', 'options' => $options]])->setAbsolute()->toString(),
+      '#openapi_url' => Url::fromRoute("openapi.$api_module", [], ['query' => ['_format' => 'json', 'options' => $options]])->setAbsolute()->toString(),
     ];
     return $build;
   }

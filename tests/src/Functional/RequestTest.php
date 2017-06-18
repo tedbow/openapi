@@ -114,7 +114,7 @@ class RequestTest extends BrowserTestBase {
     foreach (['rest', 'jsonapi'] as $api_module) {
       if ($api_module === 'rest') {
         // @todo Test REST also after https://www.drupal.org/node/2870904
-        //continue;
+        continue;
       }
       // Make request with no options to produce full result.
       $this->requestOpenApiJson($api_module);

@@ -47,22 +47,14 @@ class Routes implements ContainerInjectionInterface {
    */
   public function routes() {
     $collection = new RouteCollection();
-    $routes = [];
-    if ($this->moduleHandler->moduleExists('rest')) {
-      /** @var \Symfony\Component\Routing\Route[] $routes */
-      $routes['openapi_redoc.rest'] = (new Route('/admin/config/services/openapi/redoc/rest'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_redoc\Controller\DocController::generateDocs')
-        ->setDefault('api_module', 'rest');
-
-    }
-    if ($this->moduleHandler->moduleExists('jsonapi')) {
-      $routes['openapi_redoc.jsonapi'] = (new Route('/admin/config/services/openapi/redoc/jsonapi'))
-        ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_redoc\Controller\DocController::generateDocs')
-        ->setDefault('api_module', 'jsonapi');
-    }
-    if ($routes) {
-      foreach ($routes as $route_name => $route) {
-        $route->setMethods(['GET'])
+    foreach (['rest', 'jsonapi'] as $api_module) {
+      if ($this->moduleHandler->moduleExists($api_module)) {
+        $route_name = "openapi_redoc.$api_module";
+        $route = (new Route("/admin/config/services/openapi/redoc/$api_module"))
+          ->setDefault(RouteObjectInterface::CONTROLLER_NAME, '\Drupal\openapi_redoc\Controller\DocController::generateDocs')
+          ->setDefault('api_module', $api_module)
+          ->setDefault('_title_callback', '\Drupal\openapi_redoc\Controller\DocController::getTitle')
+          ->setMethods(['GET'])
           ->setRequirements([
             '_permission' => 'access openapi api docs',
           ]);

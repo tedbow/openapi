@@ -4,83 +4,83 @@
         "http"
     ],
     "info": {
-        "description": "@todo update",
-        "title": "Drupal - API",
-        "version": "No API version"
+        "description": "This is a JSON API compliant implemenation",
+        "title": "Drupal - JSON API",
+        "version": "Versioning not supported"
     },
     "host": "{host}",
     "basePath": "\/{base_path}\/jsonapi",
     "securityDefinitions": [],
     "tags": [
         {
-            "name": "Field(field_config)",
+            "name": "Field",
             "description": "Configuration entity Field"
         },
         {
-            "name": "Field storage(field_storage_config)",
+            "name": "Field storage",
             "description": "Configuration entity Field storage"
         },
         {
-            "name": "Text format(filter_format)",
+            "name": "Text format",
             "description": "Configuration entity Text format"
         },
         {
-            "name": "Content(node) - Camelids(camelids)",
-            "description": "Content type Camelids of type Content"
+            "name": "Content - Camelids",
+            "description": "Content type Camelids of type Content. "
         },
         {
-            "name": "Content type(node_type)",
+            "name": "Content type",
             "description": "Configuration entity Content type"
         },
         {
-            "name": "REST resource configuration(rest_resource_config)",
+            "name": "REST resource configuration",
             "description": "Configuration entity REST resource configuration"
         },
         {
-            "name": "Action(action)",
+            "name": "Action",
             "description": "Configuration entity Action"
         },
         {
-            "name": "Menu(menu)",
+            "name": "Menu",
             "description": "Configuration entity Menu"
         },
         {
-            "name": "Taxonomy term(taxonomy_term) - Camelids(camelids)",
-            "description": "Vocabulary Camelids of type Taxonomy term"
+            "name": "Taxonomy term - Camelids",
+            "description": "Vocabulary Camelids of type Taxonomy term. "
         },
         {
-            "name": "Taxonomy vocabulary(taxonomy_vocabulary)",
+            "name": "Taxonomy vocabulary",
             "description": "Configuration entity Taxonomy vocabulary"
         },
         {
-            "name": "Role(user_role)",
+            "name": "Role",
             "description": "Configuration entity Role"
         },
         {
-            "name": "User(user)"
+            "name": "User"
         },
         {
-            "name": "Date format(date_format)",
+            "name": "Date format",
             "description": "Configuration entity Date format"
         },
         {
-            "name": "Entity form display(entity_form_display)",
+            "name": "Entity form display",
             "description": "Configuration entity Entity form display"
         },
         {
-            "name": "Form mode(entity_form_mode)",
+            "name": "Form mode",
             "description": "Configuration entity Form mode"
         },
         {
-            "name": "Entity view display(entity_view_display)",
+            "name": "Entity view display",
             "description": "Configuration entity Entity view display"
         },
         {
-            "name": "View mode(entity_view_mode)",
+            "name": "View mode",
             "description": "Configuration entity View mode"
         },
         {
-            "name": "Base field override(base_field_override)",
+            "name": "Base field override",
             "description": "Configuration entity Base field override"
         }
     ],
@@ -727,7 +727,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": {
                     "200": {
@@ -740,7 +740,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": []
             }
@@ -759,7 +759,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": {
                     "200": {
@@ -780,7 +780,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": []
             },
@@ -797,7 +797,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": {
                     "201": {
@@ -820,7 +820,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": {
                     "200": {
@@ -843,7 +843,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": {
                     "200": {
@@ -864,7 +864,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": {
                     "201": {
@@ -885,7 +885,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": []
             },
@@ -902,7 +902,7 @@
                     }
                 ],
                 "tags": [
-                    "Action(action)"
+                    "Action"
                 ],
                 "responses": {
                     "201": {
@@ -936,7 +936,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": {
                     "200": {
@@ -949,7 +949,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": []
             }
@@ -968,7 +968,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": {
                     "200": {
@@ -989,7 +989,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": []
             },
@@ -1006,7 +1006,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": {
                     "201": {
@@ -1029,7 +1029,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": {
                     "200": {
@@ -1052,7 +1052,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": {
                     "200": {
@@ -1073,7 +1073,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": {
                     "201": {
@@ -1094,7 +1094,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": []
             },
@@ -1111,7 +1111,7 @@
                     }
                 ],
                 "tags": [
-                    "Base field override(base_field_override)"
+                    "Base field override"
                 ],
                 "responses": {
                     "201": {
@@ -1145,7 +1145,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": {
                     "200": {
@@ -1158,7 +1158,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": []
             }
@@ -1177,7 +1177,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": {
                     "200": {
@@ -1198,7 +1198,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": []
             },
@@ -1215,7 +1215,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": {
                     "201": {
@@ -1238,7 +1238,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": {
                     "200": {
@@ -1261,7 +1261,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": {
                     "200": {
@@ -1282,7 +1282,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": {
                     "201": {
@@ -1303,7 +1303,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": []
             },
@@ -1320,7 +1320,7 @@
                     }
                 ],
                 "tags": [
-                    "Date format(date_format)"
+                    "Date format"
                 ],
                 "responses": {
                     "201": {
@@ -1354,7 +1354,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": {
                     "200": {
@@ -1367,7 +1367,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": []
             }
@@ -1386,7 +1386,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": {
                     "200": {
@@ -1407,7 +1407,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": []
             },
@@ -1424,7 +1424,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": {
                     "201": {
@@ -1447,7 +1447,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": {
                     "200": {
@@ -1470,7 +1470,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": {
                     "200": {
@@ -1491,7 +1491,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": {
                     "201": {
@@ -1512,7 +1512,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": []
             },
@@ -1529,7 +1529,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity form display(entity_form_display)"
+                    "Entity form display"
                 ],
                 "responses": {
                     "201": {
@@ -1563,7 +1563,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": {
                     "200": {
@@ -1576,7 +1576,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": []
             }
@@ -1595,7 +1595,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": {
                     "200": {
@@ -1616,7 +1616,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": []
             },
@@ -1633,7 +1633,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": {
                     "201": {
@@ -1656,7 +1656,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": {
                     "200": {
@@ -1679,7 +1679,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": {
                     "200": {
@@ -1700,7 +1700,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": {
                     "201": {
@@ -1721,7 +1721,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": []
             },
@@ -1738,7 +1738,7 @@
                     }
                 ],
                 "tags": [
-                    "Form mode(entity_form_mode)"
+                    "Form mode"
                 ],
                 "responses": {
                     "201": {
@@ -1772,7 +1772,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": {
                     "200": {
@@ -1785,7 +1785,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": []
             }
@@ -1804,7 +1804,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": {
                     "200": {
@@ -1825,7 +1825,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": []
             },
@@ -1842,7 +1842,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": {
                     "201": {
@@ -1865,7 +1865,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": {
                     "200": {
@@ -1888,7 +1888,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": {
                     "200": {
@@ -1909,7 +1909,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": {
                     "201": {
@@ -1930,7 +1930,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": []
             },
@@ -1947,7 +1947,7 @@
                     }
                 ],
                 "tags": [
-                    "Entity view display(entity_view_display)"
+                    "Entity view display"
                 ],
                 "responses": {
                     "201": {
@@ -1981,7 +1981,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": {
                     "200": {
@@ -1994,7 +1994,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": []
             }
@@ -2013,7 +2013,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": {
                     "200": {
@@ -2034,7 +2034,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": []
             },
@@ -2051,7 +2051,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": {
                     "201": {
@@ -2074,7 +2074,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": {
                     "200": {
@@ -2097,7 +2097,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": {
                     "200": {
@@ -2118,7 +2118,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": {
                     "201": {
@@ -2139,7 +2139,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": []
             },
@@ -2156,7 +2156,7 @@
                     }
                 ],
                 "tags": [
-                    "View mode(entity_view_mode)"
+                    "View mode"
                 ],
                 "responses": {
                     "201": {
@@ -2190,7 +2190,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": {
                     "200": {
@@ -2203,7 +2203,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": []
             }
@@ -2222,7 +2222,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": {
                     "200": {
@@ -2243,7 +2243,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": []
             },
@@ -2260,7 +2260,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": {
                     "201": {
@@ -2283,7 +2283,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": {
                     "200": {
@@ -2306,7 +2306,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": {
                     "200": {
@@ -2327,7 +2327,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": {
                     "201": {
@@ -2348,7 +2348,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": []
             },
@@ -2365,7 +2365,7 @@
                     }
                 ],
                 "tags": [
-                    "Field(field_config)"
+                    "Field"
                 ],
                 "responses": {
                     "201": {
@@ -2399,7 +2399,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": {
                     "200": {
@@ -2412,7 +2412,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": []
             }
@@ -2431,7 +2431,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": {
                     "200": {
@@ -2452,7 +2452,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": []
             },
@@ -2469,7 +2469,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": {
                     "201": {
@@ -2492,7 +2492,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": {
                     "200": {
@@ -2515,7 +2515,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": {
                     "200": {
@@ -2536,7 +2536,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": {
                     "201": {
@@ -2557,7 +2557,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": []
             },
@@ -2574,7 +2574,7 @@
                     }
                 ],
                 "tags": [
-                    "Field storage(field_storage_config)"
+                    "Field storage"
                 ],
                 "responses": {
                     "201": {
@@ -2608,7 +2608,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": {
                     "200": {
@@ -2621,7 +2621,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": []
             }
@@ -2640,7 +2640,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": {
                     "200": {
@@ -2661,7 +2661,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": []
             },
@@ -2678,7 +2678,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": {
                     "201": {
@@ -2701,7 +2701,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": {
                     "200": {
@@ -2724,7 +2724,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": {
                     "200": {
@@ -2745,7 +2745,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": {
                     "201": {
@@ -2766,7 +2766,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": []
             },
@@ -2783,7 +2783,7 @@
                     }
                 ],
                 "tags": [
-                    "Text format(filter_format)"
+                    "Text format"
                 ],
                 "responses": {
                     "201": {
@@ -2817,7 +2817,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": {
                     "200": {
@@ -2830,7 +2830,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": []
             }
@@ -2849,7 +2849,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": {
                     "200": {
@@ -2870,7 +2870,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": []
             },
@@ -2887,7 +2887,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": {
                     "201": {
@@ -2910,7 +2910,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": {
                     "200": {
@@ -2933,7 +2933,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": {
                     "200": {
@@ -2954,7 +2954,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": {
                     "201": {
@@ -2975,7 +2975,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": []
             },
@@ -2992,7 +2992,7 @@
                     }
                 ],
                 "tags": [
-                    "Menu(menu)"
+                    "Menu"
                 ],
                 "responses": {
                     "201": {
@@ -3026,7 +3026,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3055,7 +3055,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": []
             }
@@ -3074,7 +3074,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3098,7 +3098,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": []
             },
@@ -3115,7 +3115,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3138,7 +3138,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3164,7 +3164,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3188,7 +3188,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3212,7 +3212,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": []
             },
@@ -3229,7 +3229,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3263,7 +3263,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": {
                     "200": {
@@ -3276,7 +3276,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": []
             }
@@ -3295,7 +3295,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": {
                     "200": {
@@ -3316,7 +3316,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": []
             },
@@ -3333,7 +3333,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": {
                     "201": {
@@ -3356,7 +3356,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": {
                     "200": {
@@ -3379,7 +3379,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": {
                     "200": {
@@ -3400,7 +3400,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": {
                     "201": {
@@ -3421,7 +3421,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": []
             },
@@ -3438,7 +3438,7 @@
                     }
                 ],
                 "tags": [
-                    "Content type(node_type)"
+                    "Content type"
                 ],
                 "responses": {
                     "201": {
@@ -3472,7 +3472,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": {
                     "200": {
@@ -3485,7 +3485,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": []
             }
@@ -3504,7 +3504,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": {
                     "200": {
@@ -3525,7 +3525,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": []
             },
@@ -3542,7 +3542,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": {
                     "201": {
@@ -3565,7 +3565,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": {
                     "200": {
@@ -3588,7 +3588,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": {
                     "200": {
@@ -3609,7 +3609,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": {
                     "201": {
@@ -3630,7 +3630,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": []
             },
@@ -3647,7 +3647,7 @@
                     }
                 ],
                 "tags": [
-                    "REST resource configuration(rest_resource_config)"
+                    "REST resource configuration"
                 ],
                 "responses": {
                     "201": {
@@ -3681,7 +3681,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3710,7 +3710,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": []
             }
@@ -3729,7 +3729,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3753,7 +3753,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": []
             },
@@ -3770,7 +3770,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3793,7 +3793,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3819,7 +3819,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3843,7 +3843,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3867,7 +3867,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": []
             },
@@ -3884,7 +3884,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3918,7 +3918,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "200": {
@@ -3931,7 +3931,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": []
             }
@@ -3950,7 +3950,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "200": {
@@ -3971,7 +3971,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": []
             },
@@ -3988,7 +3988,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "201": {
@@ -4011,7 +4011,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "200": {
@@ -4034,7 +4034,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "200": {
@@ -4055,7 +4055,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "201": {
@@ -4076,7 +4076,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": []
             },
@@ -4093,7 +4093,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy vocabulary(taxonomy_vocabulary)"
+                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "201": {
@@ -4127,7 +4127,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -4156,7 +4156,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": []
             }
@@ -4175,7 +4175,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -4199,7 +4199,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": []
             },
@@ -4216,7 +4216,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -4239,7 +4239,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -4265,7 +4265,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -4289,7 +4289,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -4313,7 +4313,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": []
             },
@@ -4330,7 +4330,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -4364,7 +4364,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": {
                     "200": {
@@ -4377,7 +4377,7 @@
                 "description": "@todo Add descriptions",
                 "parameters": [],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": []
             }
@@ -4396,7 +4396,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": {
                     "200": {
@@ -4417,7 +4417,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": []
             },
@@ -4434,7 +4434,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": {
                     "201": {
@@ -4457,7 +4457,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": {
                     "200": {
@@ -4480,7 +4480,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": {
                     "200": {
@@ -4501,7 +4501,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": {
                     "201": {
@@ -4522,7 +4522,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": []
             },
@@ -4539,7 +4539,7 @@
                     }
                 ],
                 "tags": [
-                    "Role(user_role)"
+                    "Role"
                 ],
                 "responses": {
                     "201": {

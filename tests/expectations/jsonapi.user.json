@@ -4,16 +4,16 @@
         "http"
     ],
     "info": {
-        "description": "@todo update",
-        "title": "Drupal - API",
-        "version": "No API version"
+        "description": "This is a JSON API compliant implemenation",
+        "title": "Drupal - JSON API",
+        "version": "Versioning not supported"
     },
     "host": "{host}",
     "basePath": "\/{base_path}\/jsonapi",
     "securityDefinitions": [],
     "tags": [
         {
-            "name": "User(user)"
+            "name": "User"
         }
     ],
     "definitions": {
@@ -259,7 +259,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -288,7 +288,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": []
             }
@@ -307,7 +307,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -331,7 +331,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": []
             },
@@ -348,7 +348,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -371,7 +371,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -397,7 +397,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -421,7 +421,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -445,7 +445,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": []
             },
@@ -462,7 +462,7 @@
                     }
                 ],
                 "tags": [
-                    "User(user)"
+                    "User"
                 ],
                 "responses": {
                     "201": {

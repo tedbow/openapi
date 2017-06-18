@@ -102,11 +102,19 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
   protected function getInfo() {
     $site_name = \Drupal::config('system.site')->get('name');
     return [
-      'description' => '@todo update',
-      'title' => $this->t('@site - API', ['@site' => $site_name]),
-      'version' => 'No API version',
+      'description' => $this->getApiDescription(),
+      'title' => $site_name . ' - ' . $this->getApiName(),
+      'version' => 'Versioning not supported',
     ];
   }
+
+  /**
+   * Gets the API name.
+   *
+   * @return string
+   *   The API name.
+   */
+  abstract public function getApiName();
 
   /**
    * {@inheritdoc}
@@ -375,5 +383,13 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
     }
     return TRUE;
   }
+
+  /**
+   * Gets API description.
+   *
+   * @return string
+   *   The API Description.
+   */
+  abstract protected function getApiDescription();
 
 }

@@ -4,9 +4,9 @@
         "http"
     ],
     "info": {
-        "description": "@todo update",
-        "title": "Drupal - API",
-        "version": "No API version"
+        "description": "The REST API provide by the core REST module.",
+        "title": "Drupal - REST API",
+        "version": "Versioning not supported"
     },
     "host": "{host}",
     "basePath": "\/{base_path}",

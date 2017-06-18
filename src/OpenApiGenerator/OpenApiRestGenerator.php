@@ -435,4 +435,18 @@ class OpenApiRestGenerator extends OpenApiGeneratorBase {
     return $security;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getApiName() {
+    return $this->t('REST API');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getApiDescription() {
+    return $this->t('The REST API provide by the core REST module.');
+  }
+
 }

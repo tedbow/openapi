@@ -278,17 +278,21 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
           if (!$this->includeEntityTypeBundle($options, $entity_type->id(), $bundle_name)) {
             continue;
           }
-          $description = $this->t("@bundle_label @bundle of type @entity_type",
+          $description = $this->t("@bundle_label @bundle of type @entity_type.",
             [
               '@bundle_label' => $entity_type->getBundleLabel(),
               '@bundle' => $bundle->label(),
               '@entity_type' => $entity_type->getLabel(),
             ]
           );
-          $tags[] = [
+          $tag = [
             'name' => $this->getBundleTag($entity_type->id(), $bundle->id()),
             'description' => $description,
           ];
+          if (method_exists($bundle, 'getDescription')) {
+            $tag['description'] .= ' ' . $bundle->getDescription();
+          }
+          $tags[] = $tag;
         }
       }
       else {
@@ -322,14 +326,28 @@ class OpenApiJsonapiGenerator extends OpenApiGeneratorBase {
     static $tags = [];
     if (!isset($tags[$entity_type_id][$bundle_name])) {
       $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
-      $tag = $entity_type->getLabel() . "($entity_type_id)";
+      $tag = $entity_type->getLabel();
       if ($bundle_type_id = $entity_type->getBundleEntityType()) {
         $bundle_entity = $this->entityTypeManager->getStorage($bundle_type_id)->load($bundle_name);
-        $tag .= ' - ' . $bundle_entity->label() . "($bundle_name)";
+        $tag .= ' - ' . $bundle_entity->label();
       }
       $tags[$entity_type_id][$bundle_name] = $tag;
     }
     return $tags[$entity_type_id][$bundle_name];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getApiName() {
+    return $this->t('JSON API');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getApiDescription() {
+    return $this->t('This is a JSON API compliant implemenation');
   }
 
 }

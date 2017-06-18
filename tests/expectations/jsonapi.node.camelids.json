@@ -4,17 +4,17 @@
         "http"
     ],
     "info": {
-        "description": "@todo update",
-        "title": "Drupal - API",
-        "version": "No API version"
+        "description": "This is a JSON API compliant implemenation",
+        "title": "Drupal - JSON API",
+        "version": "Versioning not supported"
     },
     "host": "{host}",
     "basePath": "\/{base_path}\/jsonapi",
     "securityDefinitions": [],
     "tags": [
         {
-            "name": "Content(node) - Camelids(camelids)",
-            "description": "Content type Camelids of type Content"
+            "name": "Content - Camelids",
+            "description": "Content type Camelids of type Content. "
         }
     ],
     "definitions": {
@@ -267,7 +267,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -296,7 +296,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": []
             }
@@ -315,7 +315,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -339,7 +339,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": []
             },
@@ -356,7 +356,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -379,7 +379,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -405,7 +405,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -429,7 +429,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -453,7 +453,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": []
             },
@@ -470,7 +470,7 @@
                     }
                 ],
                 "tags": [
-                    "Content(node) - Camelids(camelids)"
+                    "Content - Camelids"
                 ],
                 "responses": {
                     "201": {

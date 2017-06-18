@@ -4,17 +4,17 @@
         "http"
     ],
     "info": {
-        "description": "@todo update",
-        "title": "Drupal - API",
-        "version": "No API version"
+        "description": "This is a JSON API compliant implemenation",
+        "title": "Drupal - JSON API",
+        "version": "Versioning not supported"
     },
     "host": "{host}",
     "basePath": "\/{base_path}\/jsonapi",
     "securityDefinitions": [],
     "tags": [
         {
-            "name": "Taxonomy term(taxonomy_term) - Camelids(camelids)",
-            "description": "Vocabulary Camelids of type Taxonomy term"
+            "name": "Taxonomy term - Camelids",
+            "description": "Vocabulary Camelids of type Taxonomy term. "
         }
     ],
     "definitions": {
@@ -223,7 +223,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -252,7 +252,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": []
             }
@@ -271,7 +271,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -295,7 +295,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": []
             },
@@ -312,7 +312,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -335,7 +335,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -361,7 +361,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -385,7 +385,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -409,7 +409,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": []
             },
@@ -426,7 +426,7 @@
                     }
                 ],
                 "tags": [
-                    "Taxonomy term(taxonomy_term) - Camelids(camelids)"
+                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {

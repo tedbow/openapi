@@ -10,6 +10,7 @@ function openapi_redoc_theme() {
       'variables' => [
         'attributes' => [
           'scroll-y-offset' => 150,
+          'lazy-rendering' => TRUE,
         ],
         'openapi_url' => '',
         'js_url' => 'https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js',

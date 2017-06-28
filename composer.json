@@ -11,9 +11,9 @@
     "source": "http://cgit.drupalcode.org/openapi"
   },
   "require": {
-    "drupal/schemata": "^1"
+    "drupal/schemata": "^1.0"
   },
   "require-dev": {
-    "drupal/jsonapi": "^1"
+    "drupal/jsonapi": "1.0"
   }
 }

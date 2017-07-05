@@ -1,8 +1,6 @@
 ## OpenAPI Docs Module Documentation
 The  OpenAPI Docs (swagger_ui) module provides a visual web UI for browsing REST API documentation. It makes use of the [swagger-ui library](https://github.com/swagger-api/swagger-ui).
 
-Note: at the moment, only the 2.x version of swagger-ui library works with this module.
-
 ### Installation - Composer (recommended)
 If you're using composer to manage the site (recommended), follow these steps:
  
@@ -15,10 +13,10 @@ If you're using composer to manage the site (recommended), follow these steps:
   "type": "package",
   "package":{
     "name": "swagger-api/swagger-ui",
-    "version": "2.2.10",
+    "version": "3.0.17",
     "type": "drupal-library",
     "dist"    : {
-      "url": "https://github.com/swagger-api/swagger-ui/archive/v2.2.10.zip",
+      "url": "https://github.com/swagger-api/swagger-ui/archive/v3.0.17.zip",
       "type": "zip"
     },
     "require": {
@@ -36,8 +34,8 @@ If you're using composer to manage the site (recommended), follow these steps:
 
 4. Run the following to add the swagger-ui library to your composer.json and download it to /libraries:
 ```
-composer require swagger-api/swagger-ui 2.2.10
+composer require swagger-api/swagger-ui 3.0.17
 ```
 
 ### Installation - Manual
-Extract https://github.com/swagger-api/swagger-ui/archive/v2.2.10.zip into /libraries/swagger-ui
+Extract https://github.com/swagger-api/swagger-ui/archive/v3.0.17.zip into /libraries/swagger-ui

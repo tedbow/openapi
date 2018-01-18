@@ -71,8 +71,7 @@
                         },
                         "status": {
                             "type": "boolean",
-                            "title": "Publishing status",
-                            "description": "A boolean indicating the published state.",
+                            "title": "Published",
                             "default": true
                         },
                         "title": {

@@ -202,8 +202,7 @@
                 },
                 "status": {
                     "type": "array",
-                    "title": "Publishing status",
-                    "description": "A boolean indicating the published state.",
+                    "title": "Published",
                     "items": {
                         "type": "object",
                         "properties": {

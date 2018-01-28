@@ -1,99 +1,14 @@
 {
-    "swagger": "2.0",
-    "schemes": [
-        "http"
-    ],
-    "info": {
-        "description": "This is a JSON API compliant implemenation",
-        "title": "Drupal - JSON API",
-        "version": "Versioning not supported"
-    },
-    "host": "{host}",
-    "basePath": "\/{base_path}\/jsonapi",
-    "securityDefinitions": [],
-    "tags": [
-        {
-            "name": "Field",
-            "description": "Configuration entity Field"
-        },
-        {
-            "name": "Field storage",
-            "description": "Configuration entity Field storage"
-        },
-        {
-            "name": "Text format",
-            "description": "Configuration entity Text format"
-        },
-        {
-            "name": "Content - Camelids",
-            "description": "Content type Camelids of type Content. "
-        },
-        {
-            "name": "Content type",
-            "description": "Configuration entity Content type"
-        },
-        {
-            "name": "REST resource configuration",
-            "description": "Configuration entity REST resource configuration"
-        },
-        {
-            "name": "Action",
-            "description": "Configuration entity Action"
-        },
-        {
-            "name": "Menu",
-            "description": "Configuration entity Menu"
-        },
-        {
-            "name": "Taxonomy term - Camelids",
-            "description": "Vocabulary Camelids of type Taxonomy term. "
-        },
-        {
-            "name": "Taxonomy vocabulary",
-            "description": "Configuration entity Taxonomy vocabulary"
-        },
-        {
-            "name": "Role",
-            "description": "Configuration entity Role"
-        },
-        {
-            "name": "User"
-        },
-        {
-            "name": "Date format",
-            "description": "Configuration entity Date format"
-        },
-        {
-            "name": "Entity form display",
-            "description": "Configuration entity Entity form display"
-        },
-        {
-            "name": "Form mode",
-            "description": "Configuration entity Form mode"
-        },
-        {
-            "name": "Entity view display",
-            "description": "Configuration entity Entity view display"
-        },
-        {
-            "name": "View mode",
-            "description": "Configuration entity View mode"
-        },
-        {
-            "name": "Base field override",
-            "description": "Configuration entity Base field override"
-        }
-    ],
     "definitions": {
-        "node:camelids": {
+        "openapi_test_entity:camelids": {
             "type": "object",
-            "title": "node:camelids Schema",
-            "description": "Describes the payload for 'node' entities of the 'camelids' bundle.",
+            "title": "openapi_test_entity:camelids Schema",
+            "description": "Describes the payload for 'openapi_test_entity' entities of the 'camelids' bundle.",
             "properties": {
                 "attributes": {
                     "type": "object",
                     "properties": {
-                        "nid": {
+                        "id": {
                             "type": "integer",
                             "title": "ID"
                         },
@@ -102,84 +17,14 @@
                             "title": "UUID",
                             "maxLength": 128
                         },
-                        "vid": {
-                            "type": "integer",
-                            "title": "Revision ID"
-                        },
-                        "langcode": {
-                            "type": "object",
-                            "properties": {
-                                "value": {
-                                    "type": "string",
-                                    "title": "Language code"
-                                },
-                                "language": {
-                                    "type": "language_reference",
-                                    "title": "Language object",
-                                    "description": "The referenced language"
-                                }
-                            },
-                            "required": [
-                                "value"
-                            ],
-                            "title": "Language"
-                        },
-                        "revision_timestamp": {
-                            "type": "number",
-                            "title": "Revision create time",
-                            "format": "utc-millisec",
-                            "description": "The time that the current revision was created."
-                        },
-                        "revision_log": {
+                        "name": {
                             "type": "string",
-                            "title": "Revision log message",
-                            "description": "Briefly describe the changes you have made.",
+                            "title": "Name",
+                            "maxLength": 50,
+                            "description": "The name of the OpenApi Test Entity entity.",
                             "default": ""
                         },
-                        "status": {
-                            "type": "boolean",
-                            "title": "Published",
-                            "default": true
-                        },
-                        "title": {
-                            "type": "string",
-                            "title": "Title",
-                            "maxLength": 255
-                        },
-                        "created": {
-                            "type": "number",
-                            "title": "Authored on",
-                            "format": "utc-millisec",
-                            "description": "The time that the node was created."
-                        },
-                        "changed": {
-                            "type": "number",
-                            "title": "Changed",
-                            "format": "utc-millisec",
-                            "description": "The time that the node was last edited."
-                        },
-                        "promote": {
-                            "type": "boolean",
-                            "title": "Promoted to front page",
-                            "default": true
-                        },
-                        "sticky": {
-                            "type": "boolean",
-                            "title": "Sticky at top of lists",
-                            "default": false
-                        },
-                        "revision_translation_affected": {
-                            "type": "boolean",
-                            "title": "Revision translation affected",
-                            "description": "Indicates if the last edit of a translation belongs to current revision."
-                        },
-                        "default_langcode": {
-                            "type": "boolean",
-                            "title": "Default translation",
-                            "description": "A flag indicating whether this is the default translation.",
-                            "default": true
-                        },
-                        "field_test_node": {
+                        "field_test_openapi_test_entity": {
                             "type": "object",
                             "properties": {
                                 "value": {
@@ -199,11 +44,8 @@
                         }
                     },
                     "required": [
-                        "nid",
-                        "uuid",
-                        "vid",
-                        "title",
-                        "revision_translation_affected"
+                        "id",
+                        "uuid"
                     ]
                 },
                 "relationships": {
@@ -222,63 +64,7 @@
                                             "type": "string",
                                             "title": "Referenced resource",
                                             "enum": [
-                                                "node_type--node_type"
-                                            ]
-                                        },
-                                        "id": {
-                                            "type": "string",
-                                            "title": "Resource ID",
-                                            "format": "uuid",
-                                            "maxLength": 128
-                                        }
-                                    }
-                                }
-                            },
-                            "title": "Resource Identifier"
-                        },
-                        "revision_uid": {
-                            "type": "object",
-                            "properties": {
-                                "data": {
-                                    "type": "object",
-                                    "required": [
-                                        "type",
-                                        "id"
-                                    ],
-                                    "properties": {
-                                        "type": {
-                                            "type": "string",
-                                            "title": "Referenced resource",
-                                            "enum": [
-                                                "user--user"
-                                            ]
-                                        },
-                                        "id": {
-                                            "type": "string",
-                                            "title": "Resource ID",
-                                            "format": "uuid",
-                                            "maxLength": 128
-                                        }
-                                    }
-                                }
-                            },
-                            "title": "Resource Identifier"
-                        },
-                        "uid": {
-                            "type": "object",
-                            "properties": {
-                                "data": {
-                                    "type": "object",
-                                    "required": [
-                                        "type",
-                                        "id"
-                                    ],
-                                    "properties": {
-                                        "type": {
-                                            "type": "string",
-                                            "title": "Referenced resource",
-                                            "enum": [
-                                                "user--user"
+                                                "openapi_test_entity_type--openapi_test_entity_type"
                                             ]
                                         },
                                         "id": {
@@ -298,7 +84,7 @@
                 "type": {
                     "type": "string",
                     "title": "Title",
-                    "example": "node--camelids"
+                    "example": "openapi_test_entity--camelids"
                 },
                 "id": {
                     "type": "string",
@@ -725,9 +511,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Action"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -738,9 +521,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Action"
-                ],
                 "responses": []
             }
         },
@@ -756,9 +536,6 @@
                         "type": "uuid",
                         "description": "The uuid of the action action"
                     }
-                ],
-                "tags": [
-                    "Action"
                 ],
                 "responses": {
                     "200": {
@@ -778,9 +555,6 @@
                         "description": "The uuid of the action action"
                     }
                 ],
-                "tags": [
-                    "Action"
-                ],
                 "responses": []
             },
             "delete": {
@@ -794,9 +568,6 @@
                         "type": "uuid",
                         "description": "The uuid of the action action"
                     }
-                ],
-                "tags": [
-                    "Action"
                 ],
                 "responses": {
                     "201": {
@@ -818,9 +589,6 @@
                         "description": "The uuid of the action action"
                     }
                 ],
-                "tags": [
-                    "Action"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -841,9 +609,6 @@
                         "description": "The uuid of the action action"
                     }
                 ],
-                "tags": [
-                    "Action"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -861,9 +626,6 @@
                         "type": "uuid",
                         "description": "The uuid of the action action"
                     }
-                ],
-                "tags": [
-                    "Action"
                 ],
                 "responses": {
                     "201": {
@@ -883,9 +645,6 @@
                         "description": "The uuid of the action action"
                     }
                 ],
-                "tags": [
-                    "Action"
-                ],
                 "responses": []
             },
             "delete": {
@@ -899,9 +658,6 @@
                         "type": "uuid",
                         "description": "The uuid of the action action"
                     }
-                ],
-                "tags": [
-                    "Action"
                 ],
                 "responses": {
                     "201": {
@@ -934,9 +690,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Base field override"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -947,9 +700,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Base field override"
-                ],
                 "responses": []
             }
         },
@@ -965,9 +715,6 @@
                         "type": "uuid",
                         "description": "The uuid of the base_field_override base_field_override"
                     }
-                ],
-                "tags": [
-                    "Base field override"
                 ],
                 "responses": {
                     "200": {
@@ -987,9 +734,6 @@
                         "description": "The uuid of the base_field_override base_field_override"
                     }
                 ],
-                "tags": [
-                    "Base field override"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1003,9 +747,6 @@
                         "type": "uuid",
                         "description": "The uuid of the base_field_override base_field_override"
                     }
-                ],
-                "tags": [
-                    "Base field override"
                 ],
                 "responses": {
                     "201": {
@@ -1027,9 +768,6 @@
                         "description": "The uuid of the base_field_override base_field_override"
                     }
                 ],
-                "tags": [
-                    "Base field override"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1050,9 +788,6 @@
                         "description": "The uuid of the base_field_override base_field_override"
                     }
                 ],
-                "tags": [
-                    "Base field override"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1070,9 +805,6 @@
                         "type": "uuid",
                         "description": "The uuid of the base_field_override base_field_override"
                     }
-                ],
-                "tags": [
-                    "Base field override"
                 ],
                 "responses": {
                     "201": {
@@ -1092,9 +824,6 @@
                         "description": "The uuid of the base_field_override base_field_override"
                     }
                 ],
-                "tags": [
-                    "Base field override"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1108,9 +837,6 @@
                         "type": "uuid",
                         "description": "The uuid of the base_field_override base_field_override"
                     }
-                ],
-                "tags": [
-                    "Base field override"
                 ],
                 "responses": {
                     "201": {
@@ -1143,9 +869,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Date format"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1156,9 +879,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Date format"
-                ],
                 "responses": []
             }
         },
@@ -1174,9 +894,6 @@
                         "type": "uuid",
                         "description": "The uuid of the date_format date_format"
                     }
-                ],
-                "tags": [
-                    "Date format"
                 ],
                 "responses": {
                     "200": {
@@ -1196,9 +913,6 @@
                         "description": "The uuid of the date_format date_format"
                     }
                 ],
-                "tags": [
-                    "Date format"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1212,9 +926,6 @@
                         "type": "uuid",
                         "description": "The uuid of the date_format date_format"
                     }
-                ],
-                "tags": [
-                    "Date format"
                 ],
                 "responses": {
                     "201": {
@@ -1236,9 +947,6 @@
                         "description": "The uuid of the date_format date_format"
                     }
                 ],
-                "tags": [
-                    "Date format"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1259,9 +967,6 @@
                         "description": "The uuid of the date_format date_format"
                     }
                 ],
-                "tags": [
-                    "Date format"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1279,9 +984,6 @@
                         "type": "uuid",
                         "description": "The uuid of the date_format date_format"
                     }
-                ],
-                "tags": [
-                    "Date format"
                 ],
                 "responses": {
                     "201": {
@@ -1301,9 +1003,6 @@
                         "description": "The uuid of the date_format date_format"
                     }
                 ],
-                "tags": [
-                    "Date format"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1317,9 +1016,6 @@
                         "type": "uuid",
                         "description": "The uuid of the date_format date_format"
                     }
-                ],
-                "tags": [
-                    "Date format"
                 ],
                 "responses": {
                     "201": {
@@ -1352,9 +1048,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Entity form display"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1365,9 +1058,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Entity form display"
-                ],
                 "responses": []
             }
         },
@@ -1383,9 +1073,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
-                ],
-                "tags": [
-                    "Entity form display"
                 ],
                 "responses": {
                     "200": {
@@ -1405,9 +1092,6 @@
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
                 ],
-                "tags": [
-                    "Entity form display"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1421,9 +1105,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
-                ],
-                "tags": [
-                    "Entity form display"
                 ],
                 "responses": {
                     "201": {
@@ -1445,9 +1126,6 @@
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
                 ],
-                "tags": [
-                    "Entity form display"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1468,9 +1146,6 @@
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
                 ],
-                "tags": [
-                    "Entity form display"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1488,9 +1163,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
-                ],
-                "tags": [
-                    "Entity form display"
                 ],
                 "responses": {
                     "201": {
@@ -1510,9 +1182,6 @@
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
                 ],
-                "tags": [
-                    "Entity form display"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1526,9 +1195,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_display entity_form_display"
                     }
-                ],
-                "tags": [
-                    "Entity form display"
                 ],
                 "responses": {
                     "201": {
@@ -1561,9 +1227,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Form mode"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1574,9 +1237,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Form mode"
-                ],
                 "responses": []
             }
         },
@@ -1592,9 +1252,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
-                ],
-                "tags": [
-                    "Form mode"
                 ],
                 "responses": {
                     "200": {
@@ -1614,9 +1271,6 @@
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
                 ],
-                "tags": [
-                    "Form mode"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1630,9 +1284,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
-                ],
-                "tags": [
-                    "Form mode"
                 ],
                 "responses": {
                     "201": {
@@ -1654,9 +1305,6 @@
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
                 ],
-                "tags": [
-                    "Form mode"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1677,9 +1325,6 @@
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
                 ],
-                "tags": [
-                    "Form mode"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1697,9 +1342,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
-                ],
-                "tags": [
-                    "Form mode"
                 ],
                 "responses": {
                     "201": {
@@ -1719,9 +1361,6 @@
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
                 ],
-                "tags": [
-                    "Form mode"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1735,9 +1374,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_form_mode entity_form_mode"
                     }
-                ],
-                "tags": [
-                    "Form mode"
                 ],
                 "responses": {
                     "201": {
@@ -1770,9 +1406,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Entity view display"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1783,9 +1416,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Entity view display"
-                ],
                 "responses": []
             }
         },
@@ -1801,9 +1431,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
-                ],
-                "tags": [
-                    "Entity view display"
                 ],
                 "responses": {
                     "200": {
@@ -1823,9 +1450,6 @@
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
                 ],
-                "tags": [
-                    "Entity view display"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1839,9 +1463,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
-                ],
-                "tags": [
-                    "Entity view display"
                 ],
                 "responses": {
                     "201": {
@@ -1863,9 +1484,6 @@
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
                 ],
-                "tags": [
-                    "Entity view display"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1886,9 +1504,6 @@
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
                 ],
-                "tags": [
-                    "Entity view display"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1906,9 +1521,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
-                ],
-                "tags": [
-                    "Entity view display"
                 ],
                 "responses": {
                     "201": {
@@ -1928,9 +1540,6 @@
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
                 ],
-                "tags": [
-                    "Entity view display"
-                ],
                 "responses": []
             },
             "delete": {
@@ -1944,9 +1553,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_display entity_view_display"
                     }
-                ],
-                "tags": [
-                    "Entity view display"
                 ],
                 "responses": {
                     "201": {
@@ -1979,9 +1585,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "View mode"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -1992,9 +1595,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "View mode"
-                ],
                 "responses": []
             }
         },
@@ -2010,9 +1610,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
-                ],
-                "tags": [
-                    "View mode"
                 ],
                 "responses": {
                     "200": {
@@ -2032,9 +1629,6 @@
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
                 ],
-                "tags": [
-                    "View mode"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2048,9 +1642,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
-                ],
-                "tags": [
-                    "View mode"
                 ],
                 "responses": {
                     "201": {
@@ -2072,9 +1663,6 @@
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
                 ],
-                "tags": [
-                    "View mode"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2095,9 +1683,6 @@
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
                 ],
-                "tags": [
-                    "View mode"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2115,9 +1700,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
-                ],
-                "tags": [
-                    "View mode"
                 ],
                 "responses": {
                     "201": {
@@ -2137,9 +1719,6 @@
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
                 ],
-                "tags": [
-                    "View mode"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2153,9 +1732,6 @@
                         "type": "uuid",
                         "description": "The uuid of the entity_view_mode entity_view_mode"
                     }
-                ],
-                "tags": [
-                    "View mode"
                 ],
                 "responses": {
                     "201": {
@@ -2188,9 +1764,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Field"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2201,9 +1774,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Field"
-                ],
                 "responses": []
             }
         },
@@ -2219,9 +1789,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_config field_config"
                     }
-                ],
-                "tags": [
-                    "Field"
                 ],
                 "responses": {
                     "200": {
@@ -2241,9 +1808,6 @@
                         "description": "The uuid of the field_config field_config"
                     }
                 ],
-                "tags": [
-                    "Field"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2257,9 +1821,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_config field_config"
                     }
-                ],
-                "tags": [
-                    "Field"
                 ],
                 "responses": {
                     "201": {
@@ -2281,9 +1842,6 @@
                         "description": "The uuid of the field_config field_config"
                     }
                 ],
-                "tags": [
-                    "Field"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2304,9 +1862,6 @@
                         "description": "The uuid of the field_config field_config"
                     }
                 ],
-                "tags": [
-                    "Field"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2324,9 +1879,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_config field_config"
                     }
-                ],
-                "tags": [
-                    "Field"
                 ],
                 "responses": {
                     "201": {
@@ -2346,9 +1898,6 @@
                         "description": "The uuid of the field_config field_config"
                     }
                 ],
-                "tags": [
-                    "Field"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2362,9 +1911,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_config field_config"
                     }
-                ],
-                "tags": [
-                    "Field"
                 ],
                 "responses": {
                     "201": {
@@ -2397,9 +1943,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Field storage"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2410,9 +1953,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Field storage"
-                ],
                 "responses": []
             }
         },
@@ -2428,9 +1968,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
-                ],
-                "tags": [
-                    "Field storage"
                 ],
                 "responses": {
                     "200": {
@@ -2450,9 +1987,6 @@
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
                 ],
-                "tags": [
-                    "Field storage"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2466,9 +2000,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
-                ],
-                "tags": [
-                    "Field storage"
                 ],
                 "responses": {
                     "201": {
@@ -2490,9 +2021,6 @@
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
                 ],
-                "tags": [
-                    "Field storage"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2513,9 +2041,6 @@
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
                 ],
-                "tags": [
-                    "Field storage"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2533,9 +2058,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
-                ],
-                "tags": [
-                    "Field storage"
                 ],
                 "responses": {
                     "201": {
@@ -2555,9 +2077,6 @@
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
                 ],
-                "tags": [
-                    "Field storage"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2571,9 +2090,6 @@
                         "type": "uuid",
                         "description": "The uuid of the field_storage_config field_storage_config"
                     }
-                ],
-                "tags": [
-                    "Field storage"
                 ],
                 "responses": {
                     "201": {
@@ -2606,9 +2122,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Text format"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2619,9 +2132,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Text format"
-                ],
                 "responses": []
             }
         },
@@ -2637,9 +2147,6 @@
                         "type": "uuid",
                         "description": "The uuid of the filter_format filter_format"
                     }
-                ],
-                "tags": [
-                    "Text format"
                 ],
                 "responses": {
                     "200": {
@@ -2659,9 +2166,6 @@
                         "description": "The uuid of the filter_format filter_format"
                     }
                 ],
-                "tags": [
-                    "Text format"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2675,9 +2179,6 @@
                         "type": "uuid",
                         "description": "The uuid of the filter_format filter_format"
                     }
-                ],
-                "tags": [
-                    "Text format"
                 ],
                 "responses": {
                     "201": {
@@ -2699,9 +2200,6 @@
                         "description": "The uuid of the filter_format filter_format"
                     }
                 ],
-                "tags": [
-                    "Text format"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2722,9 +2220,6 @@
                         "description": "The uuid of the filter_format filter_format"
                     }
                 ],
-                "tags": [
-                    "Text format"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2742,9 +2237,6 @@
                         "type": "uuid",
                         "description": "The uuid of the filter_format filter_format"
                     }
-                ],
-                "tags": [
-                    "Text format"
                 ],
                 "responses": {
                     "201": {
@@ -2764,9 +2256,6 @@
                         "description": "The uuid of the filter_format filter_format"
                     }
                 ],
-                "tags": [
-                    "Text format"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2780,9 +2269,6 @@
                         "type": "uuid",
                         "description": "The uuid of the filter_format filter_format"
                     }
-                ],
-                "tags": [
-                    "Text format"
                 ],
                 "responses": {
                     "201": {
@@ -2815,9 +2301,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Menu"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2828,9 +2311,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Menu"
-                ],
                 "responses": []
             }
         },
@@ -2846,9 +2326,6 @@
                         "type": "uuid",
                         "description": "The uuid of the menu menu"
                     }
-                ],
-                "tags": [
-                    "Menu"
                 ],
                 "responses": {
                     "200": {
@@ -2868,9 +2345,6 @@
                         "description": "The uuid of the menu menu"
                     }
                 ],
-                "tags": [
-                    "Menu"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2884,9 +2358,6 @@
                         "type": "uuid",
                         "description": "The uuid of the menu menu"
                     }
-                ],
-                "tags": [
-                    "Menu"
                 ],
                 "responses": {
                     "201": {
@@ -2908,9 +2379,6 @@
                         "description": "The uuid of the menu menu"
                     }
                 ],
-                "tags": [
-                    "Menu"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2931,9 +2399,6 @@
                         "description": "The uuid of the menu menu"
                     }
                 ],
-                "tags": [
-                    "Menu"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -2951,9 +2416,6 @@
                         "type": "uuid",
                         "description": "The uuid of the menu menu"
                     }
-                ],
-                "tags": [
-                    "Menu"
                 ],
                 "responses": {
                     "201": {
@@ -2973,9 +2435,6 @@
                         "description": "The uuid of the menu menu"
                     }
                 ],
-                "tags": [
-                    "Menu"
-                ],
                 "responses": []
             },
             "delete": {
@@ -2989,246 +2448,6 @@
                         "type": "uuid",
                         "description": "The uuid of the menu menu"
                     }
-                ],
-                "tags": [
-                    "Menu"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Entity deleted"
-                    }
-                }
-            }
-        },
-        "\/node\/camelids": {
-            "get": {
-                "summary": "collection get",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "type": "array",
-                        "required": false
-                    },
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "type": "array",
-                        "required": false
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "type": "array",
-                        "required": false
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#\/definitions\/node:camelids"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "collection post",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "The node object",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#\/definitions\/node:camelids"
-                        }
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": []
-            }
-        },
-        "\/node\/camelids\/{node}": {
-            "get": {
-                "summary": "individual get",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#\/definitions\/node:camelids"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "summary": "individual patch",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": []
-            },
-            "delete": {
-                "summary": "individual delete",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Entity deleted"
-                    }
-                }
-            }
-        },
-        "\/node\/camelids\/{node}\/{related}": {
-            "get": {
-                "summary": "related get",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#\/definitions\/node:camelids"
-                        }
-                    }
-                }
-            }
-        },
-        "\/node\/camelids\/{node}\/relationships\/{related}": {
-            "get": {
-                "summary": "relationship get",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#\/definitions\/node:camelids"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "relationship post",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Entity created",
-                        "schema": {
-                            "$ref": "#\/definitions\/node:camelids"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "summary": "relationship patch",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
-                ],
-                "responses": []
-            },
-            "delete": {
-                "summary": "relationship delete",
-                "description": "@todo Add descriptions",
-                "parameters": [
-                    {
-                        "name": "node",
-                        "required": true,
-                        "in": "path",
-                        "type": "uuid",
-                        "description": "The uuid of the node camelids"
-                    }
-                ],
-                "tags": [
-                    "Content - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3261,9 +2480,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Content type"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -3274,9 +2490,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Content type"
-                ],
                 "responses": []
             }
         },
@@ -3292,9 +2505,6 @@
                         "type": "uuid",
                         "description": "The uuid of the node_type node_type"
                     }
-                ],
-                "tags": [
-                    "Content type"
                 ],
                 "responses": {
                     "200": {
@@ -3314,9 +2524,6 @@
                         "description": "The uuid of the node_type node_type"
                     }
                 ],
-                "tags": [
-                    "Content type"
-                ],
                 "responses": []
             },
             "delete": {
@@ -3330,9 +2537,6 @@
                         "type": "uuid",
                         "description": "The uuid of the node_type node_type"
                     }
-                ],
-                "tags": [
-                    "Content type"
                 ],
                 "responses": {
                     "201": {
@@ -3354,9 +2558,6 @@
                         "description": "The uuid of the node_type node_type"
                     }
                 ],
-                "tags": [
-                    "Content type"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -3377,9 +2578,6 @@
                         "description": "The uuid of the node_type node_type"
                     }
                 ],
-                "tags": [
-                    "Content type"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -3397,9 +2595,6 @@
                         "type": "uuid",
                         "description": "The uuid of the node_type node_type"
                     }
-                ],
-                "tags": [
-                    "Content type"
                 ],
                 "responses": {
                     "201": {
@@ -3419,9 +2614,6 @@
                         "description": "The uuid of the node_type node_type"
                     }
                 ],
-                "tags": [
-                    "Content type"
-                ],
                 "responses": []
             },
             "delete": {
@@ -3436,8 +2628,391 @@
                         "description": "The uuid of the node_type node_type"
                     }
                 ],
-                "tags": [
-                    "Content type"
+                "responses": {
+                    "201": {
+                        "description": "Entity deleted"
+                    }
+                }
+            }
+        },
+        "\/openapi_test_entity\/camelids": {
+            "get": {
+                "summary": "collection get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "type": "array",
+                        "required": false
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "type": "array",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "array",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#\/definitions\/openapi_test_entity:camelids"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "collection post",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The openapi_test_entity object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
+                        }
+                    }
+                ],
+                "responses": []
+            }
+        },
+        "\/openapi_test_entity\/camelids\/{openapi_test_entity}": {
+            "get": {
+                "summary": "individual get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "individual patch",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": []
+            },
+            "delete": {
+                "summary": "individual delete",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Entity deleted"
+                    }
+                }
+            }
+        },
+        "\/openapi_test_entity\/camelids\/{openapi_test_entity}\/{related}": {
+            "get": {
+                "summary": "related get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
+                        }
+                    }
+                }
+            }
+        },
+        "\/openapi_test_entity\/camelids\/{openapi_test_entity}\/relationships\/{related}": {
+            "get": {
+                "summary": "relationship get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "relationship post",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Entity created",
+                        "schema": {
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "relationship patch",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": []
+            },
+            "delete": {
+                "summary": "relationship delete",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity camelids"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Entity deleted"
+                    }
+                }
+            }
+        },
+        "\/openapi_test_entity_type\/openapi_test_entity_type": {
+            "get": {
+                "summary": "collection get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "type": "array",
+                        "required": false
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "type": "array",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "array",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "post": {
+                "summary": "collection post",
+                "description": "@todo Add descriptions",
+                "parameters": [],
+                "responses": []
+            }
+        },
+        "\/openapi_test_entity_type\/openapi_test_entity_type\/{openapi_test_entity_type}": {
+            "get": {
+                "summary": "individual get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "individual patch",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
+                ],
+                "responses": []
+            },
+            "delete": {
+                "summary": "individual delete",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Entity deleted"
+                    }
+                }
+            }
+        },
+        "\/openapi_test_entity_type\/openapi_test_entity_type\/{openapi_test_entity_type}\/{related}": {
+            "get": {
+                "summary": "related get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "\/openapi_test_entity_type\/openapi_test_entity_type\/{openapi_test_entity_type}\/relationships\/{related}": {
+            "get": {
+                "summary": "relationship get",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "post": {
+                "summary": "relationship post",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Entity created"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "relationship patch",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
+                ],
+                "responses": []
+            },
+            "delete": {
+                "summary": "relationship delete",
+                "description": "@todo Add descriptions",
+                "parameters": [
+                    {
+                        "name": "openapi_test_entity_type",
+                        "required": true,
+                        "in": "path",
+                        "type": "uuid",
+                        "description": "The uuid of the openapi_test_entity_type openapi_test_entity_type"
+                    }
                 ],
                 "responses": {
                     "201": {
@@ -3470,9 +3045,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "REST resource configuration"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -3483,9 +3055,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "REST resource configuration"
-                ],
                 "responses": []
             }
         },
@@ -3501,9 +3070,6 @@
                         "type": "uuid",
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
-                ],
-                "tags": [
-                    "REST resource configuration"
                 ],
                 "responses": {
                     "200": {
@@ -3523,9 +3089,6 @@
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
                 ],
-                "tags": [
-                    "REST resource configuration"
-                ],
                 "responses": []
             },
             "delete": {
@@ -3539,9 +3102,6 @@
                         "type": "uuid",
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
-                ],
-                "tags": [
-                    "REST resource configuration"
                 ],
                 "responses": {
                     "201": {
@@ -3563,9 +3123,6 @@
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
                 ],
-                "tags": [
-                    "REST resource configuration"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -3586,9 +3143,6 @@
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
                 ],
-                "tags": [
-                    "REST resource configuration"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -3606,9 +3160,6 @@
                         "type": "uuid",
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
-                ],
-                "tags": [
-                    "REST resource configuration"
                 ],
                 "responses": {
                     "201": {
@@ -3628,9 +3179,6 @@
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
                 ],
-                "tags": [
-                    "REST resource configuration"
-                ],
                 "responses": []
             },
             "delete": {
@@ -3644,9 +3192,6 @@
                         "type": "uuid",
                         "description": "The uuid of the rest_resource_config rest_resource_config"
                     }
-                ],
-                "tags": [
-                    "REST resource configuration"
                 ],
                 "responses": {
                     "201": {
@@ -3679,9 +3224,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -3708,9 +3250,6 @@
                         }
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": []
             }
         },
@@ -3726,9 +3265,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3751,9 +3287,6 @@
                         "description": "The uuid of the taxonomy_term camelids"
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": []
             },
             "delete": {
@@ -3767,9 +3300,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3790,9 +3320,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -3817,9 +3344,6 @@
                         "description": "The uuid of the taxonomy_term camelids"
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -3840,9 +3364,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3865,9 +3386,6 @@
                         "description": "The uuid of the taxonomy_term camelids"
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": []
             },
             "delete": {
@@ -3881,9 +3399,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -3916,9 +3431,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Taxonomy vocabulary"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -3929,9 +3441,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Taxonomy vocabulary"
-                ],
                 "responses": []
             }
         },
@@ -3947,9 +3456,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
-                ],
-                "tags": [
-                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "200": {
@@ -3969,9 +3475,6 @@
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
                 ],
-                "tags": [
-                    "Taxonomy vocabulary"
-                ],
                 "responses": []
             },
             "delete": {
@@ -3985,9 +3488,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
-                ],
-                "tags": [
-                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "201": {
@@ -4009,9 +3509,6 @@
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
                 ],
-                "tags": [
-                    "Taxonomy vocabulary"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -4032,9 +3529,6 @@
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
                 ],
-                "tags": [
-                    "Taxonomy vocabulary"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -4052,9 +3546,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
-                ],
-                "tags": [
-                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "201": {
@@ -4074,9 +3565,6 @@
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
                 ],
-                "tags": [
-                    "Taxonomy vocabulary"
-                ],
                 "responses": []
             },
             "delete": {
@@ -4090,9 +3578,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_vocabulary taxonomy_vocabulary"
                     }
-                ],
-                "tags": [
-                    "Taxonomy vocabulary"
                 ],
                 "responses": {
                     "201": {
@@ -4125,9 +3610,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -4154,9 +3636,6 @@
                         }
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": []
             }
         },
@@ -4172,9 +3651,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -4197,9 +3673,6 @@
                         "description": "The uuid of the user user"
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": []
             },
             "delete": {
@@ -4213,9 +3686,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -4236,9 +3706,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -4263,9 +3730,6 @@
                         "description": "The uuid of the user user"
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -4286,9 +3750,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -4311,9 +3772,6 @@
                         "description": "The uuid of the user user"
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": []
             },
             "delete": {
@@ -4327,9 +3785,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -4362,9 +3817,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Role"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -4375,9 +3827,6 @@
                 "summary": "collection post",
                 "description": "@todo Add descriptions",
                 "parameters": [],
-                "tags": [
-                    "Role"
-                ],
                 "responses": []
             }
         },
@@ -4393,9 +3842,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user_role user_role"
                     }
-                ],
-                "tags": [
-                    "Role"
                 ],
                 "responses": {
                     "200": {
@@ -4415,9 +3861,6 @@
                         "description": "The uuid of the user_role user_role"
                     }
                 ],
-                "tags": [
-                    "Role"
-                ],
                 "responses": []
             },
             "delete": {
@@ -4431,9 +3874,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user_role user_role"
                     }
-                ],
-                "tags": [
-                    "Role"
                 ],
                 "responses": {
                     "201": {
@@ -4455,9 +3895,6 @@
                         "description": "The uuid of the user_role user_role"
                     }
                 ],
-                "tags": [
-                    "Role"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -4478,9 +3915,6 @@
                         "description": "The uuid of the user_role user_role"
                     }
                 ],
-                "tags": [
-                    "Role"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -4498,9 +3932,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user_role user_role"
                     }
-                ],
-                "tags": [
-                    "Role"
                 ],
                 "responses": {
                     "201": {
@@ -4520,9 +3951,6 @@
                         "description": "The uuid of the user_role user_role"
                     }
                 ],
-                "tags": [
-                    "Role"
-                ],
                 "responses": []
             },
             "delete": {
@@ -4536,9 +3964,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user_role user_role"
                     }
-                ],
-                "tags": [
-                    "Role"
                 ],
                 "responses": {
                     "201": {

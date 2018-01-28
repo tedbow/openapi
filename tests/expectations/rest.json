@@ -1,54 +1,11 @@
 {
-    "swagger": "2.0",
-    "schemes": [
-        "http"
-    ],
-    "info": {
-        "description": "The REST API provide by the core REST module.",
-        "title": "Drupal - REST API",
-        "version": "Versioning not supported"
-    },
-    "host": "{host}",
-    "basePath": "\/{base_path}",
-    "securityDefinitions": {
-        "csrf_token": {
-            "type": "apiKey",
-            "name": "X-CSRF-Token",
-            "in": "header"
-        },
-        "basic_auth": {
-            "type": "basic"
-        }
-    },
-    "tags": [
-        {
-            "name": "node",
-            "description": "Entity type: Content",
-            "x-entity-type": "node"
-        },
-        {
-            "name": "taxonomy_term",
-            "description": "Entity type: Taxonomy term",
-            "x-entity-type": "taxonomy_term"
-        },
-        {
-            "name": "taxonomy_vocabulary",
-            "description": "Entity type: Taxonomy vocabulary",
-            "x-entity-type": "taxonomy_vocabulary"
-        },
-        {
-            "name": "user",
-            "description": "Entity type: User",
-            "x-entity-type": "user"
-        }
-    ],
     "definitions": {
-        "node": {
+        "openapi_test_entity": {
             "type": "object",
-            "title": "node Schema",
-            "description": "Describes the payload for 'node' entities.",
+            "title": "openapi_test_entity Schema",
+            "description": "Describes the payload for 'openapi_test_entity' entities.",
             "properties": {
-                "nid": {
+                "id": {
                     "type": "array",
                     "title": "ID",
                     "items": {
@@ -85,50 +42,15 @@
                     "minItems": 1,
                     "maxItems": 1
                 },
-                "vid": {
-                    "type": "array",
-                    "title": "Revision ID",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "integer",
-                                "title": "Integer value"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "minItems": 1,
-                    "maxItems": 1
-                },
-                "langcode": {
-                    "type": "array",
-                    "title": "Language",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "string",
-                                "title": "Language code"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "maxItems": 1
-                },
                 "type": {
                     "type": "array",
-                    "title": "Content type",
+                    "title": "OpenApi Test Entity type",
                     "items": {
                         "type": "object",
                         "properties": {
                             "target_id": {
                                 "type": "string",
-                                "title": "Content type ID"
+                                "title": "OpenApi Test Entity type ID"
                             }
                         },
                         "required": [
@@ -138,55 +60,17 @@
                     "minItems": 1,
                     "maxItems": 1
                 },
-                "revision_timestamp": {
+                "name": {
                     "type": "array",
-                    "title": "Revision create time",
-                    "description": "The time that the current revision was created.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "number",
-                                "title": "Timestamp value",
-                                "format": "utc-millisec"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "maxItems": 1
-                },
-                "revision_uid": {
-                    "type": "array",
-                    "title": "Revision user",
-                    "description": "The user ID of the author of the current revision.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "target_id": {
-                                "type": "integer",
-                                "title": "User ID"
-                            }
-                        },
-                        "required": [
-                            "target_id"
-                        ],
-                        "title": "User",
-                        "description": "The referenced entity"
-                    },
-                    "maxItems": 1
-                },
-                "revision_log": {
-                    "type": "array",
-                    "title": "Revision log message",
-                    "description": "Briefly describe the changes you have made.",
+                    "title": "Name",
+                    "description": "The name of the OpenApi Test Entity entity.",
                     "items": {
                         "type": "object",
                         "properties": {
                             "value": {
                                 "type": "string",
-                                "title": "Text value"
+                                "title": "Text value",
+                                "maxLength": 50
                             }
                         },
                         "required": [
@@ -199,214 +83,26 @@
                         }
                     ],
                     "maxItems": 1
-                },
-                "status": {
-                    "type": "array",
-                    "title": "Published",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "boolean",
-                                "title": "Boolean value"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "default": [
-                        {
-                            "value": true
-                        }
-                    ],
-                    "maxItems": 1
-                },
-                "title": {
-                    "type": "array",
-                    "title": "Title",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "string",
-                                "title": "Text value",
-                                "maxLength": 255
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "minItems": 1,
-                    "maxItems": 1
-                },
-                "uid": {
-                    "type": "array",
-                    "title": "Authored by",
-                    "description": "The username of the content author.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "target_id": {
-                                "type": "integer",
-                                "title": "User ID"
-                            }
-                        },
-                        "required": [
-                            "target_id"
-                        ],
-                        "title": "User",
-                        "description": "The referenced entity"
-                    },
-                    "maxItems": 1
-                },
-                "created": {
-                    "type": "array",
-                    "title": "Authored on",
-                    "description": "The time that the node was created.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "number",
-                                "title": "Timestamp value",
-                                "format": "utc-millisec"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "maxItems": 1
-                },
-                "changed": {
-                    "type": "array",
-                    "title": "Changed",
-                    "description": "The time that the node was last edited.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "number",
-                                "title": "Timestamp value",
-                                "format": "utc-millisec"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "maxItems": 1
-                },
-                "promote": {
-                    "type": "array",
-                    "title": "Promoted to front page",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "boolean",
-                                "title": "Boolean value"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "default": [
-                        {
-                            "value": true
-                        }
-                    ],
-                    "maxItems": 1
-                },
-                "sticky": {
-                    "type": "array",
-                    "title": "Sticky at top of lists",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "boolean",
-                                "title": "Boolean value"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "default": [
-                        {
-                            "value": false
-                        }
-                    ],
-                    "maxItems": 1
-                },
-                "revision_translation_affected": {
-                    "type": "array",
-                    "title": "Revision translation affected",
-                    "description": "Indicates if the last edit of a translation belongs to current revision.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "boolean",
-                                "title": "Boolean value"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "minItems": 1,
-                    "maxItems": 1
-                },
-                "default_langcode": {
-                    "type": "array",
-                    "title": "Default translation",
-                    "description": "A flag indicating whether this is the default translation.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "value": {
-                                "type": "boolean",
-                                "title": "Boolean value"
-                            }
-                        },
-                        "required": [
-                            "value"
-                        ]
-                    },
-                    "default": [
-                        {
-                            "value": true
-                        }
-                    ],
-                    "maxItems": 1
                 }
             },
             "required": [
-                "nid",
+                "id",
                 "uuid",
-                "vid",
-                "type",
-                "title",
-                "revision_translation_affected"
+                "type"
             ],
             "discriminator": "type"
         },
-        "node:camelids": {
+        "openapi_test_entity:camelids": {
             "allOf": [
                 {
-                    "$ref": "#\/definitions\/node"
+                    "$ref": "#\/definitions\/openapi_test_entity"
                 },
                 {
                     "type": "object",
-                    "title": "node:camelids Schema",
-                    "description": "Describes the payload for 'node' entities of the 'camelids' bundle.",
+                    "title": "openapi_test_entity:camelids Schema",
+                    "description": "Describes the payload for 'openapi_test_entity' entities of the 'camelids' bundle.",
                     "properties": {
-                        "field_test_node": {
+                        "field_test_openapi_test_entity": {
                             "type": "array",
                             "title": "Test field",
                             "items": {
@@ -430,15 +126,17 @@
                         }
                     },
                     "required": [
-                        "nid",
+                        "id",
                         "uuid",
-                        "vid",
-                        "type",
-                        "title",
-                        "revision_translation_affected"
+                        "type"
                     ]
                 }
             ]
+        },
+        "openapi_test_entity_type": {
+            "type": "object",
+            "title": "openapi_test_entity_type Schema",
+            "description": "Describes the payload for openapi_test_entity_type entities."
         },
         "taxonomy_term": {
             "type": "object",
@@ -1073,7 +771,7 @@
         }
     },
     "paths": {
-        "\/node\/{node}": {
+        "\/entity\/openapi_test_entity\/{openapi_test_entity}": {
             "get": {
                 "parameters": [
                     {
@@ -1088,18 +786,18 @@
                         "default": "json"
                     },
                     {
-                        "name": "node",
+                        "name": "openapi_test_entity",
                         "in": "path",
                         "required": true,
                         "type": "string",
-                        "description": "The nid,id, of the node."
+                        "description": "The id,id, of the openapi_test_entity."
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "$ref": "#\/definitions\/node"
+                            "$ref": "#\/definitions\/openapi_test_entity"
                         }
                     },
                     "400": {
@@ -1127,19 +825,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "node"
-                ],
-                "summary": "Get a Content",
-                "operationId": "entity:node:GET",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    }
-                ]
+                "summary": "Get a OpenApi Test Entity",
+                "operationId": "entity:openapi_test_entity:GET"
             },
             "patch": {
                 "parameters": [
@@ -1155,19 +842,19 @@
                         "default": "json"
                     },
                     {
-                        "name": "node",
+                        "name": "openapi_test_entity",
                         "in": "path",
                         "required": true,
                         "type": "string",
-                        "description": "The nid,id, of the node."
+                        "description": "The id,id, of the openapi_test_entity."
                     },
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "The Content object",
+                        "description": "The OpenApi Test Entity object",
                         "required": true,
                         "schema": {
-                            "$ref": "#\/definitions\/node"
+                            "$ref": "#\/definitions\/openapi_test_entity"
                         }
                     }
                 ],
@@ -1197,22 +884,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "node"
-                ],
-                "summary": "Patch a Content",
-                "operationId": "entity:node:PATCH",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    },
-                    {
-                        "csrf_token": []
-                    }
-                ]
+                "summary": "Patch a OpenApi Test Entity",
+                "operationId": "entity:openapi_test_entity:PATCH"
             },
             "delete": {
                 "parameters": [
@@ -1228,11 +901,11 @@
                         "default": "json"
                     },
                     {
-                        "name": "node",
+                        "name": "openapi_test_entity",
                         "in": "path",
                         "required": true,
                         "type": "string",
-                        "description": "The nid,id, of the node."
+                        "description": "The id,id, of the openapi_test_entity."
                     }
                 ],
                 "responses": {
@@ -1264,25 +937,11 @@
                         }
                     }
                 },
-                "tags": [
-                    "node"
-                ],
-                "summary": "Delete a Content",
-                "operationId": "entity:node:DELETE",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    },
-                    {
-                        "csrf_token": []
-                    }
-                ]
+                "summary": "Delete a OpenApi Test Entity",
+                "operationId": "entity:openapi_test_entity:DELETE"
             }
         },
-        "\/node": {
+        "\/entity\/openapi_test_entity": {
             "post": {
                 "parameters": [
                     {
@@ -1299,10 +958,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "The Content object",
+                        "description": "The OpenApi Test Entity object",
                         "required": true,
                         "schema": {
-                            "$ref": "#\/definitions\/node"
+                            "$ref": "#\/definitions\/openapi_test_entity"
                         }
                     }
                 ],
@@ -1310,7 +969,7 @@
                     "201": {
                         "description": "Entity created",
                         "schema": {
-                            "$ref": "#\/definitions\/node"
+                            "$ref": "#\/definitions\/openapi_test_entity"
                         }
                     },
                     "400": {
@@ -1338,22 +997,66 @@
                         }
                     }
                 },
-                "tags": [
-                    "node"
-                ],
-                "summary": "Post a Content",
-                "operationId": "entity:node:POST",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
+                "summary": "Post a OpenApi Test Entity",
+                "operationId": "entity:openapi_test_entity:POST"
+            }
+        },
+        "\/entity\/openapi_test_entity_type\/{openapi_test_entity_type}": {
+            "get": {
+                "parameters": [
                     {
-                        "basic_auth": []
+                        "name": "_format",
+                        "in": "query",
+                        "type": "string",
+                        "enum": [
+                            "json"
+                        ],
+                        "required": true,
+                        "description": "Request format",
+                        "default": "json"
                     },
                     {
-                        "csrf_token": []
+                        "name": "openapi_test_entity_type",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The id,id, of the openapi_test_entity_type."
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#\/definitions\/openapi_test_entity_type"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "Bad data"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Internal server error."
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get a OpenApi Test Entity type",
+                "operationId": "entity:openapi_test_entity_type:GET"
             }
         },
         "\/taxonomy\/term\/{taxonomy_term}": {
@@ -1410,19 +1113,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "taxonomy_term"
-                ],
                 "summary": "Get a Taxonomy term",
-                "operationId": "entity:taxonomy_term:GET",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    }
-                ]
+                "operationId": "entity:taxonomy_term:GET"
             },
             "patch": {
                 "parameters": [
@@ -1480,22 +1172,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "taxonomy_term"
-                ],
                 "summary": "Patch a Taxonomy term",
-                "operationId": "entity:taxonomy_term:PATCH",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    },
-                    {
-                        "csrf_token": []
-                    }
-                ]
+                "operationId": "entity:taxonomy_term:PATCH"
             },
             "delete": {
                 "parameters": [
@@ -1547,22 +1225,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "taxonomy_term"
-                ],
                 "summary": "Delete a Taxonomy term",
-                "operationId": "entity:taxonomy_term:DELETE",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    },
-                    {
-                        "csrf_token": []
-                    }
-                ]
+                "operationId": "entity:taxonomy_term:DELETE"
             }
         },
         "\/taxonomy\/term": {
@@ -1621,22 +1285,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "taxonomy_term"
-                ],
                 "summary": "Post a Taxonomy term",
-                "operationId": "entity:taxonomy_term:POST",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    },
-                    {
-                        "csrf_token": []
-                    }
-                ]
+                "operationId": "entity:taxonomy_term:POST"
             }
         },
         "\/entity\/taxonomy_vocabulary\/{taxonomy_vocabulary}": {
@@ -1693,19 +1343,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "taxonomy_vocabulary"
-                ],
                 "summary": "Get a Taxonomy vocabulary",
-                "operationId": "entity:taxonomy_vocabulary:GET",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    }
-                ]
+                "operationId": "entity:taxonomy_vocabulary:GET"
             }
         },
         "\/user\/{user}": {
@@ -1762,19 +1401,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "user"
-                ],
                 "summary": "Get a User",
-                "operationId": "entity:user:GET",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    }
-                ]
+                "operationId": "entity:user:GET"
             }
         }
     }

@@ -1,22 +1,4 @@
 {
-    "swagger": "2.0",
-    "schemes": [
-        "http"
-    ],
-    "info": {
-        "description": "This is a JSON API compliant implemenation",
-        "title": "Drupal - JSON API",
-        "version": "Versioning not supported"
-    },
-    "host": "{host}",
-    "basePath": "\/{base_path}\/jsonapi",
-    "securityDefinitions": [],
-    "tags": [
-        {
-            "name": "Taxonomy term - Camelids",
-            "description": "Vocabulary Camelids of type Taxonomy term. "
-        }
-    ],
     "definitions": {
         "taxonomy_term:camelids": {
             "type": "object",
@@ -222,9 +204,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -251,9 +230,6 @@
                         }
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": []
             }
         },
@@ -269,9 +245,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -294,9 +267,6 @@
                         "description": "The uuid of the taxonomy_term camelids"
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": []
             },
             "delete": {
@@ -310,9 +280,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -333,9 +300,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "200": {
@@ -360,9 +324,6 @@
                         "description": "The uuid of the taxonomy_term camelids"
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -383,9 +344,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {
@@ -408,9 +366,6 @@
                         "description": "The uuid of the taxonomy_term camelids"
                     }
                 ],
-                "tags": [
-                    "Taxonomy term - Camelids"
-                ],
                 "responses": []
             },
             "delete": {
@@ -424,9 +379,6 @@
                         "type": "uuid",
                         "description": "The uuid of the taxonomy_term camelids"
                     }
-                ],
-                "tags": [
-                    "Taxonomy term - Camelids"
                 ],
                 "responses": {
                     "201": {

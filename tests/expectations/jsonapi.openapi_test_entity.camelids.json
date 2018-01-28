@@ -1,84 +1,30 @@
 {
     "definitions": {
-        "taxonomy_term:camelids": {
+        "openapi_test_entity:camelids": {
             "type": "object",
-            "title": "taxonomy_term:camelids Schema",
-            "description": "Describes the payload for 'taxonomy_term' entities of the 'camelids' bundle.",
+            "title": "openapi_test_entity:camelids Schema",
+            "description": "Describes the payload for 'openapi_test_entity' entities of the 'camelids' bundle.",
             "properties": {
                 "attributes": {
                     "type": "object",
                     "properties": {
-                        "tid": {
+                        "id": {
                             "type": "integer",
-                            "title": "Term ID",
-                            "description": "The term ID."
+                            "title": "ID"
                         },
                         "uuid": {
                             "type": "string",
                             "title": "UUID",
-                            "maxLength": 128,
-                            "description": "The term UUID."
-                        },
-                        "langcode": {
-                            "type": "object",
-                            "properties": {
-                                "value": {
-                                    "type": "string",
-                                    "title": "Language code"
-                                },
-                                "language": {
-                                    "type": "language_reference",
-                                    "title": "Language object",
-                                    "description": "The referenced language"
-                                }
-                            },
-                            "required": [
-                                "value"
-                            ],
-                            "title": "Language",
-                            "description": "The term language code."
+                            "maxLength": 128
                         },
                         "name": {
                             "type": "string",
                             "title": "Name",
-                            "maxLength": 255
+                            "maxLength": 50,
+                            "description": "The name of the OpenApi Test Entity entity.",
+                            "default": ""
                         },
-                        "description": {
-                            "type": "object",
-                            "properties": {
-                                "value": {
-                                    "type": "string",
-                                    "title": "Text"
-                                },
-                                "format": {
-                                    "type": "string",
-                                    "title": "Text format"
-                                }
-                            },
-                            "required": [
-                                "value"
-                            ],
-                            "title": "Description"
-                        },
-                        "weight": {
-                            "type": "integer",
-                            "title": "Weight",
-                            "description": "The weight of this term in relation to other terms.",
-                            "default": 0
-                        },
-                        "changed": {
-                            "type": "number",
-                            "title": "Changed",
-                            "format": "utc-millisec",
-                            "description": "The time that the term was last edited."
-                        },
-                        "default_langcode": {
-                            "type": "boolean",
-                            "title": "Default translation",
-                            "description": "A flag indicating whether this is the default translation.",
-                            "default": true
-                        },
-                        "field_test_taxonomy_term": {
+                        "field_test_openapi_test_entity": {
                             "type": "object",
                             "properties": {
                                 "value": {
@@ -98,14 +44,13 @@
                         }
                     },
                     "required": [
-                        "tid",
-                        "uuid",
-                        "name"
+                        "id",
+                        "uuid"
                     ]
                 },
                 "relationships": {
                     "properties": {
-                        "vid": {
+                        "type": {
                             "type": "object",
                             "properties": {
                                 "data": {
@@ -119,7 +64,7 @@
                                             "type": "string",
                                             "title": "Referenced resource",
                                             "enum": [
-                                                "taxonomy_vocabulary--taxonomy_vocabulary"
+                                                "openapi_test_entity_type--openapi_test_entity_type"
                                             ]
                                         },
                                         "id": {
@@ -132,37 +77,6 @@
                                 }
                             },
                             "title": "Resource Identifier"
-                        },
-                        "parent": {
-                            "type": "object",
-                            "properties": {
-                                "data": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "required": [
-                                            "type",
-                                            "id"
-                                        ],
-                                        "properties": {
-                                            "type": {
-                                                "type": "string",
-                                                "title": "Referenced resource",
-                                                "enum": [
-                                                    "taxonomy_term--taxonomy_term"
-                                                ]
-                                            },
-                                            "id": {
-                                                "type": "string",
-                                                "title": "Resource ID",
-                                                "format": "uuid",
-                                                "maxLength": 128
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "title": "Resource Identifier"
                         }
                     },
                     "type": "object"
@@ -170,7 +84,7 @@
                 "type": {
                     "type": "string",
                     "title": "Title",
-                    "example": "taxonomy_term--camelids"
+                    "example": "openapi_test_entity--camelids"
                 },
                 "id": {
                     "type": "string",
@@ -180,7 +94,7 @@
         }
     },
     "paths": {
-        "\/taxonomy_term\/camelids": {
+        "\/openapi_test_entity\/camelids": {
             "get": {
                 "summary": "collection get",
                 "description": "@todo Add descriptions",
@@ -210,7 +124,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#\/definitions\/taxonomy_term:camelids"
+                                "$ref": "#\/definitions\/openapi_test_entity:camelids"
                             }
                         }
                     }
@@ -223,34 +137,34 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "The taxonomy_term object",
+                        "description": "The openapi_test_entity object",
                         "required": true,
                         "schema": {
-                            "$ref": "#\/definitions\/taxonomy_term:camelids"
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
                         }
                     }
                 ],
                 "responses": []
             }
         },
-        "\/taxonomy_term\/camelids\/{taxonomy_term}": {
+        "\/openapi_test_entity\/camelids\/{openapi_test_entity}": {
             "get": {
                 "summary": "individual get",
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "$ref": "#\/definitions\/taxonomy_term:camelids"
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
                         }
                     }
                 }
@@ -260,11 +174,11 @@
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": []
@@ -274,11 +188,11 @@
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": {
@@ -288,47 +202,47 @@
                 }
             }
         },
-        "\/taxonomy_term\/camelids\/{taxonomy_term}\/{related}": {
+        "\/openapi_test_entity\/camelids\/{openapi_test_entity}\/{related}": {
             "get": {
                 "summary": "related get",
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "$ref": "#\/definitions\/taxonomy_term:camelids"
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
                         }
                     }
                 }
             }
         },
-        "\/taxonomy_term\/camelids\/{taxonomy_term}\/relationships\/{related}": {
+        "\/openapi_test_entity\/camelids\/{openapi_test_entity}\/relationships\/{related}": {
             "get": {
                 "summary": "relationship get",
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
                         "schema": {
-                            "$ref": "#\/definitions\/taxonomy_term:camelids"
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
                         }
                     }
                 }
@@ -338,18 +252,18 @@
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Entity created",
                         "schema": {
-                            "$ref": "#\/definitions\/taxonomy_term:camelids"
+                            "$ref": "#\/definitions\/openapi_test_entity:camelids"
                         }
                     }
                 }
@@ -359,11 +273,11 @@
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": []
@@ -373,11 +287,11 @@
                 "description": "@todo Add descriptions",
                 "parameters": [
                     {
-                        "name": "taxonomy_term",
+                        "name": "openapi_test_entity",
                         "required": true,
                         "in": "path",
                         "type": "uuid",
-                        "description": "The uuid of the taxonomy_term camelids"
+                        "description": "The uuid of the openapi_test_entity camelids"
                     }
                 ],
                 "responses": {

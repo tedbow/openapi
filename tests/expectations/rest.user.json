@@ -1,47 +1,4 @@
 {
-    "swagger": "2.0",
-    "schemes": [
-        "http"
-    ],
-    "info": {
-        "description": "The REST API provide by the core REST module.",
-        "title": "Drupal - REST API",
-        "version": "Versioning not supported"
-    },
-    "host": "{host}",
-    "basePath": "\/{base_path}",
-    "securityDefinitions": {
-        "csrf_token": {
-            "type": "apiKey",
-            "name": "X-CSRF-Token",
-            "in": "header"
-        },
-        "basic_auth": {
-            "type": "basic"
-        }
-    },
-    "tags": [
-        {
-            "name": "node",
-            "description": "Entity type: Content",
-            "x-entity-type": "node"
-        },
-        {
-            "name": "taxonomy_term",
-            "description": "Entity type: Taxonomy term",
-            "x-entity-type": "taxonomy_term"
-        },
-        {
-            "name": "taxonomy_vocabulary",
-            "description": "Entity type: Taxonomy vocabulary",
-            "x-entity-type": "taxonomy_vocabulary"
-        },
-        {
-            "name": "user",
-            "description": "Entity type: User",
-            "x-entity-type": "user"
-        }
-    ],
     "definitions": {
         "user": {
             "type": "object",
@@ -469,19 +426,8 @@
                         }
                     }
                 },
-                "tags": [
-                    "user"
-                ],
                 "summary": "Get a User",
-                "operationId": "entity:user:GET",
-                "schemes": [
-                    "http"
-                ],
-                "security": [
-                    {
-                        "basic_auth": []
-                    }
-                ]
+                "operationId": "entity:user:GET"
             }
         }
     }

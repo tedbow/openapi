@@ -1,21 +1,4 @@
 {
-    "swagger": "2.0",
-    "schemes": [
-        "http"
-    ],
-    "info": {
-        "description": "This is a JSON API compliant implemenation",
-        "title": "Drupal - JSON API",
-        "version": "Versioning not supported"
-    },
-    "host": "{host}",
-    "basePath": "\/{base_path}\/jsonapi",
-    "securityDefinitions": [],
-    "tags": [
-        {
-            "name": "User"
-        }
-    ],
     "definitions": {
         "user:user": {
             "type": "object",
@@ -258,9 +241,6 @@
                         "required": false
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -287,9 +267,6 @@
                         }
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": []
             }
         },
@@ -305,9 +282,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -330,9 +304,6 @@
                         "description": "The uuid of the user user"
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": []
             },
             "delete": {
@@ -346,9 +317,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -369,9 +337,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "200": {
@@ -396,9 +361,6 @@
                         "description": "The uuid of the user user"
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -419,9 +381,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "201": {
@@ -444,9 +403,6 @@
                         "description": "The uuid of the user user"
                     }
                 ],
-                "tags": [
-                    "User"
-                ],
                 "responses": []
             },
             "delete": {
@@ -460,9 +416,6 @@
                         "type": "uuid",
                         "description": "The uuid of the user user"
                     }
-                ],
-                "tags": [
-                    "User"
                 ],
                 "responses": {
                     "201": {

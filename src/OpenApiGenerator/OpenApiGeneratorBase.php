@@ -79,12 +79,13 @@ abstract class OpenApiGeneratorBase implements OpenApiGeneratorInterface {
    * {@inheritdoc}
    */
   public function getSpecification(array $options = []) {
+    $basePath = $this->getBasePath();
     $spec = [
       'swagger' => "2.0",
       'schemes' => ['http'],
       'info' => $this->getInfo(),
       'host' => \Drupal::request()->getHost(),
-      'basePath' => $this->getBasePath(),
+      'basePath' => empty($basePath) ? '/' : $basePath,
       'securityDefinitions' => $this->getSecurityDefinitions(),
       'tags' => $this->getTags($options),
       'definitions' => $this->getDefinitions($options),

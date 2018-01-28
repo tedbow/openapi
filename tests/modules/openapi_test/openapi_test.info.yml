@@ -1,0 +1,5 @@
+name: OpenApi Test Resources
+type: module
+description: Resource dependecies for running tests for the OpenApi Module.
+core: 8.x
+package: Testing
